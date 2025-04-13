@@ -1,28 +1,22 @@
-
 import Foundation
 import SwiftUI
 import Combine
 
-public enum DifficultyLevel: String, Codable {
-    case easy = "Easy"
-    case medium = "Medium"
-    case hard = "Hard"
-    case master = "Master"
-    case epic = "Epic"
-}
-
-class Game: ObservableObject {
+@MainActor
+final class Game: ObservableObject {
     @Published var grid: [[Cell]] = []
     @Published var selectedCell: (row: Int, col: Int)? = nil
     @Published var mistakes: Int = 0
     @Published var gameOver: Bool = false
     @Published var highlightedCells: Set<CellCoordinate> = []
-    @Published var timer: GameTimer
     @Published var remainingHints: Int = 3
     @Published var pencilMode: Bool = false
     @Published var isWon: Bool = false
     @Published var finalTime: Int = 0
     @Published var lockedNumberInput: Int? = nil
+    @Published var isLoading: Bool = false
+    
+    var timer: GameTimer
     
     var usedNumbersCount: [Int: Int] {
         var count: [Int: Int] = [:]
@@ -43,12 +37,20 @@ class Game: ObservableObject {
     init(level: DifficultyLevel) {
         self.level = level
         self.timer = GameTimer()
-        generateSudokuGrid()
-        startTimer()
     }
     
     deinit {
         timer.stop()
+    }
+    
+    func loadGame() async {
+        guard !isLoading else { return }
+        
+        isLoading = true
+        defer { isLoading = false }
+        
+        await generateSudokuGrid()
+        startTimer()
     }
     
     func startTimer() {
@@ -60,15 +62,15 @@ class Game: ObservableObject {
     }
     
     func useHint() {
-            guard remainingHints > 0 else { return }
-            guard let selected = selectedCell else { return }
-            guard !grid[selected.row][selected.col].isOriginal else { return }
-
-            let correctValue = solutionGrid[selected.row][selected.col]
-            grid[selected.row][selected.col].value = correctValue
-            grid[selected.row][selected.col].notes = []
-            remainingHints -= 1
-        }
+        guard remainingHints > 0 else { return }
+        guard let selected = selectedCell else { return }
+        guard !grid[selected.row][selected.col].isOriginal else { return }
+        
+        let correctValue = solutionGrid[selected.row][selected.col]
+        grid[selected.row][selected.col].value = correctValue
+        grid[selected.row][selected.col].notes = []
+        remainingHints -= 1
+    }
     
     func restart() {
         mistakes = 0
@@ -78,9 +80,9 @@ class Game: ObservableObject {
         highlightedCells = []
         timer.reset()
         timer.start()
-        generateSudokuGrid()
         lockedNumberInput = nil
         remainingHints = 3
+        Task { await generateSudokuGrid() }
     }
     
     func restartCurrentGameState() {
@@ -140,7 +142,7 @@ class Game: ObservableObject {
             StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime)
         }
     }
-
+    
     
     func eraseValue() {
         guard let selected = selectedCell else { return }
@@ -148,27 +150,26 @@ class Game: ObservableObject {
         
         grid[selected.row][selected.col].value = 0
         grid[selected.row][selected.col].notes = []
-        grid[selected.row][selected.col].isIncorrect = false 
+        grid[selected.row][selected.col].isIncorrect = false
     }
     
-    func generateSudokuGrid() {
-        solutionGrid = SudokuGenerator.generateSolvedGrid()
+    func generateSudokuGrid() async {
+        let start = Date()
+        let fullGrid = await Task.detached(priority: .userInitiated) {
+            SudokuGenerator.generateSolvedGrid()
+        }.value
         
-        let numberOfClues: Int
-        switch level {
-        case .easy:
-            numberOfClues = 45
-        case .medium:
-            numberOfClues = 40
-        case .hard:
-            numberOfClues = 35
-        case .master:
-            numberOfClues = 30
-        case .epic:
-            numberOfClues = 25
-        }
+        let gameGrid = await Task.detached(priority: .userInitiated) {
+            await SudokuGenerator.removeNumbers(from: fullGrid, clues: self.level.numberOfClues)
+        }.value
         
-        self.grid = SudokuGenerator.removeNumbers(from: solutionGrid, clues: numberOfClues)
+        solutionGrid = fullGrid
+        grid = gameGrid
+        
+        #if DEBUG
+        let duration = Date().timeIntervalSince(start)
+        print("Sudoku grid generation took \(duration) seconds")
+        #endif
     }
     
     func selectCell(row: Int, col: Int) {
@@ -177,7 +178,6 @@ class Game: ObservableObject {
         inputLockedNumberIfNeeded()
         
     }
-        
     
     func isSelected(row: Int, col: Int) -> Bool {
         return selectedCell?.row == row && selectedCell?.col == col
@@ -197,12 +197,12 @@ class Game: ObservableObject {
         }
         
         let correctValue = solutionGrid[selected.row][selected.col]
-
+        
         if pencilMode {
             grid[selected.row][selected.col].notes.insert(value)
             return
         }
-
+        
         if value == correctValue {
             grid[selected.row][selected.col].value = value
             grid[selected.row][selected.col].isIncorrect = false
@@ -289,122 +289,123 @@ class Game: ObservableObject {
         }
     }
 }
-    
-    
-    struct Cell: Identifiable, Hashable, Codable {
-        var id = UUID()
-        var value: Int
-        var isOriginal: Bool
-        var row: Int
-        var col: Int
-        var isIncorrect: Bool = false
-        var notes: Set<Int> = []
+
+
+struct Cell: Identifiable, Hashable, Codable {
+    var id = UUID()
+    var value: Int
+    var isOriginal: Bool
+    var row: Int
+    var col: Int
+    var isIncorrect: Bool = false
+    var notes: Set<Int> = []
+}
+
+struct CellCoordinate: Hashable {
+    let row: Int
+    let col: Int
+}
+
+struct SudokuGenerator {
+    static func generateSolvedGrid() -> [[Int]] {
+        var grid = Array(repeating: Array(repeating: 0, count: 9), count: 9)
+        fillGrid(&grid)
+        return grid
     }
     
-    struct CellCoordinate: Hashable {
-        let row: Int
-        let col: Int
-    }
-    
-    struct SudokuGenerator {
-        static func generateSolvedGrid() -> [[Int]] {
-            var grid = Array(repeating: Array(repeating: 0, count: 9), count: 9)
-            _ = fillGrid(&grid)
-            return grid
-        }
-        
-        static func fillGrid(_ grid: inout [[Int]]) -> Bool {
-            for row in 0..<9 {
-                for col in 0..<9 {
-                    if grid[row][col] == 0 {
-                        let numbers = Array(1...9).shuffled()
-                        for num in numbers {
-                            if isSafe(grid, row, col, num) {
-                                grid[row][col] = num
-                                if fillGrid(&grid) {
-                                    return true
-                                }
-                                grid[row][col] = 0
+    @discardableResult
+    static func fillGrid(_ grid: inout [[Int]]) -> Bool {
+        for row in 0..<9 {
+            for col in 0..<9 {
+                if grid[row][col] == 0 {
+                    let numbers = Array(1...9).shuffled()
+                    for num in numbers {
+                        if isSafe(grid, row, col, num) {
+                            grid[row][col] = num
+                            if fillGrid(&grid) {
+                                return true
                             }
+                            grid[row][col] = 0
                         }
-                        return false
                     }
-                }
-            }
-            return true
-        }
-        
-        static func isSafe(_ grid: [[Int]], _ row: Int, _ col: Int, _ num: Int) -> Bool {
-            for i in 0..<9 {
-                if grid[row][i] == num || grid[i][col] == num {
                     return false
                 }
             }
-            let startRow = (row / 3) * 3
-            let startCol = (col / 3) * 3
-            for i in 0..<3 {
-                for j in 0..<3 {
-                    if grid[startRow + i][startCol + j] == num {
-                        return false
-                    }
-                }
-            }
-            return true
         }
-        
-        static func removeNumbers(from solved: [[Int]], clues: Int) -> [[Cell]] {
-            var grid = solved
-            var positions = (0..<9).flatMap { row in (0..<9).map { col in (row, col) } }
-            positions.shuffle()
-
-            // Подсчёт количества каждой цифры
-            var numberCounts: [Int: Int] = [:]
-            for row in 0..<9 {
-                for col in 0..<9 {
-                    let value = grid[row][col]
-                    numberCounts[value, default: 0] += 1
-                }
-            }
-
-            var cellsToRemove = 81 - clues
-
-            for (row, col) in positions {
-                guard cellsToRemove > 0 else { break }
-
-                let currentValue = grid[row][col]
-                if currentValue != 0, numberCounts[currentValue, default: 0] > 1 {
-                    grid[row][col] = 0
-                    numberCounts[currentValue, default: 0] -= 1
-                    cellsToRemove -= 1
-                }
-            }
-
-            // Убираем лишние цифры, если их больше 7
-            for number in 1...9 {
-                while numberCounts[number, default: 0] > 7 {
-                    for (row, col) in positions {
-                        if grid[row][col] == number {
-                            grid[row][col] = 0
-                            numberCounts[number, default: 0] -= 1
-                            break
-                        }
-                    }
-                }
-            }
-
-            return grid.enumerated().map { (r, row) in
-                row.enumerated().map { (c, value) in
-                    Cell(value: value, isOriginal: value != 0, row: r, col: c)
-                }
-            }
-        }
-
+        return true
     }
     
-   
-class GameTimer: ObservableObject {
-    @Published var elapsedTime: Int = 0
+    static func isSafe(_ grid: [[Int]], _ row: Int, _ col: Int, _ num: Int) -> Bool {
+        for i in 0..<9 {
+            if grid[row][i] == num || grid[i][col] == num {
+                return false
+            }
+        }
+        let startRow = (row / 3) * 3
+        let startCol = (col / 3) * 3
+        for i in 0..<3 {
+            for j in 0..<3 {
+                if grid[startRow + i][startCol + j] == num {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    
+    static func removeNumbers(from solved: [[Int]], clues: Int) -> [[Cell]] {
+        var grid = solved
+        var positions = (0..<9).flatMap { row in (0..<9).map { col in (row, col) } }
+        positions.shuffle()
+        
+        // Подсчёт количества каждой цифры
+        var numberCounts: [Int: Int] = [:]
+        for row in 0..<9 {
+            for col in 0..<9 {
+                let value = grid[row][col]
+                numberCounts[value, default: 0] += 1
+            }
+        }
+        
+        var cellsToRemove = 81 - clues
+        
+        for (row, col) in positions {
+            guard cellsToRemove > 0 else { break }
+            
+            let currentValue = grid[row][col]
+            if currentValue != 0, numberCounts[currentValue, default: 0] > 1 {
+                grid[row][col] = 0
+                numberCounts[currentValue, default: 0] -= 1
+                cellsToRemove -= 1
+            }
+        }
+        
+        // Убираем лишние цифры, если их больше 7
+        for number in 1...9 {
+            while numberCounts[number, default: 0] > 7 {
+                for (row, col) in positions {
+                    if grid[row][col] == number {
+                        grid[row][col] = 0
+                        numberCounts[number, default: 0] -= 1
+                        break
+                    }
+                }
+            }
+        }
+        
+        return grid.enumerated().map { (r, row) in
+            row.enumerated().map { (c, value) in
+                Cell(value: value, isOriginal: value != 0, row: r, col: c)
+            }
+        }
+    }
+    
+}
 
+
+final class GameTimer: ObservableObject {
+    @Published private(set) var elapsedTime: Int = 0
+    
     private var timer: Timer?
     private var startDate: Date?
     private var accumulatedTime: Int = 0
@@ -413,9 +414,9 @@ class GameTimer: ObservableObject {
         guard timer == nil else { return }
         
         startDate = Date()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            guard let start = self.startDate else { return }
-            self.elapsedTime = self.accumulatedTime + Int(Date().timeIntervalSince(start))
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self else { return }
+            handleTimer()
         }
     }
     
@@ -423,6 +424,7 @@ class GameTimer: ObservableObject {
         if let start = startDate {
             accumulatedTime += Int(Date().timeIntervalSince(start))
         }
+        
         timer?.invalidate()
         timer = nil
         startDate = nil
@@ -434,5 +436,10 @@ class GameTimer: ObservableObject {
         startDate = nil
         accumulatedTime = 0
         elapsedTime = 0
+    }
+    
+    private func handleTimer() {
+        guard let start = startDate else { return }
+        elapsedTime = accumulatedTime + Int(Date().timeIntervalSince(start))
     }
 }

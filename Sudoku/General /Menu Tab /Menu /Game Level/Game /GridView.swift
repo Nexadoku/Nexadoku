@@ -14,11 +14,13 @@ struct GridView: View {
             let offset = (geometry.size.width - gridSize) / 2
             
             ZStack {
-                Color.white.edgesIgnoringSafeArea(.all)
+                Color.white
+                    .edgesIgnoringSafeArea(.all)
+                    .shadow(color: .indigo, radius: 10)
+                    .shadow(color: .purple, radius: 5)
                 
                 ForEach(0..<9, id: \.self) { row in
                     ForEach(0..<9, id: \.self) { col in
-                        let cell = game.grid[row][col]
                         CellView(
                             cell: game.grid[row][col],
                             isSelected: game.isSelected(row: row, col: col),
@@ -52,10 +54,6 @@ struct GridView: View {
             }
         }
         .frame(width: cellSize * 9, height: cellSize * 9)
-        .shadow(color: .indigo, radius: 10)
-        .shadow(color: .purple, radius: 5)
-        
-        
     }
 }
 

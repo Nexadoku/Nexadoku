@@ -5,6 +5,10 @@ struct CellView: View {
     let isSelected: Bool
     let isHighlighted: Bool
     let onTap: () -> Void
+    
+    private var drawsGradient: Bool {
+        !(cell.isIncorrect || isSelected || isHighlighted)
+    }
 
     var body: some View {
         ZStack {
@@ -13,6 +17,24 @@ struct CellView: View {
                 .cornerRadius(1)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.2), lineWidth: 0.5))
 
+            if drawsGradient {
+                Rectangle()
+                    .fill(
+                        RadialGradient(
+                            gradient: Gradient(colors: [
+                                Color.white,
+                                Color.purple.opacity(0.5),
+                                Color.indigo.opacity(0.6)
+                            ]),
+                            center: .center,
+                            startRadius: 5,
+                            endRadius: 80
+                        )
+                    )
+                    .frame(width: 40, height: 40)
+                    .cornerRadius(1)
+            }
+            
             if cell.value != 0 {
                 Text("\(cell.value)")
                     .foregroundColor(cell.isIncorrect ? .red : cell.isOriginal ? .black : isSelected ? .white : .indigo)
