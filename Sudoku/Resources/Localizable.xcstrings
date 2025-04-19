@@ -23,9 +23,6 @@
         }
       }
     },
-    "🎉 Congratulations 🎉" : {
-
-    },
     "🎉 You completed the level 🎉" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -115,6 +112,9 @@
           }
         }
       }
+    },
+    "Congratulations!" : {
+
     },
     "contact_us" : {
       "localizations" : {
