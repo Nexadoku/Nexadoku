@@ -19,25 +19,28 @@ struct SettingsView: View {
                             .foregroundColor(.white)
                             .padding(.top, 40)
                         
-                        VStack(spacing: 10) {
-                            Text("General settings")
-                                .foregroundColor(.gray.opacity(0.7))
-                                .font(.system(size: 17))
-                            Toggle(isOn: $soundEnabled) {
-                                Text("sound")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundColor(.white)
-                            }
-                            .toggleStyle(SwitchToggleStyle(tint: .purple))
-                            .padding()
-                            
-                            Toggle(isOn: $vibrationEnabled) {
-                                Text("vibration")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundColor(.white)
-                            }
-                            .toggleStyle(SwitchToggleStyle(tint: .purple))
-                            .padding()
+                        VStack(alignment: .leading, spacing: 10) {
+                                Text("General settings")
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 17))
+                                    .padding(.horizontal)
+                            VStack {
+                                Toggle(isOn: $soundEnabled) {
+                                    Text("sound")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
+                                
+                                Toggle(isOn: $vibrationEnabled) {
+                                    Text("vibration")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
+                           
 
                             Picker(NSLocalizedString("language", comment: ""), selection: $languageSettings.currentLanguage) {
                                 Text("english").tag(Language.english)
@@ -45,25 +48,28 @@ struct SettingsView: View {
                             }
                             .pickerStyle(.segmented)
                             .padding()
-                            
+                            }
                             Text("Game settings")
-                                .foregroundColor(.gray.opacity(0.7))
+                                .foregroundColor(.gray)
                                 .font(.system(size: 17))
-                            Toggle(isOn: $timerEnabled) {
-                                Text("Timer")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundColor(.white)
+                                .padding(.horizontal)
+                            VStack {
+                                Toggle(isOn: $timerEnabled) {
+                                    Text("Timer")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
+                                
+                                Toggle(isOn: $mistakesEnabled) {
+                                    Text("Mistakes")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
                             }
-                            .toggleStyle(SwitchToggleStyle(tint: .purple))
-                            .padding()
-                            
-                            Toggle(isOn: $mistakesEnabled) {
-                                Text("Mistakes")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundColor(.white)
-                            }
-                            .toggleStyle(SwitchToggleStyle(tint: .purple))
-                            .padding()
                         }
                     }
                 }

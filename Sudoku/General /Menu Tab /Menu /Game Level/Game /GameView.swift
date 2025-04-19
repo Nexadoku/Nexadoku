@@ -167,10 +167,18 @@ struct GameView: View {
     
     private var infoPanel: some View {
         HStack {
-            Text(game.level.rawValue)
-                .font(.system(size: 18, weight: .heavy))
-                .foregroundColor(.white)
-            Spacer()
+            if !mistakesEnabled && !timerEnabled {
+                Spacer()
+                Text(game.level.rawValue)
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundColor(.white)
+                Spacer()
+            } else {
+                Text(game.level.rawValue)
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundColor(.white)
+                Spacer()
+            }
             
             if mistakesEnabled {
                 Text("Mistakes: \(game.mistakes)/3")
