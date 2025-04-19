@@ -5,6 +5,7 @@ struct CellView: View {
     let isSelected: Bool
     let isHighlighted: Bool
     let onTap: () -> Void
+    @AppStorage("mistakesEnabled") private var mistakesEnabled: Bool = true
     
     private var drawsGradient: Bool {
         !(cell.isIncorrect || isSelected || isHighlighted)
@@ -36,7 +37,7 @@ struct CellView: View {
             
             if cell.value != 0 {
                 Text("\(cell.value)")
-                    .foregroundColor(cell.isIncorrect ? .red : cell.isOriginal ? .black : isSelected ? .white : .indigo)
+                    .foregroundColor(mistakesEnabled && cell.isIncorrect ? .red : cell.isOriginal ? .black : isSelected ? .white : .indigo)
                     .font(.system(size: 20, weight: .bold))
             } else if !cell.notes.isEmpty {
                 notesGrid
@@ -50,7 +51,7 @@ struct CellView: View {
     }
 
     private var backgroundColor: Color {
-        if cell.isIncorrect {
+        if mistakesEnabled && cell.isIncorrect {
             return Color.red.opacity(0.15)
         } else if isSelected {
             return Color.indigo

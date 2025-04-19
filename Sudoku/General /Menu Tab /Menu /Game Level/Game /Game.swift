@@ -213,6 +213,7 @@ final class Game: ObservableObject {
         } else {
             grid[selected.row][selected.col].value = value
             grid[selected.row][selected.col].isIncorrect = true
+            updateHighlights(row: selected.row, col: selected.col)
             if mistakesEnabled {
                 mistakes += 1
                 

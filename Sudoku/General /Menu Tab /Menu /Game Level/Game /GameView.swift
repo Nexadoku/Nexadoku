@@ -166,35 +166,34 @@ struct GameView: View {
     }
     
     private var infoPanel: some View {
-        HStack {
-            if !mistakesEnabled && !timerEnabled {
-                Spacer()
-                Text(game.level.rawValue)
-                    .font(.system(size: 18, weight: .heavy))
-                    .foregroundColor(.white)
-                Spacer()
-            } else {
-                Text(game.level.rawValue)
-                    .font(.system(size: 18, weight: .heavy))
-                    .foregroundColor(.white)
-                Spacer()
-            }
-            
-            if mistakesEnabled {
-                Text("Mistakes: \(game.mistakes)/3")
-                    .font(.system(size: 18, weight: .heavy))
-                    .foregroundColor(.white)
-            }
-            Spacer()
-            if timerEnabled {
-                HStack {
-                    Image(systemName: "hourglass")
-                    Text("\(timeFormatted(game.timer.elapsedTime))")
-                }
-                .font(.system(size: 18, weight: .heavy))
-                .foregroundColor(.white)
+        let levelView = Text(game.level.rawValue)
+            .font(.system(size: 18, weight: .heavy))
+            .foregroundColor(.white)
+        
+        let mistakesView = Text("Mistakes: \(game.mistakes)/3")
+            .font(.system(size: 18, weight: .heavy))
+            .foregroundColor(.white)
+        
+        let timerView = HStack {
+            Image(systemName: "hourglass")
+            Text("\(timeFormatted(game.timer.elapsedTime))")
+        }
+        .font(.system(size: 18, weight: .heavy))
+        .foregroundColor(.white)
+
+        // Собираем активные элементы
+        let activeViews: [AnyView] = [
+            AnyView(levelView),
+            mistakesEnabled ? AnyView(mistakesView) : nil,
+            timerEnabled ? AnyView(timerView) : nil
+        ].compactMap { $0 }
+        
+        return HStack(spacing: 40) {
+            ForEach(0..<activeViews.count, id: \.self) { index in
+                activeViews[index]
             }
         }
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
         .background(.purple)
@@ -202,6 +201,7 @@ struct GameView: View {
         .shadow(color: .purple, radius: 5)
         .padding()
     }
+
     
     private func timeFormatted(_ totalSeconds: Int) -> String {
         let minutes = totalSeconds / 60
