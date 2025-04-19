@@ -22,41 +22,10 @@ struct WinScreen: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
-
-                ZStack {
-                    Circle()
-                        .fill(
-                            RadialGradient(
-                                gradient: Gradient(colors: [.yellow.opacity(0.4), .clear]),
-                                center: .center,
-                                startRadius: 10,
-                                endRadius: 120
-                            )
-                        )
-                        .scaleEffect(animateSparkle ? 1.2 : 0.8)
-                        .blur(radius: 20)
-                        .opacity(animateSparkle ? 1 : 0.6)
-                        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: animateSparkle)
-                        .frame(width: 200, height: 200)
-
-                    Circle()
-                        .fill(Color.white.opacity(0.15))
-                        .frame(width: 140, height: 140)
-                        .blur(radius: 30)
-
-                    Image(systemName: "trophy.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 100, height: 100)
-                        .foregroundStyle(
-                            LinearGradient(colors: [.yellow, .orange], startPoint: .top, endPoint: .bottom)
-                        )
-                        .shadow(color: .yellow, radius: 30)
-                }
+                
                     Text("Congratulations!")
                         .font(.system(size: 32, weight: .black))
                         .foregroundColor(.white)
-                        .shadow(color: .purple, radius: 10)
                         .padding(.bottom, 10)
                     
                     // Капсула, только если хотя бы один активен
@@ -94,8 +63,8 @@ struct WinScreen: View {
                         .padding()
                         .background(.purple)
                         .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-                        .shadow(color: .purple, radius: 15)
                         .padding(.horizontal)
+                        .shadow(radius: 10)
                     }
                 
                 
@@ -107,7 +76,7 @@ struct WinScreen: View {
                         .padding(.horizontal, 30)
                         .background(.purple)
                         .cornerRadius(26)
-                        .shadow(color: .purple, radius: 20)
+                        .shadow(radius: 10)
                 }
                 .padding(.top, 20)
             }
