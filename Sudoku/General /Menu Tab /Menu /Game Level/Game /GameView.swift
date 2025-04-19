@@ -7,6 +7,9 @@ struct GameView: View {
     @ObservedObject private var game: Game
     @ObservedObject private var gameTimer: GameTimer
     
+    @AppStorage("timerEnabled") private var timerEnabled = true
+    @AppStorage("mistakesEnabled") private var mistakesEnabled = true
+    
     @State private var showGameOverAlert = false
     @State private var isPaused = false
     @State private var showExitConrirmation = false
@@ -53,7 +56,14 @@ struct GameView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .task { await game.loadGame() }
+        .task {
+            await game.loadGame()
+            if !timerEnabled {
+                game.timer.stop()
+            } else {
+                game.timer.start()
+            }
+        }
         .fullScreenCover(isPresented: $game.gameOver) {
             if game.isWon {
                 WinScreen(
@@ -161,16 +171,21 @@ struct GameView: View {
                 .font(.system(size: 18, weight: .heavy))
                 .foregroundColor(.white)
             Spacer()
-            Text("Mistakes: \(game.mistakes)/3")
+            
+            if mistakesEnabled {
+                Text("Mistakes: \(game.mistakes)/3")
+                    .font(.system(size: 18, weight: .heavy))
+                    .foregroundColor(.white)
+            }
+            Spacer()
+            if timerEnabled {
+                HStack {
+                    Image(systemName: "hourglass")
+                    Text("\(timeFormatted(game.timer.elapsedTime))")
+                }
                 .font(.system(size: 18, weight: .heavy))
                 .foregroundColor(.white)
-            Spacer()
-            HStack {
-                Image(systemName: "hourglass")
-                Text("\(timeFormatted(game.timer.elapsedTime))")
             }
-            .font(.system(size: 18, weight: .heavy))
-            .foregroundColor(.white)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)

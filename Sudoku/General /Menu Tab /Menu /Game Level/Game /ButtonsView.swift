@@ -8,8 +8,9 @@ struct ButtonsView: View {
     var onHintTap: () -> Void = {}
     var usedNumbers: [Int: Int] = [:]
     var isPencilMode: Bool = false
+    var gameOver: Bool = false
+    
     @State private var remainingHints = 3
-    var gameOver: Bool = false  
 
     var body: some View {
         VStack(spacing: 20) {

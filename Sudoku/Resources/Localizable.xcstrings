@@ -251,6 +251,9 @@
         }
       }
     },
+    "Game settings" : {
+
+    },
     "game_over" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -267,6 +270,9 @@
           }
         }
       }
+    },
+    "General settings" : {
+
     },
     "Got ideas, spotted a bug, or just want to share some thoughts? Let us know! Your feedback helps make Sudoku even better." : {
 
@@ -358,6 +364,9 @@
           }
         }
       }
+    },
+    "Mistakes" : {
+
     },
     "mistakes_count" : {
       "extractionState" : "stale",
@@ -864,6 +873,9 @@
           }
         }
       }
+    },
+    "Timer" : {
+
     },
     "trials" : {
       "localizations" : {

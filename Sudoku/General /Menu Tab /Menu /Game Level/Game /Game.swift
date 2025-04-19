@@ -17,6 +17,8 @@ final class Game: ObservableObject {
     @Published var lockedNumberInput: Int? = nil
     @Published var isLoading: Bool = false
     
+    @AppStorage("mistakesEnabled") var mistakesEnabled = true
+    
     var timer: GameTimer
     
     var usedNumbersCount: [Int: Int] {
@@ -211,15 +213,20 @@ final class Game: ObservableObject {
         } else {
             grid[selected.row][selected.col].value = value
             grid[selected.row][selected.col].isIncorrect = true
-            mistakes += 1
-            
-            SoundManager.shared.playSound(named: "error")
-            VibrationManager.shared.strongErrorVibration()
-            
-            if mistakes >= 3 {
-                isWon = false
-                gameOver = true
-                gameOverDueToMistakes()
+            if mistakesEnabled {
+                mistakes += 1
+                
+                SoundManager.shared.playSound(named: "error")
+                VibrationManager.shared.strongErrorVibration()
+                
+                if mistakes >= 3 {
+                    isWon = false
+                    gameOver = true
+                    gameOverDueToMistakes()
+                }
+            } else {
+                SoundManager.shared.playSound(named: "SelectCell")
+                VibrationManager.shared.lightImpact()
             }
         }
         
