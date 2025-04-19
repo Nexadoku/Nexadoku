@@ -6,34 +6,26 @@ struct MenuView: View {
     
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
             VStack(spacing: 30) {
+                Spacer()
                 Text("SUDOKU")
                     .font(.system(size: 50, weight: .heavy))
                     .foregroundColor(.white)
                     .padding(.top, 50)
-                    .shadow(radius: 20)
-                
-                Image("logo")
-                    .resizable()
-                    .scaledToFit()
-                    .cornerRadius(50)
-                    .frame(width: 150, height: 150)
-                    .shadow(color: .indigo, radius: 10)
-                    .shadow(color: .purple, radius: 10)
-                
-                Spacer()
                 
                 VStack(spacing: 20) {
                     neonButton(title: "Play Sudoku", icon: "gamecontroller.fill") {
                         navigator.push(.menu(.levelSelection))
+                        SoundManager.shared.playSound(named: "back.click")
                     }
                     
                     neonButton(title: "Trials", icon: "brain.head.profile.fill") {
                         navigator.push(.menu(.events))
+                        SoundManager.shared.playSound(named: "back.click")
                     }
                 }
-                Spacer()
+              Spacer()
             }
             .padding(.bottom)
         }
@@ -47,12 +39,12 @@ struct MenuView: View {
                     Text(title)
                         .font(.title2.bold())
                 }
-                .foregroundColor(.black)
+                .foregroundColor(.white)
                 .padding()
                 .frame(maxWidth: 500, maxHeight: 60)
-                .background(.white)
+                .background(.purple)
                 .cornerRadius(25)
-                .shadow(radius: 20)
+                .shadow(radius: 10)
             }
             .padding(.horizontal)
         }

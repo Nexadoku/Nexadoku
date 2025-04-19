@@ -42,20 +42,12 @@ extension AppButton {
             }
         }
         
-        private var gradient: LinearGradient {
+        private var gradient: Color {
             switch variation {
-            case .primary:
-                LinearGradient(
-                    colors: [.purple, .indigo],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            default:
-                LinearGradient(
-                    colors: [Color.clear],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+            case .primary: .purple
+                
+            default: .clear
+                
             }
         }
         

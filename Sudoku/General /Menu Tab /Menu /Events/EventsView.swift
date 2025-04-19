@@ -6,11 +6,11 @@ struct EventsView: View {
     
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
             ScrollView {
                 VStack(spacing: 35) {
                     // Карточка 1: Математическая головоломка
-                    Text("Trials")
+                    Text("trials")
                         .font(.system(size: 40, weight: .heavy))
                         .foregroundColor(.white)
                         .shadow(radius: 20)

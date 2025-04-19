@@ -5,13 +5,16 @@ struct StatsView: View {
     @EnvironmentObject private var navigator: Navigator
     @ObservedObject private var statsManager = StatsManager.shared
     
-    var stats: GameStats { statsManager.stats }
-    
+    @State private var selectedLevel: DifficultyLevel = .easy
     @State private var animate = false
+    
+    var stats: GameStats {
+        statsManager.stats(for: selectedLevel)
+    }
 
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
           
                 VStack(spacing: 30) {
                     Text("Statistics")
@@ -22,6 +25,22 @@ struct StatsView: View {
                         .opacity(animate ? 1 : 0)
                         .scaleEffect(animate ? 1 : 0.95)
                         .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
+                    
+                    
+                        .onChange(of: selectedLevel) { _ in
+                            VibrationManager.shared.lightImpact()
+                        }
+                    
+                    Picker("Difficulty", selection: $selectedLevel) {
+                        ForEach(DifficultyLevel.allCases) { level in
+                            Text(level.displayName).tag(level)
+                        }
+                        
+                    }
+                    .pickerStyle(.segmented)
+                    .colorScheme(.dark)
+                    .opacity(animate ? 1 : 0)
+                    .animation(.easeOut(duration: 0.6).delay(0.2), value: animate)
                     
                     statsCapsule
                         .opacity(animate ? 1 : 0)
@@ -41,17 +60,20 @@ struct StatsView: View {
     var statsCapsule: some View {
             VStack(spacing: 28) {
                 Text("Game")
+                    .foregroundColor(.white)
                     .font(.title3.bold())
                 statRow(title: "Total Games", value: "\(stats.totalGames)")
                 statRow(title: "Wins", value: "\(stats.totalWins)")
                 statRow(title: "Flawless Wins", value: "\(stats.flawlessWins)")
                 statRow(title: "Win %", value: String(format: "%.0f%%", stats.winPercentage))
-                Text("Time")
+                Text("time")
+                    .foregroundColor(.white)
                     .font(.title3.bold())
                 statRow(title: "Best Time", value: formatTime(stats.bestTime))
                 statRow(title: "Average Time", value: formatTime(stats.averageTime))
-                Text("Streak")
+                Text("streak")
                     .font(.title3.bold())
+                    .foregroundColor(.white)
                 statRow(title: "Current Winning Streak", value: "\(stats.currentWinningStreak)")
                 statRow(title: "Best Winning Streak", value: "\(stats.bestWinningStreak)")
             }
@@ -81,7 +103,7 @@ struct StatsViewPreviews: PreviewProvider {
     static var previews: some View {
         StatsView()
             .environmentObject(Navigator())
-            .preferredColorScheme(.dark)
+           
     }
 }
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct PrivacyPolicy: View {
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
                 .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
@@ -26,38 +26,39 @@ struct PrivacyPolicy: View {
                     .font(.system(size: 26, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
                     .padding(.horizontal)
+                    .multilineTextAlignment(.center)
                 
                 
                     VStack(alignment: .leading, spacing: 16) {
                         Group {
-                            Text("1. No Data Collection")
+                            Text("no_data_collection")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("We do not collect, store, or share any personal data. All gameplay data is stored locally on your device.")
+                            Text("no_personal_data")
                             
-                            Text("2. No Internet Connection Required")
+                            Text("no_internet_required")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("The app works fully offline. It doesn’t require or use an internet connection.")
+                            Text("offline_functionality")
                             
-                            Text("3. Third-Party Services")
+                            Text("third_party_services")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("We do not use any third-party analytics, tracking, or advertising services.")
+                            Text("no_third_party_services")
                             
-                            Text("4. Children's Privacy")
+                            Text("childrens_privacy")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("This app does not collect any information and is safe for all ages.")
+                            Text("no_information_collected")
                         }
                         
                         Group {
-                            Text("5. Changes to This Policy")
+                            Text("policy_changes")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("We may update this Privacy Policy in the future. All changes will be displayed here.")
+                            Text("policy_update")
 
-                            Text("6. Contact Us")
+                            Text("contact_us")
                                 .font(.headline)
                                 .foregroundColor(.purple)
                             Text("If you have any questions or concerns, please contact us through the support section of the app.")

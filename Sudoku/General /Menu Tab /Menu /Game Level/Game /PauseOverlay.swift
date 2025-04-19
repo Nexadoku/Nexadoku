@@ -11,7 +11,7 @@ struct PauseOverlay: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Text("Paused")
+            Text("paused")
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(LinearGradient(colors: [.white, .white.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
                 .shadow(color: .purple.opacity(0.5), radius: 10, x: 0, y: 5)
@@ -29,30 +29,31 @@ struct PauseOverlay: View {
             .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
-                    .stroke(LinearGradient(colors: [.purple.opacity(0.6), .indigo.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
+                    .stroke(.purple, lineWidth: 1.5)
                    
             )
             .shadow(color: .purple, radius: 10)
-            .shadow(color: .indigo, radius: 10)
             
             HStack {
                 Button(action: onResume) {
-                    Text("Continue")
+                    Text("continue")
                         .font(.title3.bold())
                         .foregroundColor(.white)
+                        .lineLimit(1)
                         .padding(.horizontal, 50)
                         .padding(.vertical, 16)
-                        .background(LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .background(.purple)
                         .clipShape(Capsule())
                 }
                 
                 Button(action: onRestart) {
-                    Text("Restart")
+                    Text("restart")
                         .font(.title3.bold())
                         .foregroundColor(.white)
+                        .lineLimit(1)
                         .padding(.horizontal, 50)
                         .padding(.vertical, 16)
-                        .background(LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .background(.purple)
                         .clipShape(Capsule())
                 }
             }

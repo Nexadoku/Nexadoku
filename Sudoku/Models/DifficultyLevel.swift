@@ -24,3 +24,13 @@ public enum DifficultyLevel: String, Codable {
         }
     }
 }
+
+extension DifficultyLevel: CaseIterable, Identifiable {
+    public static var allCases: [DifficultyLevel] {
+        return [.easy, .medium, .hard, .master, .epic]
+    }
+    
+    public var id: String { rawValue }
+    
+    public var displayName: String { return rawValue }
+}

@@ -14,6 +14,7 @@ class MathPuzzleGame: ObservableObject {
     @Published var timeLeft = 50
     @Published var currentOptions: [Int] = []
     @Published var selectedAnswer: Int? = nil
+    @Published var questionTimeLeft = 10
     
     let questions = [
         MathPuzzleQuestion(question: "5 + 7", answer: 12),
@@ -28,16 +29,29 @@ class MathPuzzleGame: ObservableObject {
     
     var timer: Timer?
     
-    func startTimer() {
+    
+    func startGame() {
+        currentQuestionIndex = 0
+        score = 0
+        gameOver = false
+        selectedAnswer = nil
+        currentOptions = []
+        generateOptions()
+        startQuestionTimer()
+    }
+    
+    func startQuestionTimer() {
+        timer?.invalidate()
+        questionTimeLeft = 6
+        
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if self.timeLeft > 0 {
-                self.timeLeft -= 1
+            if self.questionTimeLeft > 0 {
+                self.questionTimeLeft -= 1
             } else {
-                self.gameOver = true
-                self.timer?.invalidate()
+                self.score -= 5
+                self.nextQuestion()
             }
         }
-        generateOptions()
     }
     
     func generateOptions() {
@@ -69,6 +83,7 @@ class MathPuzzleGame: ObservableObject {
             currentQuestionIndex += 1
             generateOptions()
             selectedAnswer = nil
+            startQuestionTimer()
         } else {
             gameOver = true
             timer?.invalidate()
@@ -76,12 +91,8 @@ class MathPuzzleGame: ObservableObject {
     }
     
     func restartGame() {
-        currentQuestionIndex = 0
-        score = 0
-        gameOver = false
-        timeLeft = 30
-        generateOptions()
-        startTimer()
+        timer?.invalidate()
+        startGame()
     }
     
     func getButtonColor(for option: Int) -> Color {
@@ -90,6 +101,16 @@ class MathPuzzleGame: ObservableObject {
                 return option == questions[currentQuestionIndex].answer ? Color.green : Color.red
             }
         }
-        return Color.white
+        return Color.purple
+    }
+    
+    func getProgressBarColor() -> Color {
+        if timeLeft > 6 {
+            return .green
+        } else if timeLeft > 3 {
+            return .yellow
+        } else {
+            return .red
+        }
     }
 }

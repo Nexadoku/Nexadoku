@@ -1,9 +1,3 @@
-//
-//  LevelSelectionView.swift
-//  Sudoku
-//
-//  Created by Helter Skelter on 19/03/25.
-//
 
 import SwiftUI
 
@@ -19,7 +13,7 @@ struct LevelSelectionView: View {
     
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
                 .animation(Animation.easeInOut(duration: 3).repeatForever(), value: animateBackground)
                 .onAppear {
                     animateBackground.toggle()
@@ -30,7 +24,7 @@ struct LevelSelectionView: View {
             
             
             VStack(spacing: 40) {
-                Text("Select Level:")
+                Text("select_level")
                     .font(.largeTitle.bold())
                     .foregroundColor(.white)
                     .shadow(radius: 20)
@@ -62,17 +56,16 @@ struct LevelSelectionView: View {
                     
                     Button(action: {
                         navigator.push(.level(.game(level: level)))
+                        
+                        SoundManager.shared.playSound(named: "back.click")
                     }) {
-                        Text("Start Game")
+                        Text("start_game")
                             .foregroundColor(.white)
                             .font(.system(size: 20, weight: .bold))
                             .padding()
                             .frame(width: 250)
-                            .background(
-                                LinearGradient(colors: [.indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
+                            .background(.purple)
                             .cornerRadius(20)
-                            .shadow(color: .indigo, radius: 10)
                             .shadow(color: .purple, radius: 10)
                     }
                     .transition(.opacity.combined(with: .scale))
@@ -85,12 +78,13 @@ struct LevelSelectionView: View {
                 Spacer()
                 Button(action: {
                     dismiss()
+                    SoundManager.shared.playSound(named: "buttons")
                 }) {
-                    Text("← Back")
-                        .foregroundColor(.black)
+                    Text("back_button")
+                        .foregroundColor(.white)
                         .font(.headline.bold())
                         .frame(width: 180, height: 50)
-                        .background(LinearGradient(colors: [Color.white, Color.white], startPoint: .leading, endPoint: .trailing))
+                        .background(.purple)
                         .cornerRadius(25)
                         .shadow(radius: 20)
                 }
@@ -108,6 +102,8 @@ struct LevelSelectionView: View {
                 withAnimation {
                     selectedLevel = title
                 }
+                SoundManager.shared.playSound(named: "levelSelection")
+                VibrationManager.shared.lightImpact()
             }
         }) {
             ZStack {
@@ -117,7 +113,6 @@ struct LevelSelectionView: View {
                     ))
                     .frame(width: 110, height: 90)
                     .shadow(color: isUnlocked ? color : .purple, radius: 10)
-                    .shadow(color: isUnlocked ? color : .indigo, radius: 10)
                 
                 VStack {
                     Text(title.rawValue)

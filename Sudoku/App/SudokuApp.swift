@@ -10,11 +10,14 @@ import SwiftUI
 @main
 struct SudokuApp: App {
     @StateObject private var navigator = Navigator()
+    @StateObject private var languageSettings = LanguageSettings()
     
     var body: some Scene {
         WindowGroup {
-            MenuTabView()
+            LaunchScreenView()
                 .environmentObject(navigator)
+                .environmentObject(languageSettings)
+                .environment(\.locale, languageSettings.currentLocale)
         }
     }
 }

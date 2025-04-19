@@ -46,6 +46,7 @@ struct MenuTabViewPreviews: PreviewProvider {
     static var previews: some View {
         MenuTabView()
             .environmentObject(Navigator())
+            .environmentObject(LanguageSettings())
             .preferredColorScheme(.dark)
     }
 }

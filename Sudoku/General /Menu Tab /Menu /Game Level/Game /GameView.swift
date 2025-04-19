@@ -20,7 +20,7 @@ struct GameView: View {
     
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
                 .blur(radius: isPaused ? 10 : 0)
             
             VStack(spacing: .zero) {
@@ -46,7 +46,7 @@ struct GameView: View {
                     },
                     onRestart: {
                         isPaused = false
-                        game.restartCurrentGameState()
+                        game.restart()
                     }
                 )
                 .transition(.opacity)
@@ -80,7 +80,7 @@ struct GameView: View {
                     .zIndex(1)
                 
                 VStack(spacing: 25) {
-                    Text("Are you sure you want to exit the game?")
+                    Text("exit_confirmation")
                         .font(.title2.bold())
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
@@ -96,6 +96,7 @@ struct GameView: View {
                         
                         AppButton(text: "Exit") {
                             navigator.pop()
+                            SoundManager.shared.playSound(named: "buttons")
                         }
                         .appButtonVariation(.destructive)
                     }
@@ -103,8 +104,6 @@ struct GameView: View {
                 .padding()
                 .background(.black)
                 .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                .shadow(color: .purple, radius: 10)
-                .shadow(color: .indigo, radius: 10)
                 .padding(.horizontal, 30)
                 .transition(.scale)
                 .zIndex(2)
@@ -175,11 +174,8 @@ struct GameView: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
-        .background(
-            LinearGradient(colors: [.purple.opacity(0.5), .indigo.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-        )
+        .background(.purple)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: .indigo, radius: 5)
         .shadow(color: .purple, radius: 5)
         .padding()
     }
@@ -193,7 +189,7 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(level: .master)
+        GameView(level: .easy)
             .preferredColorScheme(.dark)
             .environmentObject(Navigator())
     }

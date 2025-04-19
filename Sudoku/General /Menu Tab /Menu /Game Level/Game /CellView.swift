@@ -23,8 +23,7 @@ struct CellView: View {
                         RadialGradient(
                             gradient: Gradient(colors: [
                                 Color.white,
-                                Color.purple.opacity(0.5),
-                                Color.indigo.opacity(0.6)
+                                Color.indigo
                             ]),
                             center: .center,
                             startRadius: 5,
@@ -45,6 +44,8 @@ struct CellView: View {
         }
         .onTapGesture {
             onTap()
+            SoundManager.shared.playSound(named: "SelectCell")
+            VibrationManager.shared.lightImpact()
         }
     }
 
@@ -54,7 +55,7 @@ struct CellView: View {
         } else if isSelected {
             return Color.indigo
         } else if isHighlighted {
-            return Color.purple.opacity(0.3)
+            return Color.purple.opacity(0.7)
         } else {
             return Color.white
         }

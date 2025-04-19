@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import UIKit
 
 @MainActor
 final class Game: ObservableObject {
@@ -72,20 +73,8 @@ final class Game: ObservableObject {
         remainingHints -= 1
     }
     
-    func restart() {
-        mistakes = 0
-        gameOver = false
-        isWon = false
-        selectedCell = nil
-        highlightedCells = []
-        timer.reset()
-        timer.start()
-        lockedNumberInput = nil
-        remainingHints = 3
-        Task { await generateSudokuGrid() }
-    }
     
-    func restartCurrentGameState() {
+    func restart() {
         for row in 0..<9 {
             for col in 0..<9 {
                 if !grid[row][col].isOriginal {
@@ -109,7 +98,7 @@ final class Game: ObservableObject {
         timer.reset()
         timer.start()
     }
-    
+
     private func isBoardFilled() -> Bool {
         for row in grid {
             for cell in row {
@@ -139,8 +128,15 @@ final class Game: ObservableObject {
             isWon = true
             gameOver = true
             ProgressManager.shared.recordWin(for: level)
-            StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime)
+            StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
         }
+    }
+    
+    private func gameOverDueToMistakes() {
+        timer.stop()
+        isWon = false
+        gameOver = true
+        StatsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
     }
     
     
@@ -206,16 +202,24 @@ final class Game: ObservableObject {
         if value == correctValue {
             grid[selected.row][selected.col].value = value
             grid[selected.row][selected.col].isIncorrect = false
+            SoundManager.shared.playSound(named: "SelectCell")
+            VibrationManager.shared.lightImpact()
             grid[selected.row][selected.col].notes.remove(value)
             removeDraftsAround(row: selected.row, col: selected.col)
+            updateHighlights(row: selected.row, col: selected.col)
             checkWin()
         } else {
             grid[selected.row][selected.col].value = value
-            grid[selected.row][selected.col].isIncorrect = true   // <--- добавлено
+            grid[selected.row][selected.col].isIncorrect = true
             mistakes += 1
+            
+            SoundManager.shared.playSound(named: "error")
+            VibrationManager.shared.strongErrorVibration()
+            
             if mistakes >= 3 {
                 isWon = false
                 gameOver = true
+                gameOverDueToMistakes()
             }
         }
         

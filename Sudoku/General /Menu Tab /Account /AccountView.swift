@@ -10,29 +10,31 @@ struct AccountView: View {
 
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
 
             ScrollView {
                 VStack(spacing: 30) {
-                    Text("Account")
-                        .font(.system(size: 42, weight: .black, design: .rounded))
+                    Text("account")
+                        .font(.system(size: 42, weight: .black))
                         .foregroundStyle(.white)
-                        .shadow(color: .white.opacity(0.3), radius: 10, x: 0, y: 4)
                         .padding(.top, 40)
 
                     premiumSection(title: "GAME") {
                         premiumButton(title: "Statistics", icon: "trophy.fill") {
                             navigator.push(.account(.statistics))
+                            SoundManager.shared.playSound(named: "back.click")
                         }
                     }
 
                     premiumSection(title: "SETTINGS AND PRIVACY") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
+                            SoundManager.shared.playSound(named: "back.click")
                         }
 
                         premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
                             navigator.push(.account(.aboutPremium))
+                            SoundManager.shared.playSound(named: "back.click")
                         }
                     }
 
@@ -51,7 +53,7 @@ struct AccountView: View {
                         }
                         .sheet(isPresented: $showMailView) {
                             MailView(
-                                subject: "Sudoku App Feedback", recipients: ["support@sudokuapp.com"], body: "Hi! I wanted to share the following feedback..."
+                                subject: "Sudoku App Feedback", recipients: ["support@murkami.com"], body: "Hi! I wanted to share the following feedback..."
                             )
                         }
                         .alert(isPresented: $showMailError) {
@@ -90,17 +92,17 @@ struct AccountView: View {
             HStack {
                 Image(systemName: icon)
                     .font(.title2)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .frame(width: 30)
                 Text(title)
                     .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                 Spacer()
             }
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 25)
-                    .fill(.white)
+                    .fill(.purple)
                     .overlay(
                         RoundedRectangle(cornerRadius: 25)
                             .stroke(LinearGradient(colors: [.white.opacity(0.3), .clear], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
@@ -116,6 +118,7 @@ struct AccountViewPreviews: PreviewProvider {
     static var previews: some View {
         AccountView()
             .environmentObject(Navigator())
+            .environmentObject(LanguageSettings())
             .preferredColorScheme(.dark)
     }
 }

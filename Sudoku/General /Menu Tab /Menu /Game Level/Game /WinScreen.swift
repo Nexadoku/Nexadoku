@@ -1,4 +1,5 @@
 
+
 import SwiftUI
 
 struct WinScreen: View {
@@ -6,71 +7,112 @@ struct WinScreen: View {
     var timeElapsed: Int
     var mistakes: Int
     
-    @State private var animate = false
+    @State private var animateSparkle = false
     
     private func timeFormatted(_ totalSeconds: Int) -> String {
         let minutes = totalSeconds / 60
         let seconds = totalSeconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
-    
+
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
-            VStack(spacing: 40) {
-                Text("💫 Congratulations! 💫")
-                    .font(.system(size: 30, weight: .bold))
-                    .foregroundStyle(
-                        LinearGradient(colors: [.indigo, .purple], startPoint: .topTrailing, endPoint: .bottomLeading)
-                    )
-                    .scaleEffect(animate ? 1.1 : 0.9)
-                    .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: animate)
+            SystemDarkBackground().blur(radius: 4)
+                .ignoresSafeArea()
+            
+            VStack(spacing: 20) {
                 
-                Text("🎉 You completed the level 🎉")
-                    .font(.system(size: 25, weight: .bold))
+                ZStack {
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                gradient: Gradient(colors: [.yellow.opacity(0.4), .clear]),
+                                center: .center,
+                                startRadius: 10,
+                                endRadius: 120
+                            )
+                        )
+                        .scaleEffect(animateSparkle ? 1.2 : 0.8)
+                        .blur(radius: 20)
+                        .opacity(animateSparkle ? 1 : 0.6)
+                        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: animateSparkle)
+                        .frame(width: 200, height: 200)
+
+                    Circle()
+                        .fill(Color.white.opacity(0.15))
+                        .frame(width: 140, height: 140)
+                        .blur(radius: 30)
+
+                    Image(systemName: "trophy.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(
+                            LinearGradient(colors: [.yellow, .orange], startPoint: .top, endPoint: .bottom)
+                        )
+                        .shadow(color: .yellow, radius: 30)
+                }
+
+                Text("🎉 Congratulations 🎉")
+                    .font(.system(size: 32, weight: .black))
                     .foregroundColor(.white)
-                    
-                
-                VStack {
-                    Text(timeFormatted(timeElapsed))
-                        .font(.system(size: 40, weight: .bold, design: .monospaced))
-                        .foregroundColor(.green)
-                        .shadow(color: .black, radius: 2)
-                        .padding()
-                    
-                    Text("Mistakes: \(mistakes)/3")
-                        .font(.system(size: 25, weight: .bold))
-                        .foregroundColor(.red)
-                        .padding(.top, -20)
-                        .padding()
+                    .shadow(color: .purple, radius: 10)
+                    .padding(.bottom, 10)
+
+                // Премиум капсула с разделением
+                HStack(spacing: 0) {
+                    VStack {
+                        Text(timeFormatted(timeElapsed))
+                            .font(.system(size: 32, weight: .bold, design: .monospaced))
+                            .foregroundColor(.green)
+                            .shadow(color: .black, radius: 1)
+                        Text("Time")
+                            .font(.caption)
+                            .foregroundColor(.black)
+                    }
+                    .frame(maxWidth: .infinity)
+
+                    Divider()
+                        .frame(height: 70)
+                        .background(Color.black)
+
+                    VStack {
+                        Text("Mistakes: \(mistakes)/3")
+                            .font(.system(size: 22, weight: .semibold))
+                            .foregroundColor(.red)
+                            .shadow(color: .black, radius: 1)
+                    }
+                    .frame(maxWidth: .infinity)
                 }
-                
+                .padding()
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                .shadow(color: .purple.opacity(0.3), radius: 15)
+                .padding(.horizontal, 30)
+                .padding(.top, 10)
+
                 Button(action: onExit) {
-                    Text("Main Menu")
-                        .font(.system(size: 25, weight: .bold))
+                    Text("Return to Main Menu")
+                        .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
-                        .padding()
-                        .background(LinearGradient(colors: [.indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
-                        .cornerRadius(20)
-                        .shadow(color: .indigo, radius: 10)
-                        .shadow(color: .purple, radius: 10)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 30)
+                        .background(.purple)
+                        .cornerRadius(26)
+                        .shadow(color: .purple, radius: 20)
                 }
+                .padding(.top, 20)
             }
         }
         .onAppear {
-            animate = true
+            animateSparkle = true
         }
     }
 }
 
 struct WinScreen_Previews: PreviewProvider {
     static var previews: some View {
-        WinScreen(
-            onExit: {},
-            timeElapsed: 187,  // например, 3 минуты 7 секунд
-            mistakes: 2
-        )
-        .preferredColorScheme(.dark)
+        WinScreen(onExit: {}, timeElapsed: 123, mistakes: 1)
+            .preferredColorScheme(.dark)
     }
 }
-

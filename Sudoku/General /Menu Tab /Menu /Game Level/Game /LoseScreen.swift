@@ -9,7 +9,7 @@ struct LoseScreen: View {
     
     var body: some View {
         ZStack {
-            LuxuriousDarkBackgroundView()
+            SystemDarkBackground()
                 .ignoresSafeArea()
 
             VStack(spacing: 30) {
@@ -22,7 +22,14 @@ struct LoseScreen: View {
                         .shadow(color: .red.opacity(0.6), radius: 10, x: 0, y: 5)
                         .scaleEffect(animate ? 1.1 : 1.0)
                         .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: animate)
-
+                    
+                    Text("You Lose!")
+                        .font(.title2.weight(.black))
+                        .foregroundColor(.white)
+                        .padding()
+                    Text("You made 3 mistakes")
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
                 }
 
                 HStack(spacing: 20) {
@@ -31,9 +38,7 @@ struct LoseScreen: View {
                             .font(.title3.bold())
                             .padding(.horizontal, 40)
                             .padding(.vertical, 16)
-                            .background(
-                                LinearGradient(colors: [.indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
+                            .background(.purple)
                             .foregroundColor(.white)
                             .clipShape(Capsule())
                             .shadow(color: .purple, radius: 10)
@@ -44,9 +49,7 @@ struct LoseScreen: View {
                             .font(.title3.bold())
                             .padding(.horizontal, 40)
                             .padding(.vertical, 16)
-                            .background(
-                                LinearGradient(colors: [.gray.opacity(0.4), .black.opacity(0.6)], startPoint: .top, endPoint: .bottom)
-                            )
+                            .background(.black)
                             .foregroundColor(.white)
                             .clipShape(Capsule())
                             .shadow(color: .black.opacity(0.6), radius: 8)
@@ -60,4 +63,3 @@ struct LoseScreen: View {
         }
     }
 }
-

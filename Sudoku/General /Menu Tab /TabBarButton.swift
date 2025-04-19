@@ -17,7 +17,7 @@ struct TabBarButton: View {
            
             .foregroundStyle(
                 LinearGradient(
-                    colors: isSelected ? [Color.purple, Color.indigo] : [Color.white.opacity(0.6)],
+                    colors: isSelected ? [Color.white, Color.white] : [Color.white.opacity(0.6)],
                                                                          startPoint: .topLeading,
                                                                          endPoint: .bottomTrailing))
            

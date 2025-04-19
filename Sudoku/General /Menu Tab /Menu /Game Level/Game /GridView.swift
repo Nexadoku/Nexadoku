@@ -6,7 +6,7 @@ struct GridView: View {
     
     let cellSize: CGFloat = 40
     let lineWidth: CGFloat = 2
-    let glowColor = Color.purple.opacity(0.8)
+    let glowColor = Color.purple
     
     var body: some View {
         GeometryReader { geometry in
@@ -16,8 +16,7 @@ struct GridView: View {
             ZStack {
                 Color.white
                     .edgesIgnoringSafeArea(.all)
-                    .shadow(color: .indigo, radius: 10)
-                    .shadow(color: .purple, radius: 5)
+                    .shadow(color: .purple, radius: 10)
                 
                 ForEach(0..<9, id: \.self) { row in
                     ForEach(0..<9, id: \.self) { col in

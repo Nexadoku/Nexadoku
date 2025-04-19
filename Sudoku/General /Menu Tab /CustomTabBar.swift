@@ -10,24 +10,27 @@ struct CustomTabBar: View {
             TabBarButton(image: "house.fill", isSelected: selectedTab == .menu)
                 .onTapGesture {
                     selectedTab = .menu
+                    SoundManager.shared.playSound(named: "back.click")
+                    VibrationManager.shared.lightImpact()
                 }
             Spacer()
             TabBarButton(image: "person.crop.circle.fill", isSelected: selectedTab == .account)
                 .onTapGesture {
                     selectedTab = .account
+                    SoundManager.shared.playSound(named: "back.click")
+                    VibrationManager.shared.lightImpact()
                 }
             Spacer()
         }
         .frame(height: 70)
         .background(
-            Color.black.opacity(0.2)
+            Color.purple
                 .blur(radius: 10)
-                .background(.black.opacity(0.6))
+                .background(.purple.opacity(0.6))
                 .cornerRadius(30)
-                .shadow(color: .indigo, radius: 10)
-                .shadow(color: .purple, radius: 10)
+                .shadow(radius: 10)
         )
-        .padding(.horizontal, 30)
+        .padding(.horizontal, 20)
         .padding(.bottom, 10)
     }
 }

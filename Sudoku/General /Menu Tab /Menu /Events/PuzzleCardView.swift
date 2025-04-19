@@ -48,7 +48,7 @@ struct PuzzleCardView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(LinearGradient(gradient: Gradient(colors: [Color.indigo, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .background(.purple)
                         .cornerRadius(20)
                         .shadow(color: Color.purple.opacity(0.3), radius: 10, x: 0, y: 5)
                 }
@@ -59,8 +59,7 @@ struct PuzzleCardView: View {
         }
         .background(Color.white.opacity(0.05)) // Полупрозрачный фон для общей карточки
         .cornerRadius(20)
-        .shadow(color: Color.indigo, radius: 10, x: 0, y: 5)
-        .shadow(color: Color.purple, radius: 10, x: 0, y: 5)// Мягкая тень для премиум-эффекта
+        .shadow(color: Color.purple, radius: 20, x: 0, y: 10)// Мягкая тень для премиум-эффекта
         .padding(.bottom)
         .scaleEffect(1.05) // Плавное увеличение при нажатии
         .animation(.spring(), value: 1) // Анимация при нажатии
