@@ -22,19 +22,16 @@ struct AccountView: View {
                     premiumSection(title: "GAME") {
                         premiumButton(title: "Statistics", icon: "trophy.fill") {
                             navigator.push(.account(.statistics))
-                            SoundManager.shared.playSound(named: "back.click")
                         }
                     }
 
                     premiumSection(title: "SETTINGS AND PRIVACY") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
-                            SoundManager.shared.playSound(named: "back.click")
                         }
 
                         premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
                             navigator.push(.account(.aboutPremium))
-                            SoundManager.shared.playSound(named: "back.click")
                         }
                     }
 

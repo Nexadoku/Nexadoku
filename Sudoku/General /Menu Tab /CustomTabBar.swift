@@ -10,14 +10,12 @@ struct CustomTabBar: View {
             TabBarButton(image: "house.fill", isSelected: selectedTab == .menu)
                 .onTapGesture {
                     selectedTab = .menu
-                    SoundManager.shared.playSound(named: "back.click")
                     VibrationManager.shared.lightImpact()
                 }
             Spacer()
             TabBarButton(image: "person.crop.circle.fill", isSelected: selectedTab == .account)
                 .onTapGesture {
                     selectedTab = .account
-                    SoundManager.shared.playSound(named: "back.click")
                     VibrationManager.shared.lightImpact()
                 }
             Spacer()

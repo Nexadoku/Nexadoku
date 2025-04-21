@@ -106,7 +106,6 @@ struct GameView: View {
                         
                         AppButton(text: "Exit") {
                             navigator.pop()
-                            SoundManager.shared.playSound(named: "buttons")
                         }
                         .appButtonVariation(.destructive)
                     }

@@ -57,7 +57,6 @@ struct LevelSelectionView: View {
                     Button(action: {
                         navigator.push(.level(.game(level: level)))
                         
-                        SoundManager.shared.playSound(named: "back.click")
                     }) {
                         Text("start_game")
                             .foregroundColor(.white)
@@ -78,7 +77,7 @@ struct LevelSelectionView: View {
                 Spacer()
                 Button(action: {
                     dismiss()
-                    SoundManager.shared.playSound(named: "buttons")
+                    
                 }) {
                     Text("back_button")
                         .foregroundColor(.white)

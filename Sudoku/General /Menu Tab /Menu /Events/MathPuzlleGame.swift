@@ -48,7 +48,7 @@ class MathPuzzleGame: ObservableObject {
             if self.questionTimeLeft > 0 {
                 self.questionTimeLeft -= 1
             } else {
-                self.score -= 5
+                self.score -= 1
                 self.nextQuestion()
             }
         }
@@ -70,9 +70,9 @@ class MathPuzzleGame: ObservableObject {
         selectedAnswer = answer
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             if answer == self.questions[self.currentQuestionIndex].answer {
-                self.score += 10
+                self.score += 1
             } else {
-                self.score -= 5
+                self.score -= -1
             }
             self.nextQuestion()
         }

@@ -17,12 +17,10 @@ struct MenuView: View {
                 VStack(spacing: 20) {
                     neonButton(title: "Play Sudoku", icon: "gamecontroller.fill") {
                         navigator.push(.menu(.levelSelection))
-                        SoundManager.shared.playSound(named: "back.click")
                     }
                     
                     neonButton(title: "Trials", icon: "brain.head.profile.fill") {
                         navigator.push(.menu(.events))
-                        SoundManager.shared.playSound(named: "back.click")
                     }
                 }
               Spacer()
