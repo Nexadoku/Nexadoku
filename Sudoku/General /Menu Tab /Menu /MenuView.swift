@@ -17,7 +17,7 @@ struct MenuView: View {
                 
                 VStack(spacing: 20) {
                     if let game = savedGameManager.game {
-                        saveButton(title: "Continue") {
+                        saveButton(title: "Continue Game", icon: "play.fill") {
                             navigator.push(.menu(.game(.saved(game: game))))
                         }
                     }
@@ -36,9 +36,11 @@ struct MenuView: View {
         }
     }
     
-    func saveButton(title: String, action: @escaping () -> Void) -> some View {
+    func saveButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
+                Image(systemName: icon)
+                    .font(.title2)
                 Text(title)
                     .font(.title2.bold())
             }
@@ -46,10 +48,10 @@ struct MenuView: View {
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
             .background(
-                LinearGradient(colors: [.green, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .indigo
             )
             .cornerRadius(25)
-            .shadow(color: .cyan, radius: 20)
+            .shadow(color: .indigo, radius: 20)
         }
         .padding(.horizontal)
     }

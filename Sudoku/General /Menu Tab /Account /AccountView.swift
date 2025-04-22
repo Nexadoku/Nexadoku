@@ -7,7 +7,15 @@ struct AccountView: View {
     
     @State private var showMailView = false
     @State private var showMailError = false
-
+    @State private var showImagePicker = false
+    @State private var selectedImage: UIImage? = nil
+    @State private var draftImage: UIImage? = nil
+    @State private var draftUserName: String = "@sudoku.master"
+    @State private var isEditingName = false
+    @State private var userName: String = ""
+    
+    let imageFileName = "profileImage.png"
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -18,12 +26,14 @@ struct AccountView: View {
                         .font(.system(size: 42, weight: .black))
                         .foregroundStyle(.white)
                         .padding(.top, 40)
-
-                    premiumSection(title: "GAME") {
+                    
+                    premiumProfileSection()
+                    
+                    
                         premiumButton(title: "Statistics", icon: "trophy.fill") {
                             navigator.push(.account(.statistics))
                         }
-                    }
+                    
 
                     premiumSection(title: "SETTINGS AND PRIVACY") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
@@ -67,6 +77,12 @@ struct AccountView: View {
                 .padding(.bottom)
             }
         }
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(isPresented: $showImagePicker, selectedImage: $draftImage)
+        }
+        .onAppear {
+            loadUserData()
+        }
     }
 
     // MARK: - Premium Section
@@ -81,6 +97,91 @@ struct AccountView: View {
             content()
         }
     }
+    
+    func premiumProfileSection() -> some View {
+            HStack(spacing: 15) {
+                if isEditingName {
+                    Button(action: {
+                        showImagePicker.toggle()
+                    }) {
+                        if let draftImage = draftImage {
+                            Image(uiImage: draftImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 90, height: 90)
+                                .clipShape(Circle())
+                                .shadow(radius: 5)
+                        } else {
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 90, height: 90)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                } else {
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 90, height: 90)
+                            .clipShape(Circle())
+                            .shadow(radius: 5)
+                    } else {
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 90, height: 90)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 5) {
+                    if isEditingName {
+                        TextField("Enter your nickname", text: $draftUserName)
+                            .font(.system(size: 14))
+                            .foregroundColor(.white)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .padding(.top, 5)
+                    } else {
+                        Text(userName)
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(.white.opacity(0.7))
+                    }
+                }
+                .padding(.leading, 10)
+
+                Spacer()
+
+                Button(action: {
+                    if isEditingName {
+                        // Save changes
+                       saveUserData()
+                    } else {
+                        // Start editing, init temp values
+                        draftUserName = userName
+                        draftImage = selectedImage
+                    }
+                    isEditingName.toggle()
+                }) {
+                    Text(isEditingName ? "Save" : "Edit")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 15)
+                        .background(Color.purple)
+                        .cornerRadius(15)
+                }
+                .padding(.trailing, 10)
+            }
+            .padding()
+            .background(
+                LinearGradient(gradient: Gradient(colors: [.purple, .indigo]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .cornerRadius(15)
+            )
+            .padding(.horizontal)
+            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+        }
 
     // MARK: - Premium Button
 
@@ -108,6 +209,35 @@ struct AccountView: View {
             )
         }
         .padding(.horizontal)
+    }
+    
+    func saveUserData() {
+        userName = draftUserName
+        selectedImage = draftImage
+        
+        UserDefaults.standard.set(userName, forKey: "userName")
+        
+        if let image = selectedImage,
+           let data = image.pngData() {
+            let url = getDocumentsDirectory().appendingPathComponent(imageFileName)
+            try? data.write(to: url)
+        }
+    }
+    
+    func loadUserData() {
+        userName = UserDefaults.standard.string(forKey: "userName") ?? "@sudoku.master"
+        draftUserName = userName
+        
+        let url = getDocumentsDirectory().appendingPathComponent(imageFileName)
+        if let data = try? Data(contentsOf: url),
+           let image = UIImage(data: data) {
+            selectedImage = image
+            draftImage = image
+        }
+    }
+    
+    func getDocumentsDirectory() -> URL {
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
 }
 

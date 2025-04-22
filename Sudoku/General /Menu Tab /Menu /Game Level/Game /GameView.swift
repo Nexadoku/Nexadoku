@@ -105,7 +105,7 @@ struct GameView: View {
                         }
                         .appButtonVariation(.primary)
                         
-                        AppButton(text: "Exit") {
+                        AppButton(text: "Save and Exit") {
                             game.saveCurrentGame()
                             navigator.pop()
                         }

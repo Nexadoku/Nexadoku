@@ -151,6 +151,9 @@
     "Difficulty" : {
 
     },
+    "Edit" : {
+
+    },
     "Email Not Available" : {
 
     },
@@ -204,6 +207,9 @@
           }
         }
       }
+    },
+    "Enter your nickname" : {
+
     },
     "Exit" : {
       "localizations" : {
@@ -656,6 +662,9 @@
           }
         }
       }
+    },
+    "Save" : {
+
     },
     "score_display" : {
       "extractionState" : "stale",
