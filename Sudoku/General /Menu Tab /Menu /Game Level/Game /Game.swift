@@ -57,7 +57,8 @@ final class Game: ObservableObject {
     
     private init(from savedGame: SavedGame, state: GameState) {
         self.level = savedGame.level
-        self.grid = savedGame.grid
+        self.grid = Game.convertToLiveGrid(from: savedGame.saveGrid)
+        self.solutionGrid = savedGame.solutionGrid
         self.mistakes = savedGame.mistakes
         self.timer = GameTimer(accumulatedTime: savedGame.elapsedTime)
         self.state = state
@@ -68,10 +69,12 @@ final class Game: ObservableObject {
     }
     
     func saveCurrentGame() {
+        let savedGrid = convertToSaveGrid(from: grid)
         let savedGame = SavedGame(
             id: UUID(),
             level: level,
-            grid: grid,
+            saveGrid: savedGrid,
+            solutionGrid: solutionGrid,
             mistakes: mistakes,
             elapsedTime: timer.elapsedTime,
             createdAt: Date()
@@ -136,6 +139,36 @@ final class Game: ObservableObject {
         lockedNumberInput = nil
         timer.reset()
         timer.start()
+    }
+    
+    private func convertToSaveGrid(from grid: [[Cell]]) -> [[SavedCell]] {
+        grid.map { row in
+            row.map { cell in
+                SavedCell(
+                    value: cell.value,
+                    isOriginal: cell.isOriginal,
+                    row: cell.row,
+                    col: cell.col,
+                    isIncorect: cell.isIncorrect,
+                    notes: Array(cell.notes)
+                )
+            }
+        }
+    }
+    
+    static func convertToLiveGrid(from savedGrid: [[SavedCell]]) -> [[Cell]] {
+        savedGrid.map { row in
+            row.map { saved in
+                Cell(
+                    value: saved.value,
+                    isOriginal: saved.isOriginal,
+                    row: saved.row,
+                    col: saved.col,
+                    isIncorrect: saved.isIncorect,
+                    notes: Set(saved.notes)
+                )
+            }
+        }
     }
 
     private func isBoardFilled() -> Bool {

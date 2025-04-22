@@ -17,7 +17,7 @@ struct MenuView: View {
                 
                 VStack(spacing: 20) {
                     if let game = savedGameManager.game {
-                        neonButton(title: "Continue", icon: "gamecontroller.fill") {
+                        saveButton(title: "Continue") {
                             navigator.push(.menu(.game(.saved(game: game))))
                         }
                     }
@@ -30,29 +30,45 @@ struct MenuView: View {
                         navigator.push(.menu(.events))
                     }
                 }
-              Spacer()
+                Spacer()
             }
             .padding(.bottom)
         }
     }
     
-    func neonButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
-            Button(action: action) {
-                HStack {
-                    Image(systemName: icon)
-                        .font(.title2)
-                    Text(title)
-                        .font(.title2.bold())
-                }
-                .foregroundColor(.white)
-                .padding()
-                .frame(maxWidth: 500, maxHeight: 60)
-                .background(.purple)
-                .cornerRadius(25)
-                .shadow(radius: 10)
+    func saveButton(title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                    .font(.title.bold())
             }
-            .padding(.horizontal)
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: 500, maxHeight: 60)
+            .background(.green)
+            .cornerRadius(25)
+            .shadow(color: .green, radius: 20)
         }
+        .padding(.horizontal)
+    }
+    
+    func neonButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.title2)
+                Text(title)
+                    .font(.title2.bold())
+            }
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: 500, maxHeight: 60)
+            .background(.purple)
+            .cornerRadius(25)
+            .shadow(radius: 10)
+        }
+        .padding(.horizontal)
+    }
 }
 
 struct MenuViewPreviews: PreviewProvider {

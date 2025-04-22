@@ -13,11 +13,13 @@ public struct SavedCell: Codable, Hashable, Sendable {
 public struct SavedGame: Codable, Identifiable, Hashable, Sendable {
     public let id: UUID
     public let level: DifficultyLevel
-    public let grid: [[Cell]]
+    public let saveGrid: [[SavedCell]]
+    public let solutionGrid: [[Int]]
     public let mistakes: Int
     public let elapsedTime: Int
     public let createdAt: Date
 }
+
 
 final class GameSaveManager: ObservableObject {
     @Published var game: SavedGame?
