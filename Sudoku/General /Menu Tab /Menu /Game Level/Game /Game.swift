@@ -201,6 +201,7 @@ final class Game: ObservableObject {
             gameOver = true
             ProgressManager.shared.recordWin(for: level)
             StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
+            GameSaveManager.shared.clearSavedGame()
         }
     }
     

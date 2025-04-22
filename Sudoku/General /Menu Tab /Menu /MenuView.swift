@@ -40,14 +40,16 @@ struct MenuView: View {
         Button(action: action) {
             HStack {
                 Text(title)
-                    .font(.title.bold())
+                    .font(.title2.bold())
             }
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(.green)
+            .background(
+                LinearGradient(colors: [.green, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
+            )
             .cornerRadius(25)
-            .shadow(color: .green, radius: 20)
+            .shadow(color: .cyan, radius: 20)
         }
         .padding(.horizontal)
     }

@@ -37,6 +37,11 @@ final class GameSaveManager: ObservableObject {
         load()
     }
     
+    func clearSavedGame() {
+        self.game = nil
+        UserDefaults.standard.removeObject(forKey: key)
+    }
+    
     private func load() {
         guard let data = UserDefaults.standard.data(forKey: key),
               let game = try? JSONDecoder().decode(SavedGame.self, from: data) else {
