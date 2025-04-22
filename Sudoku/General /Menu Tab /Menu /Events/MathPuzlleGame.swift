@@ -6,16 +6,15 @@ struct MathPuzzleQuestion {
     let question: String
     let answer: Int
 }
-
 class MathPuzzleGame: ObservableObject {
     @Published var currentQuestionIndex = 0
     @Published var score = 0
     @Published var gameOver = false
-    @Published var timeLeft = 50
     @Published var currentOptions: [Int] = []
     @Published var selectedAnswer: Int? = nil
-    @Published var questionTimeLeft = 10
-    
+    @Published var questionTimeLeft = 6
+    @Published var progress: CGFloat = 1.0
+
     let questions = [
         MathPuzzleQuestion(question: "5 + 7", answer: 12),
         MathPuzzleQuestion(question: "15 - 6", answer: 9),
@@ -24,12 +23,12 @@ class MathPuzzleGame: ObservableObject {
         MathPuzzleQuestion(question: "25 + 13", answer: 38),
         MathPuzzleQuestion(question: "12 * 4", answer: 48),
         MathPuzzleQuestion(question: "72 / 8", answer: 9),
-        MathPuzzleQuestion(question: "58 + 85", answer: 143)
+        MathPuzzleQuestion(question: "8 * 7", answer: 56),
+        MathPuzzleQuestion(question: "25 - 13", answer: 12)
     ]
-    
+
     var timer: Timer?
-    
-    
+
     func startGame() {
         currentQuestionIndex = 0
         score = 0
@@ -39,21 +38,21 @@ class MathPuzzleGame: ObservableObject {
         generateOptions()
         startQuestionTimer()
     }
-    
+
     func startQuestionTimer() {
         timer?.invalidate()
         questionTimeLeft = 6
-        
+
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if self.questionTimeLeft > 0 {
                 self.questionTimeLeft -= 1
             } else {
-                self.score -= 1
-                self.nextQuestion()
+                self.timer?.invalidate()
+                self.gameOver = true
             }
         }
     }
-    
+
     func generateOptions() {
         let correctAnswer = questions[currentQuestionIndex].answer
         var options = [correctAnswer]
@@ -65,49 +64,50 @@ class MathPuzzleGame: ObservableObject {
         }
         currentOptions = options.shuffled()
     }
-    
+
     func checkAnswer(_ answer: Int) {
         selectedAnswer = answer
+        timer?.invalidate()
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             if answer == self.questions[self.currentQuestionIndex].answer {
                 self.score += 1
+                self.moveToNextQuestion()
             } else {
-                self.score -= -1
+                self.gameOver = true
             }
-            self.nextQuestion()
         }
     }
-    
-    func nextQuestion() {
+
+    func moveToNextQuestion() {
         if currentQuestionIndex < questions.count - 1 {
             currentQuestionIndex += 1
-            generateOptions()
             selectedAnswer = nil
+            generateOptions()
             startQuestionTimer()
         } else {
             gameOver = true
-            timer?.invalidate()
         }
     }
-    
+
     func restartGame() {
         timer?.invalidate()
         startGame()
     }
-    
+
     func getButtonColor(for option: Int) -> Color {
         if let selected = selectedAnswer {
             if selected == option {
-                return option == questions[currentQuestionIndex].answer ? Color.green : Color.red
+                return option == questions[currentQuestionIndex].answer ? .green : .red
             }
         }
-        return Color.purple
+        return .purple
     }
-    
+
     func getProgressBarColor() -> Color {
-        if timeLeft > 6 {
+        if questionTimeLeft > 4 {
             return .green
-        } else if timeLeft > 3 {
+        } else if questionTimeLeft > 2 {
             return .yellow
         } else {
             return .red

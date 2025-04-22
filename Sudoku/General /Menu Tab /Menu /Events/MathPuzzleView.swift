@@ -70,22 +70,22 @@ struct MathPuzzleView: View {
                     }
                     .padding()
                     
-                    Text("Time Left: \(game.questionTimeLeft) sec")
-                        .font(.system(size: 27, weight: .heavy))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                    ZStack(alignment: .leading) {
-                        Rectangle()
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 5)
-                        
-                        Rectangle()
-                            .fill(game.getProgressBarColor())
-                            .frame(width: CGFloat(game.questionTimeLeft) / 10 * UIScreen.main.bounds.width, height: 3)
-                            .animation(.linear(duration: 0.1), value: game.questionTimeLeft)
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.2))
+                                .frame(height: 5)
+                            
+                            Rectangle()
+                                .fill(game.getProgressBarColor())
+                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 6.0, height: 5)
+                                .animation(.linear(duration: 1.0), value: game.questionTimeLeft)
+                        }
+                        .cornerRadius(3)
                     }
-                    .padding(.bottom, 20)
-                    
+                    .frame(height: 5)
+                    .padding(.horizontal)
+                    .padding(.top, 20)
                     Spacer()
                 }
             }

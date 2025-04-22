@@ -11,8 +11,8 @@ public struct LevelRouter: RouterProtocol {
     @ViewBuilder
     public func view() -> some View {
         switch route {
-        case .game(let level):
-            GameView(level: level)
+        case .game(let state):
+            GameView(state: state)
         }
     }
 }

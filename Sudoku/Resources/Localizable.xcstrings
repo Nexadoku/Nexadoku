@@ -854,9 +854,6 @@
     "Time" : {
 
     },
-    "Time Left: %lld sec" : {
-
-    },
     "time_left" : {
       "extractionState" : "stale",
       "localizations" : {

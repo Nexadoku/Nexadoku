@@ -33,17 +33,51 @@ final class Game: ObservableObject {
         return count
     }
     
+    private let state: GameState
     var level: DifficultyLevel
     private var solutionGrid: [[Int]] = []
     private var timerCancellable: AnyCancellable?
     
-    init(level: DifficultyLevel) {
+    // MARK: - Initializers
+    
+    convenience init(state: GameState) {
+        switch state {
+        case .new(let level):
+            self.init(level: level, state: state)
+        case .saved(let game):
+            self.init(from: game, state: state)
+        }
+    }
+    
+    private init(level: DifficultyLevel, state: GameState) {
+        self.state = state
         self.level = level
         self.timer = GameTimer()
     }
     
+    private init(from savedGame: SavedGame, state: GameState) {
+        self.level = savedGame.level
+        self.grid = savedGame.grid
+        self.mistakes = savedGame.mistakes
+        self.timer = GameTimer(accumulatedTime: savedGame.elapsedTime)
+        self.state = state
+    }
+    
     deinit {
         timer.stop()
+    }
+    
+    func saveCurrentGame() {
+        let savedGame = SavedGame(
+            id: UUID(),
+            level: level,
+            grid: grid,
+            mistakes: mistakes,
+            elapsedTime: timer.elapsedTime,
+            createdAt: Date()
+        )
+        
+        GameSaveManager.shared.save(game: savedGame)
     }
     
     func loadGame() async {
@@ -52,7 +86,10 @@ final class Game: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         
-        await generateSudokuGrid()
+        if state .isNewGame {
+            await generateSudokuGrid()
+        }
+        
         startTimer()
     }
     
@@ -174,7 +211,6 @@ final class Game: ObservableObject {
         selectedCell = (row, col)
         updateHighlights(row: row, col: col)
         inputLockedNumberIfNeeded()
-        
     }
     
     func isSelected(row: Int, col: Int) -> Bool {
@@ -229,10 +265,6 @@ final class Game: ObservableObject {
                 SoundManager.shared.playSound(named: "SelectCell")
                 VibrationManager.shared.lightImpact()
             }
-        }
-        
-        if let lockedNumber = lockedNumberInput, grid[selected.row][selected.col].value != lockedNumber {
-            grid[selected.row][selected.col].value = lockedNumber
         }
     }
     
@@ -299,159 +331,5 @@ final class Game: ObservableObject {
                 }
             }
         }
-    }
-}
-
-
-struct Cell: Identifiable, Hashable, Codable {
-    var id = UUID()
-    var value: Int
-    var isOriginal: Bool
-    var row: Int
-    var col: Int
-    var isIncorrect: Bool = false
-    var notes: Set<Int> = []
-}
-
-struct CellCoordinate: Hashable {
-    let row: Int
-    let col: Int
-}
-
-struct SudokuGenerator {
-    static func generateSolvedGrid() -> [[Int]] {
-        var grid = Array(repeating: Array(repeating: 0, count: 9), count: 9)
-        fillGrid(&grid)
-        return grid
-    }
-    
-    @discardableResult
-    static func fillGrid(_ grid: inout [[Int]]) -> Bool {
-        for row in 0..<9 {
-            for col in 0..<9 {
-                if grid[row][col] == 0 {
-                    let numbers = Array(1...9).shuffled()
-                    for num in numbers {
-                        if isSafe(grid, row, col, num) {
-                            grid[row][col] = num
-                            if fillGrid(&grid) {
-                                return true
-                            }
-                            grid[row][col] = 0
-                        }
-                    }
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    
-    static func isSafe(_ grid: [[Int]], _ row: Int, _ col: Int, _ num: Int) -> Bool {
-        for i in 0..<9 {
-            if grid[row][i] == num || grid[i][col] == num {
-                return false
-            }
-        }
-        let startRow = (row / 3) * 3
-        let startCol = (col / 3) * 3
-        for i in 0..<3 {
-            for j in 0..<3 {
-                if grid[startRow + i][startCol + j] == num {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    
-    static func removeNumbers(from solved: [[Int]], clues: Int) -> [[Cell]] {
-        var grid = solved
-        var positions = (0..<9).flatMap { row in (0..<9).map { col in (row, col) } }
-        positions.shuffle()
-        
-        // Подсчёт количества каждой цифры
-        var numberCounts: [Int: Int] = [:]
-        for row in 0..<9 {
-            for col in 0..<9 {
-                let value = grid[row][col]
-                numberCounts[value, default: 0] += 1
-            }
-        }
-        
-        var cellsToRemove = 81 - clues
-        
-        for (row, col) in positions {
-            guard cellsToRemove > 0 else { break }
-            
-            let currentValue = grid[row][col]
-            if currentValue != 0, numberCounts[currentValue, default: 0] > 1 {
-                grid[row][col] = 0
-                numberCounts[currentValue, default: 0] -= 1
-                cellsToRemove -= 1
-            }
-        }
-        
-        // Убираем лишние цифры, если их больше 7
-        for number in 1...9 {
-            while numberCounts[number, default: 0] > 7 {
-                for (row, col) in positions {
-                    if grid[row][col] == number {
-                        grid[row][col] = 0
-                        numberCounts[number, default: 0] -= 1
-                        break
-                    }
-                }
-            }
-        }
-        
-        return grid.enumerated().map { (r, row) in
-            row.enumerated().map { (c, value) in
-                Cell(value: value, isOriginal: value != 0, row: r, col: c)
-            }
-        }
-    }
-    
-}
-
-
-final class GameTimer: ObservableObject {
-    @Published private(set) var elapsedTime: Int = 0
-    
-    private var timer: Timer?
-    private var startDate: Date?
-    private var accumulatedTime: Int = 0
-    
-    func start() {
-        guard timer == nil else { return }
-        
-        startDate = Date()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self else { return }
-            handleTimer()
-        }
-    }
-    
-    func stop() {
-        if let start = startDate {
-            accumulatedTime += Int(Date().timeIntervalSince(start))
-        }
-        
-        timer?.invalidate()
-        timer = nil
-        startDate = nil
-    }
-    
-    func reset() {
-        timer?.invalidate()
-        timer = nil
-        startDate = nil
-        accumulatedTime = 0
-        elapsedTime = 0
-    }
-    
-    private func handleTimer() {
-        guard let start = startDate else { return }
-        elapsedTime = accumulatedTime + Int(Date().timeIntervalSince(start))
     }
 }

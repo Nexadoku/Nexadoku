@@ -55,7 +55,9 @@ struct LevelSelectionView: View {
                         .shadow(radius: 20)
                     
                     Button(action: {
-                        navigator.push(.level(.game(level: level)))
+                        navigator.push(
+                            .level(.game(.new(level: level)))
+                        )
                         
                     }) {
                         Text("start_game")

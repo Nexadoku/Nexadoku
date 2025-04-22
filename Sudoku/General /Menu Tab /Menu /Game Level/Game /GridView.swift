@@ -25,7 +25,7 @@ struct GridView: View {
                             isHighlighted: game.isHighlighted(row: row, col: col)
                             
                         ) {
-                            game.selectCell(row: row, col: col)
+                                game.selectCell(row: row, col: col)
                         }
                         .position(
                             x: offset + cellSize * CGFloat(col) + cellSize / 2,
@@ -57,6 +57,6 @@ struct GridView: View {
 
 struct GridViewPreviews: PreviewProvider {
     static var previews: some View {
-        GridView(game: Game(level: .easy))
+        GridView(game: Game(state: .new(level: .easy)))
     }
 }

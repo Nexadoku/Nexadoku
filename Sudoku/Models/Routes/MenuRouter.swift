@@ -19,8 +19,8 @@ public struct MenuRouter: RouterProtocol {
         switch route {
         case .levelSelection:
             LevelSelectionView()
-        case .game:
-            GameView(level: .easy)
+        case .game(let state):
+            GameView(state: state)
         case .events:
             EventsView()
         }

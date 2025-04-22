@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MenuView: View {
     @EnvironmentObject private var navigator: Navigator
+    @EnvironmentObject private var savedGameManager: GameSaveManager
     
     var body: some View {
         ZStack {
@@ -15,6 +16,12 @@ struct MenuView: View {
                     .padding(.top, 50)
                 
                 VStack(spacing: 20) {
+                    if let game = savedGameManager.game {
+                        neonButton(title: "Continue", icon: "gamecontroller.fill") {
+                            navigator.push(.menu(.game(.saved(game: game))))
+                        }
+                    }
+                    
                     neonButton(title: "Play Sudoku", icon: "gamecontroller.fill") {
                         navigator.push(.menu(.levelSelection))
                     }

@@ -9,6 +9,6 @@ import Foundation
 
 public enum MenuRoute: Hashable {
     case levelSelection
-    case game
+    case game(GameState)
     case events
 }

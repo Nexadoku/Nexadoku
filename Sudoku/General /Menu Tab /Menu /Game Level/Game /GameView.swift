@@ -13,10 +13,10 @@ struct GameView: View {
     @State private var showGameOverAlert = false
     @State private var isPaused = false
     @State private var showExitConrirmation = false
+    @State private var lockedNumber: Int? = nil
     
-    init(level: DifficultyLevel) {
-        let newGame  = Game(level: level)
-        
+    init(state: GameState) {
+        let newGame  = Game(state: state)
         self.game = newGame
         self.gameTimer = newGame.timer
     }
@@ -58,6 +58,7 @@ struct GameView: View {
         .navigationBarBackButtonHidden(true)
         .task {
             await game.loadGame()
+            
             if !timerEnabled {
                 game.timer.stop()
             } else {
@@ -105,6 +106,7 @@ struct GameView: View {
                         .appButtonVariation(.primary)
                         
                         AppButton(text: "Exit") {
+                            game.saveCurrentGame()
                             navigator.pop()
                         }
                         .appButtonVariation(.destructive)
@@ -211,7 +213,7 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(level: .easy)
+        GameView(state: .new(level: .easy))
             .preferredColorScheme(.dark)
             .environmentObject(Navigator())
     }

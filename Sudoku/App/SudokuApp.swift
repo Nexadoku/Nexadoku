@@ -17,6 +17,7 @@ struct SudokuApp: App {
             LaunchScreenView()
                 .environmentObject(navigator)
                 .environmentObject(languageSettings)
+                .environmentObject(GameSaveManager.shared)
                 .environment(\.locale, languageSettings.currentLocale)
         }
     }
