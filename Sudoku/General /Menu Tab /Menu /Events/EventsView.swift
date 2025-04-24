@@ -23,23 +23,6 @@ struct EventsView: View {
                         action: {
                             navigator.push(.event(.mathPuzzle))
                         })
-//                    
-//                    PuzzleCardView(
-//                        title: "Math Crossword",
-//                        description: "Fill the grid with numbers based on given math clues.",
-//                        image: "mathCrosswordImage",
-//                        action: {
-//                            
-//                        })
-//                    
-//                    PuzzleCardView(
-//                        title: "Killer Sudoku",
-//                        description: "",
-//                        image: "killerSudoku",
-//                        action: {
-//                            
-//                        })
-//                    
                    }
             .padding(.horizontal)
             }

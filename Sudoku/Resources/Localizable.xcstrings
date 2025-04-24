@@ -49,6 +49,7 @@
 
     },
     "account" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -151,9 +152,6 @@
     "Difficulty" : {
 
     },
-    "Edit" : {
-
-    },
     "Email Not Available" : {
 
     },
@@ -208,7 +206,7 @@
         }
       }
     },
-    "Enter your nickname" : {
+    "Enter nickname" : {
 
     },
     "Exit" : {
@@ -663,9 +661,6 @@
         }
       }
     },
-    "Save" : {
-
-    },
     "score_display" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -826,6 +821,9 @@
       }
     },
     "SUDOKU" : {
+
+    },
+    "Tap to select banner" : {
 
     },
     "third_party_services" : {

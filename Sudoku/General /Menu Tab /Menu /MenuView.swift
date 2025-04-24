@@ -19,15 +19,18 @@ struct MenuView: View {
                     if let game = savedGameManager.game {
                         saveButton(title: "Continue Game", icon: "play.fill") {
                             navigator.push(.menu(.game(.saved(game: game))))
+                            VibrationManager.shared.lightImpact()
                         }
                     }
                     
                     neonButton(title: "Play Sudoku", icon: "gamecontroller.fill") {
                         navigator.push(.menu(.levelSelection))
+                        VibrationManager.shared.lightImpact()
                     }
                     
                     neonButton(title: "Trials", icon: "brain.head.profile.fill") {
                         navigator.push(.menu(.events))
+                        VibrationManager.shared.lightImpact()
                     }
                 }
                 Spacer()

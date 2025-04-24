@@ -1,5 +1,5 @@
-
 import SwiftUI
+import PhotosUI
 import MessageUI
 
 struct AccountView: View {
@@ -7,50 +7,140 @@ struct AccountView: View {
     
     @State private var showMailView = false
     @State private var showMailError = false
-    @State private var showImagePicker = false
-    @State private var selectedImage: UIImage? = nil
-    @State private var draftImage: UIImage? = nil
-    @State private var draftUserName: String = "@sudoku.master"
-    @State private var isEditingName = false
-    @State private var userName: String = ""
     
-    let imageFileName = "profileImage.png"
+    @State private var bannerImage: UIImage? = nil
+    @State private var avatarImage: UIImage? = nil
+    
+    @State private var showBannerPicker = false
+    @State private var showAvatarPicker = false
+    
+    @AppStorage("nickname") private var nickname: String = "Your Nickname"
+    @State private var isEditingNickname = false
     
     var body: some View {
         ZStack {
             SystemDarkBackground()
-
+            
             ScrollView {
                 VStack(spacing: 30) {
-                    Text("account")
-                        .font(.system(size: 42, weight: .black))
-                        .foregroundStyle(.white)
-                        .padding(.top, 40)
                     
-                    premiumProfileSection()
-                    
-                    
-                        premiumButton(title: "Statistics", icon: "trophy.fill") {
-                            navigator.push(.account(.statistics))
+                    ZStack(alignment: .bottomLeading) {
+                        Button {
+                            showBannerPicker = true
+                        } label: {
+                            ZStack {
+                                if let banner = bannerImage {
+                                    Image(uiImage: banner)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(height: 200)
+                                        .clipped()
+                                } else {
+                                    Color.gray.opacity(0.25)
+                                    VStack {
+                                        Image(systemName: "photo.on.rectangle")
+                                            .font(.system(size: 30))
+                                            .foregroundColor(.white.opacity(0.6))
+                                        Text("Tap to select banner")
+                                            .font(.system(size: 14))
+                                            .foregroundColor(.white.opacity(0.5))
+                                    }
+                                }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: 200)
+                            .clipped()
+                            .contentShape(Rectangle())
                         }
+                        .sheet(isPresented: $showBannerPicker) {
+                            ImagePicker(image: $bannerImage)
+                        }
+                        
+                        HStack(alignment: .bottom, spacing: 16) {
+                            Button {
+                                showAvatarPicker = true
+                            } label: {
+                                ZStack {
+                                    if let avatar = avatarImage {
+                                        Image(uiImage: avatar)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                    } else {
+                                        Circle()
+                                            .fill(Color.gray.opacity(0.3))
+                                        Image(systemName: "person.fill")
+                                            .foregroundColor(.white.opacity(0.6))
+                                            .font(.system(size: 40))
+                                    }
+                                }
+                                .frame(width: 90, height: 90)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.white, lineWidth: 3))
+                            }
+                            .sheet(isPresented: $showAvatarPicker) {
+                                ImagePicker(image: $avatarImage)
+                            }
+                            .offset(x: 16, y: 45)
+                            
+                            HStack {
+                                if isEditingNickname {
+                                    TextField("Enter nickname", text: $nickname)
+                                        .font(.system(size: 22, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .textFieldStyle(PlainTextFieldStyle())
+                                        .background(Color.white.opacity(0.1))
+                                        .cornerRadius(8)
+                                        .padding(.trailing, 4)
+                                    
+                                    Button(action: {
+                                        isEditingNickname = false
+                                        VibrationManager.shared.lightImpact()
+                                    }) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.green)
+                                    }
+                                } else {
+                                    Text(nickname)
+                                        .font(.system(size: 22, weight: .bold))
+                                        .foregroundColor(.white)
+                                    
+                                    Button(action: {
+                                        isEditingNickname = true
+                                        VibrationManager.shared.lightImpact()
+                                    }) {
+                                        Image(systemName: "pencil")
+                                            .foregroundColor(.white.opacity(0.7))
+                                    }
+                                }
+                            }
+                            .padding(.leading, 8)
+                            .offset(y: 45)
+                        }
+                    }
+                    .padding(.bottom, 45)
                     
-
+                    premiumButton(title: "Statistics", icon: "trophy.fill") {
+                        navigator.push(.account(.statistics))
+                        VibrationManager.shared.lightImpact()
+                    }
+                    
                     premiumSection(title: "SETTINGS AND PRIVACY") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
+                            VibrationManager.shared.lightImpact()
                         }
-
+                        
                         premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
                             navigator.push(.account(.aboutPremium))
+                            VibrationManager.shared.lightImpact()
                         }
                     }
-
+                    
                     premiumSection(title: "WE VALUE YOUR INPUT") {
                         Text("Got ideas, spotted a bug, or just want to share some thoughts? Let us know! Your feedback helps make Sudoku even better.")
                             .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.5))
                             .padding(.horizontal)
-
+                        
                         premiumButton(title: "Send Feedback", icon: "paperplane.fill") {
                             if MFMailComposeViewController.canSendMail() {
                                 showMailView = true
@@ -71,117 +161,28 @@ struct AccountView: View {
                             )
                         }
                     }
-
+                    
                     Spacer(minLength: 40)
                 }
                 .padding(.bottom)
             }
         }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(isPresented: $showImagePicker, selectedImage: $draftImage)
-        }
-        .onAppear {
-            loadUserData()
-        }
     }
-
+}
+    
     // MARK: - Premium Section
-
+    
     func premiumSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title)
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(.white.opacity(0.7))
                 .padding(.horizontal)
-
+            
             content()
         }
     }
-    
-    func premiumProfileSection() -> some View {
-            HStack(spacing: 15) {
-                if isEditingName {
-                    Button(action: {
-                        showImagePicker.toggle()
-                    }) {
-                        if let draftImage = draftImage {
-                            Image(uiImage: draftImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 90, height: 90)
-                                .clipShape(Circle())
-                                .shadow(radius: 5)
-                        } else {
-                            Image(systemName: "person.crop.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 90, height: 90)
-                                .foregroundColor(.gray)
-                        }
-                    }
-                } else {
-                    if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 90, height: 90)
-                            .clipShape(Circle())
-                            .shadow(radius: 5)
-                    } else {
-                        Image(systemName: "person.crop.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 90, height: 90)
-                            .foregroundColor(.gray)
-                    }
-                }
 
-                VStack(alignment: .leading, spacing: 5) {
-                    if isEditingName {
-                        TextField("Enter your nickname", text: $draftUserName)
-                            .font(.system(size: 14))
-                            .foregroundColor(.white)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding(.top, 5)
-                    } else {
-                        Text(userName)
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.white.opacity(0.7))
-                    }
-                }
-                .padding(.leading, 10)
-
-                Spacer()
-
-                Button(action: {
-                    if isEditingName {
-                        // Save changes
-                       saveUserData()
-                    } else {
-                        // Start editing, init temp values
-                        draftUserName = userName
-                        draftImage = selectedImage
-                    }
-                    isEditingName.toggle()
-                }) {
-                    Text(isEditingName ? "Save" : "Edit")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 15)
-                        .background(Color.purple)
-                        .cornerRadius(15)
-                }
-                .padding(.trailing, 10)
-            }
-            .padding()
-            .background(
-                LinearGradient(gradient: Gradient(colors: [.purple, .indigo]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .cornerRadius(15)
-            )
-            .padding(.horizontal)
-            .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
-        }
 
     // MARK: - Premium Button
 
@@ -211,36 +212,6 @@ struct AccountView: View {
         .padding(.horizontal)
     }
     
-    func saveUserData() {
-        userName = draftUserName
-        selectedImage = draftImage
-        
-        UserDefaults.standard.set(userName, forKey: "userName")
-        
-        if let image = selectedImage,
-           let data = image.pngData() {
-            let url = getDocumentsDirectory().appendingPathComponent(imageFileName)
-            try? data.write(to: url)
-        }
-    }
-    
-    func loadUserData() {
-        userName = UserDefaults.standard.string(forKey: "userName") ?? "@sudoku.master"
-        draftUserName = userName
-        
-        let url = getDocumentsDirectory().appendingPathComponent(imageFileName)
-        if let data = try? Data(contentsOf: url),
-           let image = UIImage(data: data) {
-            selectedImage = image
-            draftImage = image
-        }
-    }
-    
-    func getDocumentsDirectory() -> URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-}
-
 struct AccountViewPreviews: PreviewProvider {
     static var previews: some View {
         AccountView()

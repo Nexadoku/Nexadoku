@@ -71,6 +71,6 @@ struct PuzzleCardView_Previews: PreviewProvider {
         PuzzleCardView(title: "Math Puzzle", description: "Solve interesting and challenging puzzles to test your math skills.", image: "your_image_name") {
             print("Start pressed")
         }
-        .frame(width: 250, height: 250)
+        .frame(width: 300, height: 250)
     }
 }
