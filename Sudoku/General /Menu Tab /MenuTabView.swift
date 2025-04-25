@@ -38,6 +38,8 @@ struct MenuTabView: View {
             EventsRouter(route: route).view()
         case .level(let route):
             LevelRouter(route: route).view()
+        case .menuTab(let route):
+            MenuTabRouter(route: route).view()
         }
     }
 }

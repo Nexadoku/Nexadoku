@@ -4,6 +4,8 @@ struct WinScreen: View {
     var onExit: () -> Void
     var timeElapsed: Int
     var mistakes: Int
+    
+    @EnvironmentObject private var navigator: Navigator
 
     @State private var animateSparkle = false
 
@@ -68,7 +70,9 @@ struct WinScreen: View {
                     }
                 
                 
-                Button(action: onExit) {
+                Button(action: {
+                    navigator.push(.menuTab(.mainMenu))
+                }) {
                     Text("Return to Main Menu")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
@@ -89,6 +93,7 @@ struct WinScreen: View {
 struct WinScreen_Previews: PreviewProvider {
     static var previews: some View {
         WinScreen(onExit: {}, timeElapsed: 123, mistakes: 1)
+            .environmentObject(Navigator())
             .preferredColorScheme(.dark)
     }
 }

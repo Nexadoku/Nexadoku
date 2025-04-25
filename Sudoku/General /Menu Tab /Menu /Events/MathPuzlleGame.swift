@@ -12,7 +12,7 @@ class MathPuzzleGame: ObservableObject {
     @Published var gameOver = false
     @Published var currentOptions: [Int] = []
     @Published var selectedAnswer: Int? = nil
-    @Published var questionTimeLeft = 6
+    @Published var questionTimeLeft = 4
     @Published var progress: CGFloat = 1.0
 
     let questions = [
@@ -41,7 +41,7 @@ class MathPuzzleGame: ObservableObject {
 
     func startQuestionTimer() {
         timer?.invalidate()
-        questionTimeLeft = 6
+        questionTimeLeft = 4
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if self.questionTimeLeft > 0 {
@@ -105,9 +105,9 @@ class MathPuzzleGame: ObservableObject {
     }
 
     func getProgressBarColor() -> Color {
-        if questionTimeLeft > 4 {
+        if questionTimeLeft > 3 {
             return .green
-        } else if questionTimeLeft > 2 {
+        } else if questionTimeLeft > 1 {
             return .yellow
         } else {
             return .red

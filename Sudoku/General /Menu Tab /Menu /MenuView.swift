@@ -15,6 +15,15 @@ struct MenuView: View {
                     .foregroundColor(.white)
                     .padding(.top, 50)
                 
+                Image("logo")
+                    .resizable()
+                    .frame(width: 140, height: 140)
+                    .cornerRadius(30)
+                    .shadow(color: .purple, radius: 10)
+                    .shadow(color: .indigo, radius: 10)
+                
+                Spacer()
+                
                 VStack(spacing: 20) {
                     if let game = savedGameManager.game {
                         saveButton(title: "Continue Game", icon: "play.fill") {
@@ -23,7 +32,7 @@ struct MenuView: View {
                         }
                     }
                     
-                    neonButton(title: "Play Sudoku", icon: "gamecontroller.fill") {
+                    neonButton(title: "New Game", icon: "gamecontroller.fill") {
                         navigator.push(.menu(.levelSelection))
                         VibrationManager.shared.lightImpact()
                     }
@@ -34,6 +43,7 @@ struct MenuView: View {
                     }
                 }
                 Spacer()
+                    .padding(.bottom)
             }
             .padding(.bottom)
         }

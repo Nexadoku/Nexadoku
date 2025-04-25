@@ -818,7 +818,8 @@
             "value" : "СУДОКУ"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "SUDOKU" : {
 

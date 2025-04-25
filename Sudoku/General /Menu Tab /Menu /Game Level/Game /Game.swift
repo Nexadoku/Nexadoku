@@ -210,6 +210,7 @@ final class Game: ObservableObject {
         isWon = false
         gameOver = true
         StatsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
+        GameSaveManager.shared.clearSavedGame()
     }
     
     
