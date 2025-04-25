@@ -3,19 +3,35 @@ import SwiftUI
 
 struct MathPuzzleView: View {
     @ObservedObject var game = MathPuzzleGame()
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack {
             SystemDarkBackground()
             
             VStack {
-                Text("Fast Math")
-                    .font(.system(size: 44, weight: .heavy))
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .shadow(radius: 10)
-                    .padding(.top, 30)
-                
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .font(.system(size: 24, weight: .heavy))
+                            .shadow(radius: 10)
+                    }
+                    
+                    Text("FAST MATH")
+                        .font(.system(size: 30, weight: .heavy))
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
+                    
+                    Spacer()
+                       
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                .padding(.bottom, 10)
                 Spacer()
                 
                 if game.gameOver {
@@ -30,6 +46,11 @@ struct MathPuzzleView: View {
                             .font(.title)
                             .foregroundColor(.white)
                             .padding()
+                        
+                        Text("Best Score: \(game.highScore)")
+                            .font(.title2)
+                            .foregroundColor(.yellow)
+                            .padding(.bottom, 10)
                         
                         Button(action: {
                             game.restartGame()
@@ -94,6 +115,7 @@ struct MathPuzzleView: View {
                 game.startGame()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

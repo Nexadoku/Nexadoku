@@ -14,6 +14,8 @@ class MathPuzzleGame: ObservableObject {
     @Published var selectedAnswer: Int? = nil
     @Published var questionTimeLeft = 4
     @Published var progress: CGFloat = 1.0
+    @Published var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
+    
 
     let questions = [
         MathPuzzleQuestion(question: "5 + 7", answer: 12),
@@ -48,7 +50,7 @@ class MathPuzzleGame: ObservableObject {
                 self.questionTimeLeft -= 1
             } else {
                 self.timer?.invalidate()
-                self.gameOver = true
+                self.finishGame()
             }
         }
     }
@@ -74,7 +76,7 @@ class MathPuzzleGame: ObservableObject {
                 self.score += 1
                 self.moveToNextQuestion()
             } else {
-                self.gameOver = true
+                self.finishGame()
             }
         }
     }
@@ -86,7 +88,15 @@ class MathPuzzleGame: ObservableObject {
             generateOptions()
             startQuestionTimer()
         } else {
-            gameOver = true
+            finishGame()
+        }
+    }
+    
+    func finishGame() {
+        gameOver = true
+        if score > highScore {
+            highScore = score
+            UserDefaults.standard.set(highScore, forKey: "HighScore")
         }
     }
 

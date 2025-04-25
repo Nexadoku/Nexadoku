@@ -5,6 +5,8 @@ struct LoseScreen: View {
     var onExit: () -> Void
     var onRetry: () -> Void
     
+    @EnvironmentObject private var navigator: Navigator
+    
     @State private var animate = false
     
     var body: some View {
@@ -44,7 +46,9 @@ struct LoseScreen: View {
                             .shadow(color: .purple, radius: 10)
                     }
 
-                    Button(action: onExit) {
+                    Button(action: {
+                        navigator.pop()
+                    }) {
                         Text("Exit")
                             .font(.title3.bold())
                             .padding(.horizontal, 40)

@@ -8,27 +8,39 @@
 import SwiftUI
 
 struct PrivacyPolicy: View {
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
                 .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .font(.system(size: 24, weight: .heavy))
+                    }
+                    
+                    Text("PRIVACY POLICY")
+                        .foregroundColor(.white)
+                        .font(.system(size: 30, weight: .heavy))
+                    
+                    Spacer()
+                }
+                .padding()
+                
                 Image("logo")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .cornerRadius(20)
                     .shadow(color: .purple.opacity(0.6), radius: 15, x: 0, y: 6)
                     .shadow(color: .indigo.opacity(0.4), radius: 10, x: 0, y: -4)
-                    .padding(.top, 40)
+                    .padding(.top, 20)
 
-                Text("Privacy Policy")
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
-                    .padding(.horizontal)
-                    .multilineTextAlignment(.center)
-                
-                
                     VStack(alignment: .leading, spacing: 16) {
                         Group {
                             Text("no_data_collection")
@@ -81,6 +93,7 @@ struct PrivacyPolicy: View {
                 Spacer()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

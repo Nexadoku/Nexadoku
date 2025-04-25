@@ -81,6 +81,9 @@
         }
       }
     },
+    "Best Score: %lld" : {
+
+    },
     "childrens_privacy" : {
       "localizations" : {
         "en" : {
@@ -236,6 +239,7 @@
       }
     },
     "Fast Math" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -244,6 +248,9 @@
           }
         }
       }
+    },
+    "FAST MATH" : {
+
     },
     "Game" : {
       "localizations" : {
@@ -255,7 +262,7 @@
         }
       }
     },
-    "Game settings" : {
+    "Game Settings" : {
 
     },
     "game_over" : {
@@ -275,7 +282,7 @@
         }
       }
     },
-    "General settings" : {
+    "General Settings" : {
 
     },
     "Got ideas, spotted a bug, or just want to share some thoughts? Let us know! Your feedback helps make Sudoku even better." : {
@@ -560,6 +567,7 @@
       }
     },
     "Privacy Policy" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -568,6 +576,9 @@
           }
         }
       }
+    },
+    "PRIVACY POLICY" : {
+
     },
     "privacy_policy" : {
       "extractionState" : "stale",
@@ -708,6 +719,7 @@
       }
     },
     "settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -722,6 +734,9 @@
           }
         }
       }
+    },
+    "SETTINGS" : {
+
     },
     "sound" : {
       "localizations" : {
@@ -777,6 +792,7 @@
     },
     "Statistics" : {
       "comment" : "Статистика",
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -785,6 +801,9 @@
           }
         }
       }
+    },
+    "STATISTICS" : {
+
     },
     "streak" : {
       "extractionState" : "manual",
@@ -883,6 +902,7 @@
 
     },
     "trials" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -897,6 +917,9 @@
           }
         }
       }
+    },
+    "TRIALS" : {
+
     },
     "vibration" : {
       "localizations" : {

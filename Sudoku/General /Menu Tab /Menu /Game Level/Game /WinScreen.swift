@@ -71,7 +71,7 @@ struct WinScreen: View {
                 
                 
                 Button(action: {
-                    navigator.push(.menuTab(.mainMenu))
+                    navigator.pop()
                 }) {
                     Text("Return to Main Menu")
                         .font(.system(size: 20, weight: .semibold))

@@ -60,11 +60,9 @@ struct MenuView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(
-                .indigo
-            )
+            .background(.purple)
             .cornerRadius(25)
-            .shadow(color: .indigo, radius: 20)
+            .shadow(color: .purple, radius: 20)
         }
         .padding(.horizontal)
     }

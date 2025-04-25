@@ -14,16 +14,28 @@ struct SettingsView: View {
             VStack {
                 ScrollView {
                     VStack(spacing: 30) {
-                        Text("settings")
-                            .font(.system(size: 50, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.top, 40)
+                        HStack {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 24, weight: .heavy))
+                            }
+                            Text("SETTINGS")
+                                .font(.system(size: 30, weight: .heavy))
+                                .foregroundColor(.white)
+                            
+                            Spacer()
+                        }
+                        .padding()
                         
                         VStack(alignment: .leading, spacing: 10) {
-                                Text("General settings")
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 17))
-                                    .padding(.horizontal)
+                                Text("General Settings")
+                                .padding(.horizontal)
+                                .font(.system(size: 17, weight: .heavy))
+                                .foregroundColor(.gray)
+                            
                             VStack {
                                 Toggle(isOn: $soundEnabled) {
                                     Text("sound")
@@ -40,7 +52,6 @@ struct SettingsView: View {
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
-                           
 
                             Picker(NSLocalizedString("language", comment: ""), selection: $languageSettings.currentLanguage) {
                                 Text("english").tag(Language.english)
@@ -49,10 +60,17 @@ struct SettingsView: View {
                             .pickerStyle(.segmented)
                             .padding()
                             }
-                            Text("Game settings")
-                                .foregroundColor(.gray)
-                                .font(.system(size: 17))
+                            .background(
+                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .cornerRadius(25)
+                            .padding()
+                            
+                            Text("Game Settings")
                                 .padding(.horizontal)
+                                .font(.system(size: 17, weight: .heavy))
+                                .foregroundColor(.gray)
+                            
                             VStack {
                                 Toggle(isOn: $timerEnabled) {
                                     Text("Timer")
@@ -70,11 +88,17 @@ struct SettingsView: View {
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                             }
+                            .background(
+                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .cornerRadius(25)
+                            .padding()
                         }
                     }
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

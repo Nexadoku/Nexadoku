@@ -3,18 +3,32 @@ import SwiftUI
 
 struct EventsView: View {
     @EnvironmentObject private var navigator: Navigator
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack {
             SystemDarkBackground()
             ScrollView {
                 VStack(spacing: 35) {
-                    // Карточка 1: Математическая головоломка
-                    Text("trials")
-                        .font(.system(size: 40, weight: .heavy))
-                        .foregroundColor(.white)
-                        .shadow(radius: 20)
-                        .padding()
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
+                                .font(.system(size: 24, weight: .heavy))
+                                .shadow(radius: 10)
+                        }
+                        
+                        Text("TRIALS")
+                            .font(.system(size: 30, weight: .heavy))
+                            .foregroundColor(.white)
+                            .shadow(radius: 20)
+                        
+                        Spacer()
+                            
+                    }
+                    .padding()
                     
                     PuzzleCardView(
                         title: "Fast Math",
@@ -27,6 +41,7 @@ struct EventsView: View {
             .padding(.horizontal)
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

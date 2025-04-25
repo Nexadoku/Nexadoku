@@ -8,6 +8,8 @@ struct StatsView: View {
     @State private var selectedLevel: DifficultyLevel = .easy
     @State private var animate = false
     
+    @Environment(\.dismiss) var dismiss
+    
     var stats: GameStats {
         statsManager.stats(for: selectedLevel)
     }
@@ -17,14 +19,34 @@ struct StatsView: View {
             SystemDarkBackground()
           
                 VStack(spacing: 30) {
-                    Text("Statistics")
-                        .font(.system(size: 44, weight: .black, design: .rounded))
-                        .foregroundColor(.white)
-                        .shadow(color: .white.opacity(0.3), radius: 10, x: 0, y: 4)
-                        .padding(.top, 30)
-                        .opacity(animate ? 1 : 0)
-                        .scaleEffect(animate ? 1 : 0.95)
-                        .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label:  {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.white)
+                                .shadow(radius: 10)
+                        }
+                        
+                        
+                        Text("STATISTICS")
+                            .font(.system(size: 30, weight: .heavy))
+                            .foregroundColor(.white)
+                            .shadow(radius: 10)
+                            .opacity(animate ? 1 : 0)
+                            .scaleEffect(animate ? 1 : 0.95)
+                            .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
+                        
+                        Image(systemName: "trophy.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 20, weight: .black, design: .rounded))
+                            .shadow(radius: 10)
+                            .opacity(animate ? 1 : 0)
+                            .animation(.easeInOut(duration: 0.8).delay(0.1), value: animate)
+                        
+                        Spacer()
+                    }
                     
                     
                         .onChange(of: selectedLevel) { _ in
@@ -55,6 +77,7 @@ struct StatsView: View {
         .onAppear {
             animate = true
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     var statsCapsule: some View {
