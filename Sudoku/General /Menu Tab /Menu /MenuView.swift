@@ -9,7 +9,6 @@ struct MenuView: View {
         ZStack {
             SystemDarkBackground()
             VStack(spacing: 30) {
-                Spacer()
                 Text("SUDOKU")
                     .font(.system(size: 50, weight: .heavy))
                     .foregroundColor(.white)
@@ -43,7 +42,6 @@ struct MenuView: View {
                     }
                 }
                 Spacer()
-                    .padding(.bottom)
             }
             .padding(.bottom)
         }
@@ -60,7 +58,14 @@ struct MenuView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(.purple)
+            .background(
+                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3), .purple.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 25)
+                    .stroke(.purple, lineWidth: 3)
+            )
             .cornerRadius(25)
             .shadow(color: .purple, radius: 20)
         }
