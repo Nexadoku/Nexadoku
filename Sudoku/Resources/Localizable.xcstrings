@@ -298,17 +298,6 @@
         }
       }
     },
-    "Key" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "НАСТРОЙКИ И КОНФИДЕЦИАЛЬНОСТЬ"
-          }
-        }
-      }
-    },
     "language" : {
       "localizations" : {
         "en" : {
@@ -919,7 +908,20 @@
       }
     },
     "TRIALS" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TRIALS"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Испытание"
+          }
+        }
+      }
     },
     "vibration" : {
       "localizations" : {
