@@ -58,9 +58,7 @@ struct MenuView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(
-                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3), .purple.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
-            )
+            .background(.black.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 25)
