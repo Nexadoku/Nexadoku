@@ -35,7 +35,10 @@ struct PauseOverlay: View {
             .shadow(color: .purple, radius: 10)
             
             HStack {
-                Button(action: onResume) {
+                Button(action: {
+                    onResume()
+                    VibrationManager.shared.lightImpact()
+                }) {
                     Text("continue")
                         .font(.title3.bold())
                         .foregroundColor(.white)
@@ -46,7 +49,10 @@ struct PauseOverlay: View {
                         .clipShape(Capsule())
                 }
                 
-                Button(action: onRestart) {
+                Button(action: {
+                    onRestart()
+                    VibrationManager.shared.lightImpact()
+                }) {
                     Text("restart")
                         .font(.title3.bold())
                         .foregroundColor(.white)

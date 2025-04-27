@@ -84,6 +84,12 @@
     "Best Score: %lld" : {
 
     },
+    "Cancel" : {
+
+    },
+    "Change Photo" : {
+
+    },
     "childrens_privacy" : {
       "localizations" : {
         "en" : {
@@ -151,6 +157,9 @@
           }
         }
       }
+    },
+    "Delete Photo" : {
+
     },
     "Difficulty" : {
 
@@ -364,6 +373,9 @@
           }
         }
       }
+    },
+    "Manage %@" : {
+
     },
     "Mistakes" : {
 

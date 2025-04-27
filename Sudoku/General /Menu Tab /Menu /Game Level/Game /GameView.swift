@@ -101,6 +101,7 @@ struct GameView: View {
                         AppButton(text: "Cancel") {
                             withAnimation {
                                 showExitConrirmation = false
+                                VibrationManager.shared.lightImpact()
                             }
                         }
                         .appButtonVariation(.primary)
@@ -108,6 +109,7 @@ struct GameView: View {
                         AppButton(text: "Save and Exit") {
                             game.saveCurrentGame()
                             navigator.pop()
+                            VibrationManager.shared.lightImpact()
                         }
                         .appButtonVariation(.destructive)
                     }
@@ -127,6 +129,7 @@ struct GameView: View {
             HStack {
                 Button {
                     showExitConrirmation = true
+                    VibrationManager.shared.lightImpact()
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 24, weight: .bold))
@@ -144,6 +147,7 @@ struct GameView: View {
                 Button(action: {
                     isPaused = true
                     game.timer.stop()
+                    VibrationManager.shared.lightImpact()
                 }) {
                     Image(systemName: "pause.circle.fill")
                         .font(.system(size: 30, weight: .bold))

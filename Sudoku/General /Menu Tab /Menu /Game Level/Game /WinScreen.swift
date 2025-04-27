@@ -6,6 +6,7 @@ struct WinScreen: View {
     var mistakes: Int
    
     @EnvironmentObject private var navigator: Navigator
+    @Environment(\.dismiss) var dismiss
 
     @State private var animateSparkle = false
     @State private var fireworks: [Firework] = []

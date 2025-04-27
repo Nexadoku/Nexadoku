@@ -14,8 +14,14 @@ struct AccountView: View {
     @State private var showBannerPicker = false
     @State private var showAvatarPicker = false
     
+    @State private var showBannerActionSheet = false
+    @State private var showAvatarActionSheet = false
+    
     @AppStorage("nickname") private var nickname: String = "Your Nickname"
     @State private var isEditingNickname = false
+    
+    @AppStorage("avatarImagePath") private var avatarImagePath: String?
+    @AppStorage("bannerImagePath") private var bannerImagePath: String?
     
     var body: some View {
         ZStack {
@@ -26,7 +32,7 @@ struct AccountView: View {
                     
                     ZStack(alignment: .bottomLeading) {
                         Button {
-                            showBannerPicker = true
+                            showBannerActionSheet = true
                         } label: {
                             ZStack {
                                 if let banner = bannerImage {
@@ -36,7 +42,7 @@ struct AccountView: View {
                                         .frame(height: 200)
                                         .clipped()
                                 } else {
-                                    Color.gray.opacity(0.25)
+                                    Color.purple.opacity(0.25)
                                     VStack {
                                         Image(systemName: "photo.on.rectangle")
                                             .font(.system(size: 30))
@@ -57,7 +63,7 @@ struct AccountView: View {
                         
                         HStack(alignment: .bottom, spacing: 16) {
                             Button {
-                                showAvatarPicker = true
+                                showAvatarActionSheet = true
                             } label: {
                                 ZStack {
                                     if let avatar = avatarImage {
@@ -144,8 +150,10 @@ struct AccountView: View {
                         premiumButton(title: "Send Feedback", icon: "paperplane.fill") {
                             if MFMailComposeViewController.canSendMail() {
                                 showMailView = true
+                                VibrationManager.shared.lightImpact()
                             } else {
                                 showMailError = true
+                                VibrationManager.shared.lightImpact()
                             }
                         }
                         .sheet(isPresented: $showMailView) {
@@ -166,7 +174,91 @@ struct AccountView: View {
                 }
                 .padding(.bottom)
             }
+            .ignoresSafeArea()
         }
+        .customActionSheet(isPresented: $showBannerActionSheet, title: "Banner") {
+            clearBannerImage()
+        } onChange: {
+            showBannerPicker = true
+        }
+        .customActionSheet(isPresented: $showAvatarActionSheet, title: "Avatar") {
+            clearAvatarImage()
+        } onChange: {
+            showAvatarPicker = true
+        }
+        .onAppear {
+            loadSavedImage()
+        }
+        .onChange(of: avatarImage) { newImage in
+            if let newImage = newImage {
+                if let oldPath = avatarImagePath {
+                    deleteImage(at: oldPath)
+                }
+                avatarImagePath = saveImage(newImage)
+            }
+        }
+        .onChange(of: bannerImage) { newImage in
+            if let newImage = newImage {
+                if let oldPath = bannerImagePath {
+                    deleteImage(at: oldPath)
+                }
+                bannerImagePath = saveImage(newImage)
+            }
+        }
+    }
+    
+    // MARK: - Save / Load / Delete Images
+    
+    func saveImage(_ image: UIImage) -> String? {
+        guard let data = image.jpegData(compressionQuality: 0.9) else { return nil }
+        let filename = UUID().uuidString + ".jpg"
+        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
+        do {
+            try data.write(to: url)
+            return url.path
+        } catch {
+            print("Error saving image:", error)
+            return nil
+        }
+    }
+
+    func loadSavedImage() {
+        if let avatarPath = avatarImagePath {
+            avatarImage = loadImage(from: avatarPath)
+        }
+        if let bannerPath = bannerImagePath {
+            bannerImage = loadImage(from: bannerPath)
+        }
+    }
+
+    func loadImage(from path: String) -> UIImage? {
+        let url = URL(fileURLWithPath: path)
+        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
+        return UIImage(contentsOfFile: url.path)
+    }
+
+    func deleteImage(at path: String) {
+        let url = URL(fileURLWithPath: path)
+        if FileManager.default.fileExists(atPath: url.path) {
+            try? FileManager.default.removeItem(at: url)
+        }
+    }
+    
+    func clearBannerImage() {
+        if let oldPath = bannerImagePath {
+            deleteImage(at: oldPath)
+        }
+        
+        bannerImagePath = nil
+        bannerImage = nil
+    }
+    
+    func clearAvatarImage() {
+        if let oldPath = avatarImagePath {
+            deleteImage(at: oldPath)
+        }
+        avatarImagePath = nil
+        avatarImage = nil
     }
 }
     
@@ -218,6 +310,109 @@ struct AccountViewPreviews: PreviewProvider {
             .environmentObject(Navigator())
             .environmentObject(LanguageSettings())
             .preferredColorScheme(.dark)
+    }
+}
+
+extension View {
+    func customActionSheet(
+        isPresented: Binding<Bool>,
+        title: String,
+        onDelete: @escaping () -> Void,
+        onChange: @escaping () -> Void
+    ) -> some View {
+        self.overlay(
+            Group {
+                if isPresented.wrappedValue {
+                 
+                        ZStack {
+                            Color.black.opacity(0.4)
+                                .ignoresSafeArea()
+                                .onTapGesture {
+                                    withAnimation {
+                                        isPresented.wrappedValue = false
+                                    }
+                                }
+                            
+                            VStack(spacing: 20) {
+                                Text("Manage \(title)")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.white)
+                                
+                                Button(action: {
+                                    withAnimation {
+                                        onChange()
+                                        isPresented.wrappedValue = false
+                                    }
+                                }) {
+                                    Text("Change Photo")
+                                        .font(.system(size: 18, weight: .semibold))
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(
+                                            LinearGradient(
+                                                colors: [Color.white.opacity(0.2), Color.black.opacity(0.6)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                            .cornerRadius(15)
+                                        )
+                                }
+                                
+                                Button(action: {
+                                    withAnimation {
+                                        onDelete()
+                                        isPresented.wrappedValue = false
+                                    }
+                                }) {
+                                    Text("Delete Photo")
+                                        .font(.system(size: 18, weight: .semibold))
+                                        .foregroundColor(.red)
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                        .background(
+                                            LinearGradient(
+                                                colors: [Color.white.opacity(0.2), Color.black.opacity(0.6)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                            .cornerRadius(15)
+                                        )
+                                }
+                                
+                                Button(action: {
+                                    withAnimation {
+                                        isPresented.wrappedValue = false
+                                    }
+                                }) {
+                                    Text("Cancel")
+                                        .font(.system(size: 18, weight: .regular))
+                                        .foregroundColor(.white.opacity(0.8))
+                                        .frame(maxWidth: .infinity)
+                                        .padding()
+                                }
+                            }
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    colors: [Color.black.opacity(0.6), Color.black.opacity(0.6)],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                                .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 25)
+                                        .stroke(.purple, lineWidth: 3)
+                                )
+                                .cornerRadius(25)
+                                .shadow(color: .purple, radius: 20)
+                            )
+                            .frame(width: 300)
+                    }
+                    .transition(.opacity)
+                }
+            }
+        )
     }
 }
 

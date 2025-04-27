@@ -22,6 +22,7 @@ struct StatsView: View {
                     HStack {
                         Button {
                             dismiss()
+                            VibrationManager.shared.lightImpact()
                         } label:  {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 24, weight: .bold))

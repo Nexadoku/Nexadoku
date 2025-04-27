@@ -13,6 +13,7 @@ struct EventsView: View {
                     HStack {
                         Button {
                             dismiss()
+                            VibrationManager.shared.lightImpact()
                         } label: {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.white)

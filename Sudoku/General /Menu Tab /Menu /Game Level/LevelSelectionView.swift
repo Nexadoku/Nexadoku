@@ -79,7 +79,7 @@ struct LevelSelectionView: View {
                 Spacer()
                 Button(action: {
                     dismiss()
-                    
+                    VibrationManager.shared.lightImpact()
                 }) {
                     Text("back_button")
                         .foregroundColor(.white)
