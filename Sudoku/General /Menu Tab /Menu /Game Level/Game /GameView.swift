@@ -25,6 +25,7 @@ struct GameView: View {
         ZStack {
             SystemDarkBackground()
                 .blur(radius: isPaused ? 10 : 0)
+               
             
             VStack(spacing: .zero) {
                 if game.isLoading || game.grid.isEmpty {
@@ -36,7 +37,7 @@ struct GameView: View {
             .blur(radius: isPaused ? 10 : 0)
             
             if isPaused {
-                Color.black.opacity(0.5)
+                Color.black.opacity(0.6)
                     .ignoresSafeArea()
                 
                 PauseOverlay(
@@ -85,7 +86,7 @@ struct GameView: View {
     private var warning: some View {
         Group {
             if showExitConrirmation {
-                Color.black.opacity(0.5)
+               SystemDarkBackground()
                     .ignoresSafeArea()
                     .transition(.opacity)
                     .zIndex(1)
@@ -95,8 +96,19 @@ struct GameView: View {
                         .font(.title2.bold())
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
-                        .padding()
-
+                        .padding(.horizontal, 32)
+                        .padding(.vertical, 24)
+                        .background(
+                            LinearGradient(
+                                colors: [.black.opacity(0.4), .purple.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 30)
+                                    .stroke(.purple, lineWidth: 3)
+                            )
+                            .cornerRadius(30)
+                        )
                     HStack(spacing: 20) {
                         AppButton(text: "Cancel") {
                             withAnimation {
@@ -114,9 +126,6 @@ struct GameView: View {
                         .appButtonVariation(.destructive)
                     }
                 }
-                .padding()
-                .background(.black)
-                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
                 .padding(.horizontal, 30)
                 .transition(.scale)
                 .zIndex(2)
@@ -160,9 +169,18 @@ struct GameView: View {
             GridView(game: game)
             ButtonsView(
                 onNumberTap: { game.updateValue($0) },
-                onEraseTap: { game.eraseValue() },
-                onPencilTap: { game.togglePencilMode() },
-                onHintTap: { game.useHint() },
+                onEraseTap: {
+                    game.eraseValue()
+                    VibrationManager.shared.lightImpact()
+                },
+                onPencilTap: {
+                    game.togglePencilMode()
+                    VibrationManager.shared.lightImpact()
+                },
+                onHintTap: {
+                    game.useHint()
+                    VibrationManager.shared.lightImpact()
+                },
                 usedNumbers:  game.usedNumbersCount,
                 isPencilMode: game.pencilMode
             )

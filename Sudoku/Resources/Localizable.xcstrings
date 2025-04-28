@@ -87,9 +87,6 @@
     "Cancel" : {
 
     },
-    "Change Photo" : {
-
-    },
     "childrens_privacy" : {
       "localizations" : {
         "en" : {
@@ -105,6 +102,9 @@
           }
         }
       }
+    },
+    "Choose Photo" : {
+
     },
     "congratulations" : {
       "extractionState" : "stale",

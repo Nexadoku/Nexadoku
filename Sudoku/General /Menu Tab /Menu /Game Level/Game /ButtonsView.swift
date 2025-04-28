@@ -58,40 +58,63 @@ struct ButtonsView: View {
     private func numberButton(number: Int) -> some View {
         let isDisabled = usedNumbers[number, default: 0] >= 9
 
-        if !isDisabled {
-            let tapGesture = TapGesture()
-                .onEnded {
-                        onNumberTap(number)
-                }
-
-            Button {
-               
-            } label: {
-                Text("\(number)")
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundColor(isPencilMode ? .brown : .black)
+        ZStack {
+            if isDisabled {
+                Color.clear
                     .frame(width: 50, height: 50)
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [Color.white, Color.white]),
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
+            } else {
+                let tapGesture = TapGesture()
+                    .onEnded {
+                        onNumberTap(number)
+                    }
+                
+                Button {
+                    
+                } label: {
+                    Text("\(number)")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(isPencilMode ? .brown : .black)
+                        .frame(width: 50, height: 50)
+                        .background(
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color.white, Color.white]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
                                     )
-                                )
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white.opacity(0.8), lineWidth: 1)
-                        }
+                                
+                                if isDisabled {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.purple.opacity(0.8), lineWidth: 5)
+                                        .scaleEffect(1.2)
+                                        .opacity(0)
+                                        .animation(
+                                            .easeOut(duration: 0.4),
+                                            value: isDisabled
+                                        )
+                                }
+                                
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.white.opacity(0.8), lineWidth: 1)
+                            }
+                        )
+                }
+                .simultaneousGesture(tapGesture)
+                .buttonStyle(ScaleButtonStyle())
+                .shadow(radius: 10)
+                .transition(
+                    .asymmetric(
+                        insertion: .identity,
+                        removal: .scale(scale: 0.5).combined(with: .opacity)
                     )
+                )
             }
-            .simultaneousGesture(tapGesture)
-            .buttonStyle(ScaleButtonStyle())
-            .transition(.opacity.combined(with: .scale))
-            .animation(.easeInOut(duration: 0.3), value: usedNumbers)
-            .shadow(radius: 10)
         }
+        .frame(width: 50, height: 50)
+        .animation(.spring(response: 0.5, dampingFraction: 0.6), value: isDisabled)
     }
     private func actionButton(systemName: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {

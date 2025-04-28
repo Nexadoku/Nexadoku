@@ -37,6 +37,7 @@ struct EventsView: View {
                         image: "mathPuzzleImage", // Изображение
                         action: {
                             navigator.push(.event(.mathPuzzle))
+                            VibrationManager.shared.lightImpact()
                         })
                    }
             .padding(.horizontal)

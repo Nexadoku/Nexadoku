@@ -14,7 +14,6 @@ struct PauseOverlay: View {
             Text("paused")
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(LinearGradient(colors: [.white, .white.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                .shadow(color: .purple.opacity(0.5), radius: 10, x: 0, y: 5)
             
             VStack(spacing: 16) {
                 overlayItem(title: "Level", value: level.rawValue)
@@ -25,14 +24,18 @@ struct PauseOverlay: View {
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 24)
-            .background(.black)
+            .background(
+                LinearGradient(
+                    colors: [.black.opacity(0.4), .purple.opacity(0.4)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing)
             .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
                     .stroke(.purple, lineWidth: 1.5)
-                   
+                   )
+            .cornerRadius(30)
             )
-            .shadow(color: .purple, radius: 10)
             
             HStack {
                 Button(action: {

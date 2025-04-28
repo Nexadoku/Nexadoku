@@ -19,14 +19,14 @@ struct GridView: View {
                 
                 ForEach(0..<9, id: \.self) { row in
                     ForEach(0..<9, id: \.self) { col in
+                        
                         CellView(
                             cell: game.grid[row][col],
                             isSelected: game.isSelected(row: row, col: col),
-                            isHighlighted: game.isHighlighted(row: row, col: col)
+                            isHighlighted: game.isHighlighted(row: row, col: col),
+                            onTap: { game.selectCell(row: row, col: col) }
                             
-                        ) {
-                                game.selectCell(row: row, col: col)
-                        }
+                        )
                         .position(
                             x: offset + cellSize * CGFloat(col) + cellSize / 2,
                             y: offset + cellSize * CGFloat(row) + cellSize / 2
@@ -57,6 +57,6 @@ struct GridView: View {
 
 struct GridViewPreviews: PreviewProvider {
     static var previews: some View {
-        GridView(game: Game(state: .new(level: .easy)))
+        GridView(game: Game(state: .new(level: .medium)))
     }
 }

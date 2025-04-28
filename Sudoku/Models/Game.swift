@@ -16,6 +16,7 @@ final class Game: ObservableObject {
     @Published var finalTime: Int = 0
     @Published var lockedNumberInput: Int? = nil
     @Published var isLoading: Bool = false
+    @Published var completedLines: Set<Int> = []
     
     @AppStorage("mistakesEnabled") var mistakesEnabled = true
     
@@ -102,6 +103,24 @@ final class Game: ObservableObject {
     
     func togglePencilMode() {
         pencilMode.toggle()
+    }
+    
+    func checkCompletedLines() {
+        var completedRows = Set<Int>()
+        var completedColumns = Set<Int>()
+        
+        for row in 0..<9 {
+            if grid[row].allSatisfy({ $0.value != 0 }) {
+                completedRows.insert(row)
+            }
+        }
+        
+        for col in 0..<9 {
+            if (0..<9).allSatisfy({ grid[$0][col].value != 0 }) {
+                completedColumns.insert(col)
+            }
+        }
+        completedLines = completedRows.union(completedColumns)
     }
     
     func useHint() {

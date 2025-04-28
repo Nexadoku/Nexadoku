@@ -4,6 +4,7 @@ struct CellView: View {
     let cell: Cell
     let isSelected: Bool
     let isHighlighted: Bool
+
     let onTap: () -> Void
     @AppStorage("mistakesEnabled") private var mistakesEnabled: Bool = true
     
@@ -23,7 +24,7 @@ struct CellView: View {
                     .fill(
                         RadialGradient(
                             gradient: Gradient(colors: [
-                                Color.white,
+                                Color.white.opacity(0.5),
                                 Color.indigo
                             ]),
                             center: .center,
@@ -83,4 +84,3 @@ struct CellView: View {
         }
     }
 }
-

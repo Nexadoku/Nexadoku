@@ -33,6 +33,7 @@ struct AccountView: View {
                     ZStack(alignment: .bottomLeading) {
                         Button {
                             showBannerActionSheet = true
+                            VibrationManager.shared.lightImpact()
                         } label: {
                             ZStack {
                                 if let banner = bannerImage {
@@ -64,6 +65,7 @@ struct AccountView: View {
                         HStack(alignment: .bottom, spacing: 16) {
                             Button {
                                 showAvatarActionSheet = true
+                                VibrationManager.shared.lightImpact()
                             } label: {
                                 ZStack {
                                     if let avatar = avatarImage {
@@ -344,18 +346,23 @@ extension View {
                                         isPresented.wrappedValue = false
                                     }
                                 }) {
-                                    Text("Change Photo")
+                                    Text("Choose Photo")
                                         .font(.system(size: 18, weight: .semibold))
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
                                         .padding()
                                         .background(
                                             LinearGradient(
-                                                colors: [Color.white.opacity(0.2), Color.black.opacity(0.6)],
+                                                colors: [Color.black.opacity(0.6), Color.purple.opacity(0.6)],
                                                 startPoint: .topLeading,
                                                 endPoint: .bottomTrailing
                                             )
-                                            .cornerRadius(15)
+                                            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 25)
+                                                    .stroke(.purple, lineWidth: 3)
+                                            )
+                                            .cornerRadius(25)
                                         )
                                 }
                                 
@@ -372,11 +379,16 @@ extension View {
                                         .padding()
                                         .background(
                                             LinearGradient(
-                                                colors: [Color.white.opacity(0.2), Color.black.opacity(0.6)],
+                                                colors: [Color.black.opacity(0.6), Color.purple.opacity(0.6)],
                                                 startPoint: .topLeading,
                                                 endPoint: .bottomTrailing
                                             )
-                                            .cornerRadius(15)
+                                            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 25)
+                                                    .stroke(.purple, lineWidth: 3)
+                                            )
+                                            .cornerRadius(25)
                                         )
                                 }
                                 
@@ -395,9 +407,9 @@ extension View {
                             .padding()
                             .background(
                                 LinearGradient(
-                                    colors: [Color.black.opacity(0.6), Color.black.opacity(0.6)],
-                                    startPoint: .top,
-                                    endPoint: .bottom
+                                    colors: [Color.black.opacity(0.3), Color.purple.opacity(0.3)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
                                 )
                                 .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
                                 .overlay(
@@ -405,11 +417,12 @@ extension View {
                                         .stroke(.purple, lineWidth: 3)
                                 )
                                 .cornerRadius(25)
-                                .shadow(color: .purple, radius: 20)
+                                .shadow(color: .black, radius: 20)
                             )
                             .frame(width: 300)
                     }
-                    .transition(.opacity)
+                        .transition(.opacity)
+                        .background(SystemDarkBackground())
                 }
             }
         )
