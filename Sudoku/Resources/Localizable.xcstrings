@@ -48,19 +48,19 @@
     "🔒" : {
 
     },
-    "account" : {
-      "extractionState" : "stale",
+    "avatar" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Account"
+            "value" : "Avatar"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Аккаунт"
+            "value" : "Аватар"
           }
         }
       }
@@ -81,11 +81,35 @@
         }
       }
     },
+    "banner" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Banner"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Баннер"
+          }
+        }
+      }
+    },
     "Best Score: %lld" : {
 
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отмена"
+          }
+        }
+      }
     },
     "childrens_privacy" : {
       "localizations" : {
@@ -104,7 +128,14 @@
       }
     },
     "Choose Photo" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать фото"
+          }
+        }
+      }
     },
     "congratulations" : {
       "extractionState" : "stale",
@@ -159,10 +190,34 @@
       }
     },
     "Delete Photo" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить Фото"
+          }
+        }
+      }
     },
     "Difficulty" : {
 
+    },
+    "Easy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Easy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лёгкий"
+          }
+        }
+      }
     },
     "Email Not Available" : {
 
@@ -219,7 +274,31 @@
       }
     },
     "Enter nickname" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напишите имя"
+          }
+        }
+      }
+    },
+    "Epic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Epic"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эпик"
+          }
+        }
+      }
     },
     "Exit" : {
       "localizations" : {
@@ -250,6 +329,12 @@
     "Fast Math" : {
       "extractionState" : "stale",
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fast Math"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -259,10 +344,29 @@
       }
     },
     "FAST MATH" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FAST MATH"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "БЫСТРАЯ МАТЕМАТИКА"
+          }
+        }
+      }
     },
     "Game" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -272,7 +376,20 @@
       }
     },
     "Game Settings" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Game Settings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Игровые настройки"
+          }
+        }
+      }
     },
     "game_over" : {
       "extractionState" : "stale",
@@ -292,10 +409,53 @@
       }
     },
     "General Settings" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "General Settings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Базовые настройки"
+          }
+        }
+      }
     },
     "Got ideas, spotted a bug, or just want to share some thoughts? Let us know! Your feedback helps make Sudoku even better." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got ideas, spotted a bug, or just want to share some thoughts? Let us know! Your feedback helps make Sudoku even better."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Есть идеи, заметили ошибку или просто хотите поделиться мыслями? Дайте нам знать! Ваши отзывы помогут сделать Sudoku еще лучше."
+          }
+        }
+      }
+    },
+    "Hard" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hard"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сложный"
+          }
+        }
+      }
     },
     "If you have any questions or concerns, please contact us through the support section of the app." : {
       "localizations" : {
@@ -375,10 +535,64 @@
       }
     },
     "Manage %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить %@"
+          }
+        }
+      }
+    },
+    "Master" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мастер"
+          }
+        }
+      }
+    },
+    "Medium" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medium"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средний"
+          }
+        }
+      }
     },
     "Mistakes" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mistakes"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ошибки"
+          }
+        }
+      }
     },
     "mistakes_count" : {
       "extractionState" : "stale",
@@ -579,7 +793,20 @@
       }
     },
     "PRIVACY POLICY" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PRIVACY POLICY"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ"
+          }
+        }
+      }
     },
     "privacy_policy" : {
       "extractionState" : "stale",
@@ -615,7 +842,14 @@
       }
     },
     "Restart Game" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать заново"
+          }
+        }
+      }
     },
     "restart_game" : {
       "extractionState" : "stale",
@@ -652,10 +886,24 @@
       }
     },
     "Retry" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заново"
+          }
+        }
+      }
     },
     "Return to Main Menu" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вернуться в меню"
+          }
+        }
+      }
     },
     "russian" : {
       "localizations" : {
@@ -719,8 +967,8 @@
         }
       }
     },
-    "settings" : {
-      "extractionState" : "stale",
+    "Settings" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -737,7 +985,20 @@
       }
     },
     "SETTINGS" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SETTINGS"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " НАСТРОЙКИ"
+          }
+        }
+      }
     },
     "sound" : {
       "localizations" : {
@@ -773,7 +1034,14 @@
       }
     },
     "Start" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать"
+          }
+        }
+      }
     },
     "start_game" : {
       "localizations" : {
@@ -791,20 +1059,21 @@
         }
       }
     },
-    "Statistics" : {
-      "comment" : "Статистика",
-      "extractionState" : "stale",
+    "STATISTICS" : {
       "localizations" : {
-        "ru" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Статистика"
+            "value" : "Statistics"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "СТАТИСТИКА"
           }
         }
       }
-    },
-    "STATISTICS" : {
-
     },
     "streak" : {
       "extractionState" : "manual",
@@ -823,29 +1092,25 @@
         }
       }
     },
-    "sudoku" : {
-      "extractionState" : "stale",
+    "SUDOKU" : {
+
+    },
+    "tap_to_select" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SUDOKU"
+            "value" : "Tap to select banner"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "СУДОКУ"
+            "value" : "Выбирайте баннер "
           }
         }
-      },
-      "shouldTranslate" : false
-    },
-    "SUDOKU" : {
-
-    },
-    "Tap to select banner" : {
-
+      }
     },
     "third_party_services" : {
       "localizations" : {
@@ -880,7 +1145,14 @@
       }
     },
     "Time" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время"
+          }
+        }
+      }
     },
     "time_left" : {
       "extractionState" : "stale",
@@ -900,7 +1172,14 @@
       }
     },
     "Timer" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таймер"
+          }
+        }
+      }
     },
     "trials" : {
       "extractionState" : "stale",
@@ -951,14 +1230,52 @@
         }
       }
     },
+    "WE VALUE YOUR INPUT" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WE VALUE YOUR INPUT"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "МЫ ЦЕНИМ ВАШ ВКЛАД"
+          }
+        }
+      }
+    },
     "You Lose!" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы проиграли "
+          }
+        }
+      }
     },
     "You made 3 mistakes" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы допустили 3 ошибки "
+          }
+        }
+      }
     },
     "You Win!" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы выиграли!"
+          }
+        }
+      }
     },
     "you_lose" : {
       "extractionState" : "stale",
@@ -990,6 +1307,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вы выиграли!"
+          }
+        }
+      }
+    },
+    "Your Nickname" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your Nickname"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваше имя"
           }
         }
       }

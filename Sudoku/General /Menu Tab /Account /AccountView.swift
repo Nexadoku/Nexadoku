@@ -48,7 +48,7 @@ struct AccountView: View {
                                         Image(systemName: "photo.on.rectangle")
                                             .font(.system(size: 30))
                                             .foregroundColor(.white.opacity(0.6))
-                                        Text("Tap to select banner")
+                                        Text("tap_to_select")
                                             .font(.system(size: 14))
                                             .foregroundColor(.white.opacity(0.5))
                                     }
@@ -178,12 +178,12 @@ struct AccountView: View {
             }
             .ignoresSafeArea()
         }
-        .customActionSheet(isPresented: $showBannerActionSheet, title: "Banner") {
+        .customActionSheet(isPresented: $showBannerActionSheet, title: "banner") {
             clearBannerImage()
         } onChange: {
             showBannerPicker = true
         }
-        .customActionSheet(isPresented: $showAvatarActionSheet, title: "Avatar") {
+        .customActionSheet(isPresented: $showAvatarActionSheet, title: "avatar") {
             clearAvatarImage()
         } onChange: {
             showAvatarPicker = true

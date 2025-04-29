@@ -30,17 +30,18 @@ struct EventsView: View {
                             
                     }
                     .padding()
-                    
-                    PuzzleCardView(
-                        title: "Fast Math",
-                        description: "Solve complex math puzzles using logic and numbers.",
-                        image: "mathPuzzleImage", // Изображение
-                        action: {
-                            navigator.push(.event(.mathPuzzle))
-                            VibrationManager.shared.lightImpact()
-                        })
-                   }
-            .padding(.horizontal)
+                    VStack(spacing: 0) {
+                        PuzzleCardView(
+                            title: "Fast Math",
+                            description: "Solve complex math puzzles using logic and numbers.",
+                            image: "mathPuzzleImage", // Изображение
+                            action: {
+                                navigator.push(.event(.mathPuzzle))
+                                VibrationManager.shared.lightImpact()
+                            })
+                    }
+                    .padding(.horizontal)
+                }
             }
         }
         .navigationBarBackButtonHidden(true)

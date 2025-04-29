@@ -19,6 +19,8 @@ final class Game: ObservableObject {
     @Published var completedLines: Set<Int> = []
     
     @AppStorage("mistakesEnabled") var mistakesEnabled = true
+    @AppStorage("hintsUsedToday") private var hintsUsedToday = 0
+    @AppStorage("lastHintResetDate") private var lastHintResetDate = ""
     
     var timer: GameTimer
     
@@ -123,6 +125,11 @@ final class Game: ObservableObject {
         completedLines = completedRows.union(completedColumns)
     }
     
+    func canUseHint() -> Bool {
+        resetHintsIfNeeded()
+        return hintsUsedToday < 3
+    }
+    
     func useHint() {
         guard remainingHints > 0 else { return }
         guard let selected = selectedCell else { return }
@@ -131,8 +138,11 @@ final class Game: ObservableObject {
         let correctValue = solutionGrid[selected.row][selected.col]
         grid[selected.row][selected.col].value = correctValue
         grid[selected.row][selected.col].notes = []
-        remainingHints -= 1
+      
+        hintsUsedToday += 1
+        remainingHints = max(0, 3 - hintsUsedToday)
     }
+    
     
     
     func restart() {
@@ -364,6 +374,17 @@ final class Game: ObservableObject {
                     grid[r][c].notes.remove(value)
                 }
             }
+        }
+    }
+    
+    private func resetHintsIfNeeded() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = formatter.string(from: Date())
+        
+        if lastHintResetDate != today {
+            lastHintResetDate = today
+            hintsUsedToday = 0
         }
     }
     
