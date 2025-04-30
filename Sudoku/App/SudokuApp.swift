@@ -11,14 +11,23 @@ import SwiftUI
 struct SudokuApp: App {
     @StateObject private var navigator = Navigator()
     @StateObject private var languageSettings = LanguageSettings()
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnbiarding = false
     
     var body: some Scene {
         WindowGroup {
-            LaunchScreenView()
-                .environmentObject(navigator)
-                .environmentObject(languageSettings)
-                .environmentObject(GameSaveManager.shared)
-                .environment(\.locale, languageSettings.currentLocale)
+            if hasSeenOnbiarding {
+                LaunchScreenView()
+                    .environmentObject(navigator)
+                    .environmentObject(languageSettings)
+                    .environmentObject(GameSaveManager.shared)
+                    .environment(\.locale, languageSettings.currentLocale)
+            } else {
+                OnboardingView()
+                    .environmentObject(navigator)
+                    .environmentObject(languageSettings)
+                    .environmentObject(GameSaveManager.shared)
+                    .environment(\.locale, languageSettings.currentLocale)
+            }
         }
     }
 }

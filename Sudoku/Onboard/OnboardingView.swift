@@ -17,7 +17,7 @@ struct OnboardingView: View {
                 
                 TabView(selection: $currentPage) {
                     OnboardingPageView(
-                        title: "Добро пожаловать в SUDOKU",
+                        title: " SUDOKU",
                         subtitle: "Твоя ежедневная головоломка для ума",
                         color: .clear,
                         imageName: "brain.head.profile",
