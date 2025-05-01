@@ -33,9 +33,11 @@ struct SystemDarkBackground: View {
         }
     }
 }
-struct LuxuriousDarkBackgroundView_Previews: PreviewProvider {
+
+struct SystemDarkBackgroundPreviews: PreviewProvider {
     static var previews: some View {
         SystemDarkBackground()
     }
 }
+
                                                                                                  

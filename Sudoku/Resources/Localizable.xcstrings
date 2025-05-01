@@ -10,6 +10,9 @@
     "%lld" : {
 
     },
+    "• To unlock Medium, win Easy 2 times\n• To unlock Hard, win Medium 4 times\n• To unlock Master, win Hard 6 times\n• To unlock Epic, win Master 8 times\n\nPlay and discover new levels!" : {
+
+    },
     "✓ %lld" : {
 
     },
@@ -44,6 +47,9 @@
           }
         }
       }
+    },
+    "📖 How levels work?" : {
+
     },
     "🔒" : {
 
@@ -136,6 +142,9 @@
           }
         }
       }
+    },
+    "Close" : {
+
     },
     "congratulations" : {
       "extractionState" : "stale",
@@ -468,6 +477,7 @@
       }
     },
     "language" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -906,6 +916,7 @@
       }
     },
     "russian" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1240,9 +1251,27 @@
           }
         },
         "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "МЫ ЦЕНИМ ВАШ ВКЛАД"
+          "variations" : {
+            "device" : {
+              "iphone" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "МЫ ЦЕНИМ ВАШ ВКЛАД"
+                }
+              },
+              "mac" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "МЫ ЦЕНИМ ВАШ ВКЛАД"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "МЫ ЦЕНИМ ВАШ ВКЛАД"
+                }
+              }
+            }
           }
         }
       }

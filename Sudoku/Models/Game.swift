@@ -160,7 +160,7 @@ final class Game: ObservableObject {
         }
         
         mistakes = 0
-        remainingHints = 3
+        useHint()
         selectedCell = nil
         highlightedCells = []
         isWon = false
@@ -168,21 +168,6 @@ final class Game: ObservableObject {
         lockedNumberInput = nil
         timer.reset()
         timer.start()
-    }
-    
-    private func convertToSaveGrid(from grid: [[Cell]]) -> [[SavedCell]] {
-        grid.map { row in
-            row.map { cell in
-                SavedCell(
-                    value: cell.value,
-                    isOriginal: cell.isOriginal,
-                    row: cell.row,
-                    col: cell.col,
-                    isIncorect: cell.isIncorrect,
-                    notes: Array(cell.notes)
-                )
-            }
-        }
     }
     
     static func convertToLiveGrid(from savedGrid: [[SavedCell]]) -> [[Cell]] {
@@ -199,49 +184,6 @@ final class Game: ObservableObject {
             }
         }
     }
-
-    private func isBoardFilled() -> Bool {
-        for row in grid {
-            for cell in row {
-                if cell.value == 0 {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    
-    private func isBoardCorrect() -> Bool {
-        for row in 0..<9 {
-            for col in 0..<9 {
-                if grid[row][col].value != solutionGrid[row][col] {
-                    return false
-                }
-            }
-        }
-        return true
-    }
-    
-    private func checkWin() {
-        if isBoardCorrect() && isBoardFilled() {
-            finalTime = timer.elapsedTime
-            timer.stop()
-            isWon = true
-            gameOver = true
-            ProgressManager.shared.recordWin(for: level)
-            StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
-            GameSaveManager.shared.clearSavedGame()
-        }
-    }
-    
-    private func gameOverDueToMistakes() {
-        timer.stop()
-        isWon = false
-        gameOver = true
-        StatsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
-        GameSaveManager.shared.clearSavedGame()
-    }
-    
     
     func eraseValue() {
         guard let selected = selectedCell else { return }
@@ -376,6 +318,65 @@ final class Game: ObservableObject {
             }
         }
     }
+    
+    
+    private func convertToSaveGrid(from grid: [[Cell]]) -> [[SavedCell]] {
+        grid.map { row in
+            row.map { cell in
+                SavedCell(
+                    value: cell.value,
+                    isOriginal: cell.isOriginal,
+                    row: cell.row,
+                    col: cell.col,
+                    isIncorect: cell.isIncorrect,
+                    notes: Array(cell.notes)
+                )
+            }
+        }
+    }
+    
+    private func isBoardFilled() -> Bool {
+        for row in grid {
+            for cell in row {
+                if cell.value == 0 {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    
+    private func isBoardCorrect() -> Bool {
+        for row in 0..<9 {
+            for col in 0..<9 {
+                if grid[row][col].value != solutionGrid[row][col] {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+    
+    private func checkWin() {
+        if isBoardCorrect() && isBoardFilled() {
+            finalTime = timer.elapsedTime
+            timer.stop()
+            isWon = true
+            gameOver = true
+            ProgressManager.shared.recordWin(for: level)
+            StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
+            GameSaveManager.shared.clearSavedGame()
+        }
+    }
+    
+    private func gameOverDueToMistakes() {
+        timer.stop()
+        isWon = false
+        gameOver = true
+        StatsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
+        GameSaveManager.shared.clearSavedGame()
+    }
+    
     
     private func resetHintsIfNeeded() {
         let formatter = DateFormatter()

@@ -422,7 +422,7 @@ extension View {
                             .frame(width: 300)
                     }
                         .transition(.opacity)
-                        .background(SystemDarkBackground())
+                        .background(.black.opacity(0.5))
                 }
             }
         )

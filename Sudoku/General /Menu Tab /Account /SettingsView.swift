@@ -53,13 +53,6 @@ struct SettingsView: View {
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
-
-                            Picker(NSLocalizedString("language", comment: ""), selection: $languageSettings.currentLanguage) {
-                                Text("english").tag(Language.english)
-                                Text("russian").tag(Language.russian)
-                            }
-                            .pickerStyle(.segmented)
-                            .padding()
                             }
                             .background(
                                 LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)

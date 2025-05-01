@@ -86,8 +86,7 @@ struct GameView: View {
     private var warning: some View {
         Group {
             if showExitConrirmation {
-               SystemDarkBackground()
-                    .ignoresSafeArea()
+                SystemDarkBackground()
                     .transition(.opacity)
                     .zIndex(1)
                 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 @main
 struct SudokuApp: App {
     @StateObject private var navigator = Navigator()
@@ -17,6 +18,7 @@ struct SudokuApp: App {
         WindowGroup {
             if hasSeenOnbiarding {
                 LaunchScreenView()
+             
                     .environmentObject(navigator)
                     .environmentObject(languageSettings)
                     .environmentObject(GameSaveManager.shared)
@@ -27,6 +29,7 @@ struct SudokuApp: App {
                     .environmentObject(languageSettings)
                     .environmentObject(GameSaveManager.shared)
                     .environment(\.locale, languageSettings.currentLocale)
+                    
             }
         }
     }
