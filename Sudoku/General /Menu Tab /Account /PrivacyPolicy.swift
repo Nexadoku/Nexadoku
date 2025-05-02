@@ -29,6 +29,7 @@ struct PrivacyPolicy: View {
                     Text("PRIVACY POLICY")
                         .foregroundColor(.white)
                         .font(.system(size: 30, weight: .heavy))
+                        .lineLimit(3)
                     
                     Spacer()
                 }
