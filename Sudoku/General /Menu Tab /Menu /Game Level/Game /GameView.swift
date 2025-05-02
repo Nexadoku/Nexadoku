@@ -26,7 +26,6 @@ struct GameView: View {
             SystemDarkBackground()
                 .blur(radius: isPaused ? 10 : 0)
                
-            
             VStack(spacing: .zero) {
                 if game.isLoading || game.grid.isEmpty {
                     ProgressView()

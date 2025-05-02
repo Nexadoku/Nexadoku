@@ -4,9 +4,10 @@ struct CellView: View {
     let cell: Cell
     let isSelected: Bool
     let isHighlighted: Bool
-
+    let completedNumber: Int?
     let onTap: () -> Void
     @AppStorage("mistakesEnabled") private var mistakesEnabled: Bool = true
+    @State private var pulse = false
     
     private var drawsGradient: Bool {
         !(cell.isIncorrect || isSelected || isHighlighted)
@@ -18,6 +19,8 @@ struct CellView: View {
                 .frame(width: 40, height: 40)
                 .cornerRadius(1)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.2), lineWidth: 0.5))
+                .animation(.easeInOut(duration: 1), value: shouldAnimate)
+                
 
             if drawsGradient {
                 Rectangle()
@@ -49,6 +52,10 @@ struct CellView: View {
             SoundManager.shared.playSound(named: "SelectCell")
             VibrationManager.shared.lightImpact()
         }
+    }
+    
+    private var shouldAnimate: Bool {
+        isHighlighted && completedNumber == cell.value && cell.value != 0
     }
 
     private var backgroundColor: Color {

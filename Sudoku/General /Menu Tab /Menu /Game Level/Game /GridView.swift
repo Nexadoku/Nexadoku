@@ -24,6 +24,7 @@ struct GridView: View {
                             cell: game.grid[row][col],
                             isSelected: game.isSelected(row: row, col: col),
                             isHighlighted: game.isHighlighted(row: row, col: col),
+                            completedNumber: game.completedNumbers,
                             onTap: { game.selectCell(row: row, col: col) }
                             
                         )

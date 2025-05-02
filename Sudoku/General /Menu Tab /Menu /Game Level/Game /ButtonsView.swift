@@ -57,7 +57,8 @@ struct ButtonsView: View {
     @ViewBuilder
     private func numberButton(number: Int) -> some View {
         let isDisabled = usedNumbers[number, default: 0] >= 9
-
+    
+        
         ZStack {
             if isDisabled {
                 Color.clear
@@ -133,12 +134,5 @@ struct ScaleButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.92 : 1.0)
             .opacity(configuration.isPressed ? 0.7 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.5), value: configuration.isPressed)
-    }
-}
-
-struct SudokuNumberPadPreviews: PreviewProvider {
-    static var previews: some View {
-        ButtonsView()
-            .preferredColorScheme(.dark)
     }
 }

@@ -17,6 +17,7 @@ final class Game: ObservableObject {
     @Published var lockedNumberInput: Int? = nil
     @Published var isLoading: Bool = false
     @Published var completedLines: Set<Int> = []
+    @Published var completedNumbers: Int? = nil
     
     @AppStorage("mistakesEnabled") var mistakesEnabled = true
     @AppStorage("hintsUsedToday") private var hintsUsedToday = 0
@@ -246,11 +247,21 @@ final class Game: ObservableObject {
         if value == correctValue {
             grid[selected.row][selected.col].value = value
             grid[selected.row][selected.col].isIncorrect = false
+            grid[selected.row][selected.col].notes.remove(value)
+            
             SoundManager.shared.playSound(named: "SelectCell")
             VibrationManager.shared.lightImpact()
-            grid[selected.row][selected.col].notes.remove(value)
+            
             removeDraftsAround(row: selected.row, col: selected.col)
             updateHighlights(row: selected.row, col: selected.col)
+            
+            let count = grid.flatMap { $0 }.filter { $0.value == value }.count
+            if count == 9 {
+                completedNumbers = value
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.completedNumbers = nil
+                }
+            }
             checkWin()
         } else {
             grid[selected.row][selected.col].value = value

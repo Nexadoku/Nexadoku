@@ -108,6 +108,7 @@
 
     },
     "Cancel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -134,6 +135,7 @@
       }
     },
     "Choose Photo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -199,6 +201,7 @@
       }
     },
     "Delete Photo" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -283,6 +286,7 @@
       }
     },
     "Enter nickname" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -545,6 +549,7 @@
       }
     },
     "Manage %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
