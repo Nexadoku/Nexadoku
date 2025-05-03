@@ -185,6 +185,7 @@
       }
     },
     "continue" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -841,6 +842,7 @@
       }
     },
     "restart" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
