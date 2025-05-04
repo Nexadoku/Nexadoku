@@ -37,24 +37,37 @@ struct PauseOverlay: View {
             .cornerRadius(30)
             )
             
-            HStack(spacing: 20) {
-                AppButton(text: "Resume") {
-                    withAnimation {
-                        onResume()
-                        VibrationManager.shared.lightImpact()
-                    }
+            HStack {
+                Button(action: {
+                    onResume()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    Text("continue")
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                        .padding(.horizontal, 50)
+                        .padding(.vertical, 16)
+                        .background(.purple)
+                        .clipShape(Capsule())
                 }
-                .appButtonVariation(.primary)
                 
-                AppButton(text: "Restart") {
+                Button(action: {
                     onRestart()
                     VibrationManager.shared.lightImpact()
+                }) {
+                    Text("restart")
+                        .font(.title3.bold())
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                        .padding(.horizontal, 50)
+                        .padding(.vertical, 16)
+                        .background(.purple)
+                        .clipShape(Capsule())
                 }
-                .appButtonVariation(.destructive)
             }
         }
         .padding()
-        .transition(.opacity)
     }
     
     private func overlayItem(title: String, value: String) -> some View {
