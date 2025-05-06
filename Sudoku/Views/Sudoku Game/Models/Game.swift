@@ -93,9 +93,13 @@ final class Game: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         
+        resetHintsIfNeeded()
+        
         if state .isNewGame {
             await generateSudokuGrid()
         }
+        
+        remainingHints = max(0, 3 - hintsUsedToday)
         
         startTimer()
     }
@@ -132,6 +136,8 @@ final class Game: ObservableObject {
     }
     
     func useHint() {
+        resetHintsIfNeeded()
+        
         guard remainingHints > 0 else { return }
         guard let selected = selectedCell else { return }
         guard !grid[selected.row][selected.col].isOriginal else { return }

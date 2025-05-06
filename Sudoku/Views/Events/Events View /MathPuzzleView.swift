@@ -100,7 +100,7 @@ struct MathPuzzleView: View {
                             
                             Rectangle()
                                 .fill(game.getProgressBarColor())
-                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 4.0, height: 5)
+                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 3.0, height: 5)
                                 .animation(.linear(duration: 1.0), value: game.questionTimeLeft)
                         }
                         .cornerRadius(3)

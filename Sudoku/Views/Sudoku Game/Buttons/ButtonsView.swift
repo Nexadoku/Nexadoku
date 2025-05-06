@@ -9,8 +9,7 @@ struct ButtonsView: View {
     var usedNumbers: [Int: Int] = [:]
     var isPencilMode: Bool = false
     var gameOver: Bool = false
-    
-    @State private var remainingHints = 3
+    var remainingHints = 3
 
     var body: some View {
         VStack(spacing: 20) {
@@ -21,7 +20,6 @@ struct ButtonsView: View {
                 actionButton(systemName: "pencil", action: onPencilTap)
                 actionButton(systemName: "lightbulb", action: {
                     if remainingHints > 0 && !gameOver {
-                        remainingHints -= 1
                         onHintTap()
                     }
                 })

@@ -180,7 +180,8 @@ struct GameView: View {
                     VibrationManager.shared.lightImpact()
                 },
                 usedNumbers:  game.usedNumbersCount,
-                isPencilMode: game.pencilMode
+                isPencilMode: game.pencilMode,
+                remainingHints: game.remainingHints
             )
             .padding()
         }

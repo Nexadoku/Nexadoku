@@ -9,38 +9,38 @@ struct PuzzleCardView: View {
 
     var body: some View {
         ZStack {
-            // Фон изображения с градиентом
-            Image(image) // Изображение головоломки
+         
+            Image(image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(height: 250) // Высота карточки
-                .cornerRadius(20)
+                .frame(height: 250)
+                .cornerRadius(35)
                 .clipped() // Обрезаем лишние части изображения
                 .overlay(
                     LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]), startPoint: .top, endPoint: .bottom) // Градиент для темного фона
-                        .cornerRadius(20)
+                        .cornerRadius(35)
                 )
 
             VStack {
-                // Текстовая информация
+        
                 VStack(alignment: .leading, spacing: 8) {
                     Text(title)
                         .font(.title2)
                         .fontWeight(.heavy)
-                        .foregroundColor(.white) // Белый цвет текста для контраста
+                        .foregroundColor(.white)
                         .padding(.top, 15)
                         .padding(.leading, 20)
                     
                     Text(description)
                         .font(.subheadline)
-                        .foregroundColor(.white) // Описание белым
+                        .foregroundColor(.white)
                         .lineLimit(3)
                         .padding([.leading, .trailing])
                 }
 
-                Spacer() // Отделяем текст от кнопки
+                Spacer()
 
-                // Кнопка внизу
+               
                 Button(action: action) {
                     Text("Start")
                         .font(.title3)
@@ -49,20 +49,20 @@ struct PuzzleCardView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(.purple)
-                        .cornerRadius(20)
+                        .cornerRadius(35)
                         .shadow(color: Color.purple.opacity(0.3), radius: 10, x: 0, y: 5)
                 }
                 .padding([.leading, .trailing, .bottom])
-                .background(Color.clear) // Чистая фоновая зона для кнопки
-                .cornerRadius(20)
+                .background(Color.clear)
+                .cornerRadius(35)
             }
         }
-        .background(Color.white.opacity(0.05)) // Полупрозрачный фон для общей карточки
-        .cornerRadius(20)
-        .shadow(color: Color.purple, radius: 20, x: 0, y: 10)// Мягкая тень для премиум-эффекта
+        .background(Color.white.opacity(0.05))
+        .cornerRadius(35)
+        .shadow(color: Color.purple, radius: 20, x: 0, y: 10)
         .padding(.bottom)
-        .scaleEffect(1.05) // Плавное увеличение при нажатии
-        .animation(.spring(), value: 1) // Анимация при нажатии
+        .scaleEffect(1.05)
+        .animation(.spring(), value: 1)
     }
 }
 

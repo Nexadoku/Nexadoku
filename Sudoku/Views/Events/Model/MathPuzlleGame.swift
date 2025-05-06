@@ -12,21 +12,27 @@ class MathPuzzleGame: ObservableObject {
     @Published var gameOver = false
     @Published var currentOptions: [Int] = []
     @Published var selectedAnswer: Int? = nil
-    @Published var questionTimeLeft = 4
+    @Published var questionTimeLeft = 3
     @Published var progress: CGFloat = 1.0
     @Published var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
     
 
     let questions = [
-        MathPuzzleQuestion(question: "5 + 7", answer: 12),
-        MathPuzzleQuestion(question: "15 - 6", answer: 9),
-        MathPuzzleQuestion(question: "9 * 3", answer: 27),
-        MathPuzzleQuestion(question: "18 / 3", answer: 6),
-        MathPuzzleQuestion(question: "25 + 13", answer: 38),
-        MathPuzzleQuestion(question: "12 * 4", answer: 48),
-        MathPuzzleQuestion(question: "72 / 8", answer: 9),
-        MathPuzzleQuestion(question: "8 * 7", answer: 56),
-        MathPuzzleQuestion(question: "25 - 13", answer: 12)
+        MathPuzzleQuestion(question: "1 + 2", answer: 3),
+        MathPuzzleQuestion(question: "1 + 1", answer: 2),
+        MathPuzzleQuestion(question: "2 + 1", answer: 3),
+        MathPuzzleQuestion(question: "3 - 1", answer: 2),
+        MathPuzzleQuestion(question: "3 - 2", answer: 1),
+        MathPuzzleQuestion(question: "2 - 1", answer: 1),
+        MathPuzzleQuestion(question: "1 - 3 + 3 ", answer: 1),
+        MathPuzzleQuestion(question: "1 - 2 + 2", answer: 1),
+        MathPuzzleQuestion(question: "3 + 2 - 2", answer: 3),
+        MathPuzzleQuestion(question: "2 + 2 - 2", answer: 2),
+        MathPuzzleQuestion(question: "1 - 1 + 1", answer: 1),
+        MathPuzzleQuestion(question: "3 + 3 - 3", answer: 3),
+        MathPuzzleQuestion(question: "3 + 1 - 3", answer: 1),
+        MathPuzzleQuestion(question: "3 + 2 - 3", answer: 2),
+        MathPuzzleQuestion(question: "1 + 3 - 2", answer: 2)
     ]
 
     var timer: Timer?
@@ -43,7 +49,7 @@ class MathPuzzleGame: ObservableObject {
 
     func startQuestionTimer() {
         timer?.invalidate()
-        questionTimeLeft = 4
+        questionTimeLeft = 3
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if self.questionTimeLeft > 0 {
@@ -115,7 +121,7 @@ class MathPuzzleGame: ObservableObject {
     }
 
     func getProgressBarColor() -> Color {
-        if questionTimeLeft > 3 {
+        if questionTimeLeft > 2 {
             return .green
         } else if questionTimeLeft > 1 {
             return .yellow
