@@ -24,6 +24,7 @@ class MathPuzzleGame: ObservableObject {
         MathPuzzleQuestion(question: "3 - 1", answer: 2),
         MathPuzzleQuestion(question: "3 - 2", answer: 1),
         MathPuzzleQuestion(question: "2 - 1", answer: 1),
+        
         MathPuzzleQuestion(question: "1 - 3 + 3 ", answer: 1),
         MathPuzzleQuestion(question: "1 - 2 + 2", answer: 1),
         MathPuzzleQuestion(question: "3 + 2 - 2", answer: 3),
@@ -32,7 +33,9 @@ class MathPuzzleGame: ObservableObject {
         MathPuzzleQuestion(question: "3 + 3 - 3", answer: 3),
         MathPuzzleQuestion(question: "3 + 1 - 3", answer: 1),
         MathPuzzleQuestion(question: "3 + 2 - 3", answer: 2),
-        MathPuzzleQuestion(question: "1 + 3 - 2", answer: 2)
+        MathPuzzleQuestion(question: "1 + 3 - 2", answer: 2),
+        MathPuzzleQuestion(question: "3 - 1 - 1", answer: 1),
+        MathPuzzleQuestion(question: "3 + 1 - 1", answer: 3)
     ]
 
     var timer: Timer?

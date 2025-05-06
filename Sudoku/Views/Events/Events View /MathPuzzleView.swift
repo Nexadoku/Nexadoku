@@ -4,6 +4,8 @@ import SwiftUI
 struct MathPuzzleView: View {
     @ObservedObject var game = MathPuzzleGame()
     @Environment(\.dismiss) var dismiss
+    @State private var animateQuestions = false
+    @State private var bounce = false
     
     var body: some View {
         ZStack {
@@ -37,7 +39,7 @@ struct MathPuzzleView: View {
                 
                 if game.gameOver {
                     VStack {
-                        Text(game.score <= 0 ? "You Lose!" : "You Win!")
+                        Text(game.score <= 20 ? "You Lose!" : "You Win!")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -67,15 +69,44 @@ struct MathPuzzleView: View {
                         .padding(.top, 20)
                     }
                 } else {
-                    Text(game.questions[game.currentQuestionIndex].question)
-                        .font(.system(size: 50))
-                        .fontWeight(.bold)
+                    Image("purpleCalculator")
+                        .resizable()
+                        .frame(width: 130, height: 130)
+                        .offset(y: bounce ? -10 : 0)
+                        .scaleEffect(bounce ? 1.1 : 1.0)
+                        .animation(.easeInOut(duration: 0.25), value: bounce)
+                        .shadow(color: .purple, radius: 10)
+                    
+                    Text("Score: \(game.score)")
+                        .font(.title2)
                         .foregroundColor(.white)
-                        .padding()
+                        .padding(.top, 10)
+                    
+                    Group {
+                        if !game.gameOver {
+                            Text(game.questions[game.currentQuestionIndex].question)
+                                .font(.system(size: 50))
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .padding()
+                                .transition(.move(edge: .trailing).combined(with: .opacity))
+                        }
+                    }
+                    .animation(.easeInOut(duration: 0.3), value: game.currentQuestionIndex)
                     
                     VStack(spacing: 15) {
                         ForEach(game.currentOptions, id: \ .self) { option in
                             Button(action: {
+                                if option == game.questions[game.currentQuestionIndex].answer {
+                                    withAnimation(.easeInOut(duration: 0.25)) {
+                                        bounce = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                                        withAnimation(.easeInOut(duration: 0.25)) {
+                                            bounce = false
+                                        }
+                                    }
+                                }
                                 game.checkAnswer(option)
                             }) {
                                 Text("\(option)")
@@ -86,11 +117,11 @@ struct MathPuzzleView: View {
                                     .background(game.getButtonColor(for: option))
                                     .cornerRadius(25)
                                     .shadow(color: .purple, radius: 10)
-                                    
                             }
                         }
                     }
-                    .padding()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .animation(.easeInOut(duration: 0.3), value: game.currentQuestionIndex)
                     
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
