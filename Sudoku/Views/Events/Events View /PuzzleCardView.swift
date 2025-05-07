@@ -9,7 +9,7 @@ struct PuzzleCardView: View {
 
     var body: some View {
         ZStack {
-         
+            
             Image(image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -57,7 +57,7 @@ struct PuzzleCardView: View {
                 .cornerRadius(35)
             }
         }
-        .background(Color.white.opacity(0.05))
+        .background(Color.purple.opacity(0.5))
         .cornerRadius(35)
         .shadow(color: Color.purple, radius: 20, x: 0, y: 10)
         .padding(.bottom)

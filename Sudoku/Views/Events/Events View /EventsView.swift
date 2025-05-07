@@ -34,7 +34,7 @@ struct EventsView: View {
                         PuzzleCardView(
                             title: "Fast Math",
                             description: "Solve complex math puzzles using logic and numbers.",
-                            image: "mathPuzzleImage", // Изображение
+                            image: "purpleCalculator", // Изображение
                             action: {
                                 navigator.push(.event(.mathPuzzle))
                                 VibrationManager.shared.lightImpact()

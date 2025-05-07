@@ -12,7 +12,7 @@ class MathPuzzleGame: ObservableObject {
     @Published var gameOver = false
     @Published var currentOptions: [Int] = []
     @Published var selectedAnswer: Int? = nil
-    @Published var questionTimeLeft = 3
+    @Published var questionTimeLeft = 2.5
     @Published var progress: CGFloat = 1.0
     @Published var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
     
@@ -35,7 +35,8 @@ class MathPuzzleGame: ObservableObject {
         MathPuzzleQuestion(question: "3 + 2 - 3", answer: 2),
         MathPuzzleQuestion(question: "1 + 3 - 2", answer: 2),
         MathPuzzleQuestion(question: "3 - 1 - 1", answer: 1),
-        MathPuzzleQuestion(question: "3 + 1 - 1", answer: 3)
+        MathPuzzleQuestion(question: "3 + 1 - 1", answer: 3),
+        MathPuzzleQuestion(question: "2 - 1 + 1", answer: 2)
     ]
 
     var timer: Timer?
@@ -52,7 +53,7 @@ class MathPuzzleGame: ObservableObject {
 
     func startQuestionTimer() {
         timer?.invalidate()
-        questionTimeLeft = 3
+        questionTimeLeft = 2.5
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if self.questionTimeLeft > 0 {
@@ -80,7 +81,7 @@ class MathPuzzleGame: ObservableObject {
         selectedAnswer = answer
         timer?.invalidate()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             if answer == self.questions[self.currentQuestionIndex].answer {
                 self.score += 1
                 self.moveToNextQuestion()
@@ -124,7 +125,7 @@ class MathPuzzleGame: ObservableObject {
     }
 
     func getProgressBarColor() -> Color {
-        if questionTimeLeft > 2 {
+        if questionTimeLeft > 1.50 {
             return .green
         } else if questionTimeLeft > 1 {
             return .yellow
