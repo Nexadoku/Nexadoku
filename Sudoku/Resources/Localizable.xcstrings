@@ -50,7 +50,14 @@
       }
     },
     "📖 How levels work?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "📖 Как работают уровни?"
+          }
+        }
+      }
     },
     "🔒" : {
 
@@ -488,7 +495,6 @@
       }
     },
     "language" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -928,7 +934,6 @@
       }
     },
     "russian" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

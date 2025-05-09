@@ -16,21 +16,11 @@ struct SudokuApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if hasSeenOnbiarding {
                 LaunchScreenView()
-             
                     .environmentObject(navigator)
                     .environmentObject(languageSettings)
                     .environmentObject(GameSaveManager.shared)
                     .environment(\.locale, languageSettings.currentLocale)
-            } else {
-                OnboardingView()
-                    .environmentObject(navigator)
-                    .environmentObject(languageSettings)
-                    .environmentObject(GameSaveManager.shared)
-                    .environment(\.locale, languageSettings.currentLocale)
-                    
-            }
         }
     }
 }

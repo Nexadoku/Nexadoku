@@ -11,7 +11,7 @@ struct LoseScreen: View {
     
     var body: some View {
         ZStack {
-            AfterGameBackground()
+            SystemDarkBackground()
                 .ignoresSafeArea()
 
             VStack(spacing: 30) {
