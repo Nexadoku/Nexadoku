@@ -16,7 +16,7 @@ struct LoseScreen: View {
 
             VStack(spacing: 30) {
                 VStack(spacing: 10) {
-                    Text("❌ Game Over")
+                    Text("Game Over")
                         .font(.system(size: 42, weight: .black, design: .rounded))
                         .foregroundStyle(
                             LinearGradient(colors: [.red, .pink, .red], startPoint: .topLeading, endPoint: .bottomTrailing)

@@ -17,6 +17,7 @@
 
     },
     "❌ Game Over" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -387,6 +388,9 @@
           }
         }
       }
+    },
+    "Game Over" : {
+
     },
     "Game Settings" : {
       "localizations" : {
