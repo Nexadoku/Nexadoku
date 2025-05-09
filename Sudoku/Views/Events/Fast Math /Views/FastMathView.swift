@@ -6,6 +6,7 @@ struct MathPuzzleView: View {
     @Environment(\.dismiss) var dismiss
     @State private var animateQuestions = false
     @State private var bounce = false
+    @State private var animate = false
     
     var body: some View {
         ZStack {
@@ -66,12 +67,11 @@ struct MathPuzzleView: View {
                                 .cornerRadius(20)
                                 .shadow(color: .purple, radius: 10)
                         }
-                        .padding(.top, 20)
                     }
                 } else {
                     Image("purpleCalculator")
                         .resizable()
-                        .frame(width: 130, height: 130)
+                        .frame(width: 180, height: 180)
                         .offset(y: bounce ? -10 : 0)
                         .scaleEffect(bounce ? 1.1 : 1.0)
                         .animation(.easeInOut(duration: 0.25), value: bounce)
@@ -131,7 +131,7 @@ struct MathPuzzleView: View {
                             
                             Rectangle()
                                 .fill(game.getProgressBarColor())
-                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 2.5, height: 5)
+                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 2.5, height: 6)
                                 .animation(.linear(duration: 1.0), value: game.questionTimeLeft)
                         }
                         .cornerRadius(3)

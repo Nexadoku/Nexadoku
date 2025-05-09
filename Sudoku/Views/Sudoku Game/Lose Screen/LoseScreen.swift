@@ -11,7 +11,7 @@ struct LoseScreen: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            AfterGameBackground()
                 .ignoresSafeArea()
 
             VStack(spacing: 30) {
@@ -25,11 +25,7 @@ struct LoseScreen: View {
                         .scaleEffect(animate ? 1.1 : 1.0)
                         .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: animate)
                     
-                    Text("You Lose!")
-                        .font(.title2.weight(.black))
-                        .foregroundColor(.white)
-                        .padding()
-                    Text("You made 3 mistakes")
+                    Text("You made 3 mistakes and lost this game.")
                         .font(.title3.bold())
                         .foregroundColor(.white)
                 }

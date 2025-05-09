@@ -36,7 +36,8 @@ class MathPuzzleGame: ObservableObject {
         MathPuzzleQuestion(question: "1 + 3 - 2", answer: 2),
         MathPuzzleQuestion(question: "3 - 1 - 1", answer: 1),
         MathPuzzleQuestion(question: "3 + 1 - 1", answer: 3),
-        MathPuzzleQuestion(question: "2 - 1 + 1", answer: 2)
+        MathPuzzleQuestion(question: "2 - 1 + 1", answer: 2),
+        MathPuzzleQuestion(question: "1 + 3 - 1", answer: 3)
     ]
 
     var timer: Timer?
@@ -69,7 +70,7 @@ class MathPuzzleGame: ObservableObject {
         let correctAnswer = questions[currentQuestionIndex].answer
         var options = [correctAnswer]
         while options.count < 3 {
-            let randomOption = Int.random(in: (correctAnswer - 5)...(correctAnswer + 5))
+            let randomOption = Int.random(in: (correctAnswer - 1)...(correctAnswer + 1))
             if randomOption != correctAnswer && !options.contains(randomOption) {
                 options.append(randomOption)
             }
@@ -81,11 +82,13 @@ class MathPuzzleGame: ObservableObject {
         selectedAnswer = answer
         timer?.invalidate()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             if answer == self.questions[self.currentQuestionIndex].answer {
+                VibrationManager.shared.lightImpact()
                 self.score += 1
                 self.moveToNextQuestion()
             } else {
+                VibrationManager.shared.strongErrorVibration()
                 self.finishGame()
             }
         }

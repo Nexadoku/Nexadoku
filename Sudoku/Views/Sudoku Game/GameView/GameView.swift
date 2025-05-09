@@ -70,7 +70,8 @@ struct GameView: View {
                 WinScreen(
                     onExit: { navigator.pop() },
                     timeElapsed: game.finalTime,
-                    mistakes: game.mistakes
+                    mistakes: game.mistakes,
+                    level: game.level
                 )
             } else {
                 LoseScreen(

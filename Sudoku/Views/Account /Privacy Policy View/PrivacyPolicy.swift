@@ -4,6 +4,8 @@ import SwiftUI
 struct PrivacyPolicy: View {
     @Environment(\.dismiss) var dismiss
     
+    @State private var animate = false
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -88,6 +90,12 @@ struct PrivacyPolicy: View {
                 }
                 Spacer()
             }
+            .opacity(animate ? 1 : 0)
+            .offset(y: animate ? 0 : 20)
+            .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
+        }
+        .onAppear {
+            animate = true
         }
         .navigationBarBackButtonHidden(true)
     }

@@ -5,6 +5,8 @@ struct MenuView: View {
     @EnvironmentObject private var navigator: Navigator
     @EnvironmentObject private var savedGameManager: GameSaveManager
     
+    @State private var animate = false
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -44,6 +46,12 @@ struct MenuView: View {
                 Spacer()
             }
             .padding(.bottom)
+            .opacity(animate ? 1 : 0)
+            .offset(y: animate ? 0 : 20)
+            .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
+        }
+        .onAppear {
+            animate = true
         }
     }
     

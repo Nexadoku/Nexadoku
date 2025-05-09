@@ -9,18 +9,18 @@ struct PuzzleCardView: View {
 
     var body: some View {
         ZStack {
+      
+                Image(image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 250)
+                    .cornerRadius(35)
+                    .clipped() // Обрезаем лишние части изображения
+                    .overlay(
+                        LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]), startPoint: .top, endPoint: .bottom) // Градиент для темного фона
+                            .cornerRadius(35)
+                    )
             
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 250)
-                .cornerRadius(35)
-                .clipped() // Обрезаем лишние части изображения
-                .overlay(
-                    LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]), startPoint: .top, endPoint: .bottom) // Градиент для темного фона
-                        .cornerRadius(35)
-                )
-
             VStack {
         
                 VStack(alignment: .leading, spacing: 8) {
@@ -72,5 +72,6 @@ struct PuzzleCardView_Previews: PreviewProvider {
             print("Start pressed")
         }
         .frame(width: 300, height: 250)
+        .preferredColorScheme(.dark)
     }
 }

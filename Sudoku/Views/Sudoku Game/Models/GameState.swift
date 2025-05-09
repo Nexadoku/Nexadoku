@@ -17,5 +17,4 @@ public enum GameState: Hashable, Sendable {
         default: false
         }
     }
-    
 }

@@ -9,6 +9,8 @@ struct PauseOverlay: View {
     let onResume: () -> Void
     let onRestart: () -> Void
     
+    @State private var animate = false
+    
     var body: some View {
         VStack(spacing: 30) {
             Text("paused")

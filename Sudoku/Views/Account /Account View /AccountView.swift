@@ -8,6 +8,8 @@ struct AccountView: View {
     @State private var showMailView = false
     @State private var showMailError = false
     
+    @State private var animate = false
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -61,6 +63,12 @@ struct AccountView: View {
                 }
                 .padding(.top)
             }
+            .opacity(animate ? 1 : 0)
+            .offset(y: animate ? 0 : 20)
+            .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
+        }
+        .onAppear {
+            animate = true
         }
     }
 }
@@ -99,9 +107,9 @@ struct AccountView: View {
                     .fill(.purple)
                     .overlay(
                         RoundedRectangle(cornerRadius: 25)
-                            .stroke(LinearGradient(colors: [.white.opacity(0.3), .clear], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
+                            .stroke(LinearGradient(colors: [.purple.opacity(0.3), .clear], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
                     )
-                    .shadow(color: .white.opacity(0.05), radius: 10, x: 0, y: 5)
+                    .shadow(radius: 10)
             )
         }
         .padding(.horizontal)

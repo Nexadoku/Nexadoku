@@ -404,6 +404,9 @@
         }
       }
     },
+    "Game Summary" : {
+
+    },
     "game_over" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1161,6 +1164,7 @@
       }
     },
     "Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1292,6 +1296,7 @@
       }
     },
     "You made 3 mistakes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -1300,6 +1305,9 @@
           }
         }
       }
+    },
+    "You made 3 mistakes and lost this game." : {
+
     },
     "You Win!" : {
       "localizations" : {

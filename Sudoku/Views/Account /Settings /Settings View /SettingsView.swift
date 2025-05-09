@@ -8,6 +8,8 @@ struct SettingsView: View {
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
     @EnvironmentObject var languageSettings: LanguageSettings
     
+    @State private var animate = false
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -90,6 +92,12 @@ struct SettingsView: View {
                         }
                     }
                 }
+                .opacity(animate ? 1 : 0)
+                .offset(y: animate ? 0 : 20)
+                .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
+            }
+            .onAppear {
+                animate = true
             }
         }
         .navigationBarBackButtonHidden(true)

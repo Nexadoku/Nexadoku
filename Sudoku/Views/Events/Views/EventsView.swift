@@ -5,6 +5,8 @@ struct EventsView: View {
     @EnvironmentObject private var navigator: Navigator
     @Environment(\.dismiss) var dismiss
     
+    @State private var animate = false
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -30,6 +32,7 @@ struct EventsView: View {
                             
                     }
                     .padding()
+                    
                     VStack(spacing: 0) {
                         PuzzleCardView(
                             title: "Fast Math",
@@ -40,9 +43,16 @@ struct EventsView: View {
                                 VibrationManager.shared.lightImpact()
                             })
                     }
+                    .padding()
                     .padding(.horizontal)
                 }
             }
+            .opacity(animate ? 1 : 0)
+            .offset(y: animate ? 0 : 20)
+            .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
+        }
+        .onAppear {
+            animate = true
         }
         .navigationBarBackButtonHidden(true)
     }
