@@ -13,7 +13,7 @@ struct PauseOverlay: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Text("paused")
+            Text("Paused")
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(LinearGradient(colors: [.white, .white.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
             
@@ -44,7 +44,7 @@ struct PauseOverlay: View {
                     onResume()
                     VibrationManager.shared.lightImpact()
                 }) {
-                    Text("continue")
+                    Text("Continue")
                         .font(.title3.bold())
                         .foregroundColor(.white)
                         .lineLimit(1)
@@ -58,7 +58,7 @@ struct PauseOverlay: View {
                     onRestart()
                     VibrationManager.shared.lightImpact()
                 }) {
-                    Text("restart")
+                    Text("Restart")
                         .font(.title3.bold())
                         .foregroundColor(.white)
                         .lineLimit(1)

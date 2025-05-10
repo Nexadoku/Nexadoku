@@ -41,7 +41,7 @@ struct SettingsView: View {
                             
                             VStack {
                                 Toggle(isOn: $soundEnabled) {
-                                    Text("sound")
+                                    Text("Sound")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
@@ -49,7 +49,7 @@ struct SettingsView: View {
                                 .padding()
                                 
                                 Toggle(isOn: $vibrationEnabled) {
-                                    Text("vibration")
+                                    Text("Vibration")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }

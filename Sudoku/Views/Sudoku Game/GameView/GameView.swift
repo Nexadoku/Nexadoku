@@ -91,7 +91,7 @@ struct GameView: View {
                     .zIndex(1)
                 
                 VStack(spacing: 25) {
-                    Text("exit_confirmation")
+                    Text("Are you sure you want to exit the game?")
                         .font(.title2.bold())
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)

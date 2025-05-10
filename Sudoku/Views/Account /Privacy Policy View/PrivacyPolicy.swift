@@ -41,34 +41,34 @@ struct PrivacyPolicy: View {
 
                     VStack(alignment: .leading, spacing: 16) {
                         Group {
-                            Text("no_data_collection")
+                            Text("1. No Data Collection")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("no_personal_data")
+                            Text("We do not collect, store, or share any personal data. All gameplay data is stored locally on your device.")
                             
-                            Text("no_internet_required")
+                            Text("2. No Internet Connection Required")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("offline_functionality")
+                            Text("The app works fully offline. It doesn't require or use an internet connection.")
                             
-                            Text("third_party_services")
+                            Text("3. Third-Party Services")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("no_third_party_services")
+                            Text("We do not use any third-party analytics, tracking, or advertising services.")
                             
-                            Text("childrens_privacy")
+                            Text("4. Children's Privacy")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("no_information_collected")
+                            Text("The app does not collect anu information and is safe for all ages.")
                         }
                         
                         Group {
-                            Text("policy_changes")
+                            Text("5. Changes to This Policy")
                                 .font(.headline)
                                 .foregroundColor(.purple)
-                            Text("policy_update")
+                            Text("We may update this Privacy Policy in the future. All changes will be displayed here.")
 
-                            Text("contact_us")
+                            Text("6. Contact Us")
                                 .font(.headline)
                                 .foregroundColor(.purple)
                             Text("If you have any questions or concerns, please contact us through the support section of the app.")

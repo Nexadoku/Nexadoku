@@ -26,7 +26,7 @@ struct LevelSelectionView: View {
         
                 VStack(spacing: 40) {
                    
-                        Text("select_level")
+                        Text("Select Level:")
                             .font(.largeTitle.bold())
                             .foregroundColor(.white)
                             .shadow(radius: 20)
@@ -64,7 +64,7 @@ struct LevelSelectionView: View {
                             )
                             
                         }) {
-                            Text("start_game")
+                            Text("Start Game")
                                 .foregroundColor(.white)
                                 .font(.system(size: 20, weight: .bold))
                                 .padding()
@@ -102,7 +102,7 @@ struct LevelSelectionView: View {
                         dismiss()
                         VibrationManager.shared.lightImpact()
                     }) {
-                        Text("back_button")
+                        Text("← Back")
                             .foregroundColor(.white)
                             .font(.headline.bold())
                             .frame(width: 180, height: 50)
