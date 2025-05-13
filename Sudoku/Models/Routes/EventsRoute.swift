@@ -1,9 +1,3 @@
-//
-//  EventsRoute.swift
-//  SUDOKU
-//
-//  Created by Helter Skelter on 03/04/25.
-//
 
 import Foundation
 

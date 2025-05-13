@@ -16,7 +16,7 @@ struct PauseOverlay: View {
             Text("Paused")
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(LinearGradient(colors: [.white, .white.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
-            
+             
             VStack(spacing: 16) {
                 overlayItem(title: "Level", value: level.rawValue)
                 Divider().background(Color.white.opacity(0.4))
