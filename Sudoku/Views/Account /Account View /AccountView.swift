@@ -49,7 +49,7 @@ struct AccountView: View {
                         }
                         .sheet(isPresented: $showMailView) {
                             MailView(
-                                subject: "Sudoku App Feedback", recipients: ["support@murkami.com"], body: "Hi! I wanted to share the following feedback..."
+                                subject: "Sudoku App Feedback", recipients: ["futuresudoku@gmail.com"], body: "Hi! I wanted to share the following feedback..."
                             )
                         }
                         .alert(isPresented: $showMailError) {
