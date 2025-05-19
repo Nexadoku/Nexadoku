@@ -15,10 +15,11 @@ struct WinScreen: View {
 
     @State private var animate = false
     @State private var confettiPieces: [Confetti] = []
+    @State private var digitparticles: [DigitParticle] = []
 
     private let colors: [Color] = [
-        .red, .yellow, .blue, .green, .purple, .pink, .orange,
-        Color.indigo, Color.cyan, Color.white.opacity(0.8)
+        .purple.opacity(0.3), .purple.opacity(0.4), .purple.opacity(0.5), .purple.opacity(0.6),
+        Color.purple.opacity(0.7), Color.purple.opacity(0.8), Color.purple.opacity(0.9), .purple
     ]
 
     private let shapes: [ConfettiShape] = [.circle, .star, .diamond, .rectangle]
@@ -33,6 +34,16 @@ struct WinScreen: View {
         ZStack {
             SystemDarkBackground()
             
+            ForEach(digitparticles) { particle in
+                Text(particle.digit)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(particle.color)
+                    .position(particle.position)
+                    .offset(particle.offset)
+                    .opacity(particle.opacity)
+                    .scaleEffect(particle.scale)
+            }
+            
             ForEach(confettiPieces) { piece in
                 ConfettiShapeView(piece: piece)
                     .frame(width: piece.size, height: piece.size)
@@ -45,7 +56,7 @@ struct WinScreen: View {
             VStack(spacing: 20) {
                     VStack(spacing: 20) {
                         Text("Congratulations!")
-                            .font(.system(size: 34, weight: .heavy))
+                            .font(.system(size: 34, weight: .black))
                             .foregroundStyle(
                                 Color.white
                             )
@@ -87,6 +98,64 @@ struct WinScreen: View {
         .onAppear {
             animate = true
             generateConfetti()
+            launchDigitExplosions()
+        }
+    }
+    
+    func launchDigitExplosions() {
+        let explosionCenters: [CGPoint] = (0..<4).map { _ in
+            CGPoint(
+                x: CGFloat.random(in: 60...(UIScreen.main.bounds.width - 60)),
+                y: CGFloat.random(in: 50...(UIScreen.main.bounds.height / 2.5))
+            )
+        }
+        launchNextExplesion(from: explosionCenters, index: 0)
+    }
+    
+    func launchNextExplesion(from centers: [CGPoint], index: Int) {
+        guard index < centers.count else { return }
+        
+        let center = centers[index]
+        
+        launchDigitExplosion(center: center) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                launchNextExplesion(from: centers, index: index + 1)
+            }
+        }
+    }
+    
+    func launchDigitExplosion(center: CGPoint, completion: @escaping () -> Void) {
+        let digits = (0...9).map { "\($0)" }
+        
+        for _ in 0..<35 {
+            let angle = Double.random(in: 0...(2 * .pi))
+            let radius = CGFloat.random(in: 100...200)
+            let dx = cos(angle) * radius
+            let dy = sin(angle) * radius
+            
+            var particle = DigitParticle(
+                digit: digits.randomElement() ?? "5",
+                position: center,
+                offset: .zero,
+                opacity: 1,
+                scale: 1,
+                color: .purple
+            )
+            
+            digitparticles.append(particle)
+            
+            withAnimation(.easeOut(duration: 1)) {
+                if let index = digitparticles.indices.last {
+                    digitparticles[index].offset = CGSize(width: dx, height: dy)
+                    digitparticles[index].opacity = 0
+                    digitparticles[index].scale = 1
+                }
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            digitparticles.removeAll()
+            completion()
         }
     }
 
@@ -106,7 +175,6 @@ func generateConfetti() {
             )
             confettiPieces.append(newPiece)
             
-            // Animate falling
             withAnimation {
                 if let lastIndex = confettiPieces.indices.last {
                     confettiPieces[lastIndex].y = UIScreen.main.bounds.height + 50
@@ -234,6 +302,16 @@ struct DiamondShape: Shape {
         path.closeSubpath()
         return path
     }
+}
+
+struct DigitParticle: Identifiable {
+    let id = UUID()
+    let digit: String
+    var position: CGPoint
+    var offset: CGSize
+    var opacity: Double = 1.0
+    var scale: CGFloat = 1.0
+    var color: Color
 }
 
 struct WinScreen_Previews: PreviewProvider {

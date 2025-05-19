@@ -88,6 +88,7 @@ class MathPuzzleGame: ObservableObject {
                 self.score += 1
                 self.moveToNextQuestion()
             } else {
+                SoundManager.shared.playSound(named: "error")
                 VibrationManager.shared.strongErrorVibration()
                 self.finishGame()
             }
