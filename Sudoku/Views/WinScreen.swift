@@ -9,20 +9,22 @@ struct WinScreen: View {
     
     @EnvironmentObject private var navigator: Navigator
     @Environment(\.dismiss) var dismiss
+    
+    @ObservedObject var progress = ProgressManager.shared
 
     @AppStorage("mistakesEnabled") var mistakesEnabled: Bool = true
     @AppStorage("timerEnabled") var timerEnabled: Bool = true
 
+    @State private var showUnlockSheet = false
+    @State private var unlockedTrophy: Trophy? = nil
     @State private var animate = false
-    @State private var confettiPieces: [Confetti] = []
     @State private var digitparticles: [DigitParticle] = []
+    @State private var winsBefore: Int = 0
 
     private let colors: [Color] = [
         .purple.opacity(0.3), .purple.opacity(0.4), .purple.opacity(0.5), .purple.opacity(0.6),
         Color.purple.opacity(0.7), Color.purple.opacity(0.8), Color.purple.opacity(0.9), .purple
     ]
-
-    private let shapes: [ConfettiShape] = [.circle, .star, .diamond, .rectangle]
 
     private func timeFormatted(_ totalSeconds: Int) -> String {
         let minutes = totalSeconds / 60
@@ -42,15 +44,6 @@ struct WinScreen: View {
                     .offset(particle.offset)
                     .opacity(particle.opacity)
                     .scaleEffect(particle.scale)
-            }
-            
-            ForEach(confettiPieces) { piece in
-                ConfettiShapeView(piece: piece)
-                    .frame(width: piece.size, height: piece.size)
-                    .position(x: piece.x, y: piece.y)
-                    .opacity(piece.opacity)
-                    .blendMode(.plusLighter)
-                    .animation(.easeOut(duration: piece.duration), value: piece.y)
             }
 
             VStack(spacing: 20) {
@@ -90,20 +83,32 @@ struct WinScreen: View {
                         .opacity(animate ? 1 : 0)
                         .offset(y: animate ? 0 : 20)
                         .animation(.easeOut(duration: 1.0).delay(0.7), value: animate)
-                        
-                    
                 }
+            }
+            .blur(radius: showUnlockSheet ? 5 : 0)
+            
+            if showUnlockSheet, let trophy = unlockedTrophy {
+                RewardsUnlockSheet(trophy: trophy) {
+                    withAnimation(.easeInOut) {
+                        showUnlockSheet = false
+                    }
+                }
+                .zIndex(100)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .onAppear {
             animate = true
-            generateConfetti()
             launchDigitExplosions()
+            winsBefore = progress.winsCount(for: level)
+        }
+        .onChange(of: progress.winsCount(for: level)) { newWins in
+            checkForNewTrophy(winsBefore: winsBefore, winsAfter: newWins)
         }
     }
     
     func launchDigitExplosions() {
-        let explosionCenters: [CGPoint] = (0..<4).map { _ in
+        let explosionCenters: [CGPoint] = (0..<5).map { _ in
             CGPoint(
                 x: CGFloat.random(in: 60...(UIScreen.main.bounds.width - 60)),
                 y: CGFloat.random(in: 50...(UIScreen.main.bounds.height / 2.5))
@@ -118,7 +123,7 @@ struct WinScreen: View {
         let center = centers[index]
         
         launchDigitExplosion(center: center) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                 launchNextExplesion(from: centers, index: index + 1)
             }
         }
@@ -158,32 +163,24 @@ struct WinScreen: View {
             completion()
         }
     }
-
-func generateConfetti() {
-    for i in 0..<100 {
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.06) {
-            let shape = shapes.randomElement()!
-            var newPiece = Confetti(
-                shape: shape,
-                x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
-                y: -20,
-                size: CGFloat.random(in: 10...15),
-                color: colors.randomElement() ?? .white,
-                opacity: Double.random(in: 0.7...1),
-                duration: Double.random(in: 2.5...4),
-                
-            )
-            confettiPieces.append(newPiece)
-            
-            withAnimation {
-                if let lastIndex = confettiPieces.indices.last {
-                    confettiPieces[lastIndex].y = UIScreen.main.bounds.height + 50
-                    
+    
+    private func checkForNewTrophy(winsBefore: Int, winsAfter: Int) {
+        guard winsAfter > winsBefore else { return }
+        let unlocks: [(TrophyType, Int)] = [
+            (.bronze, 10),
+            (.silver, 30),
+            (.gold, 60)
+        ]
+        for (type, needWins) in unlocks {
+            if winsAfter >= needWins, winsBefore < needWins {
+                unlockedTrophy = Trophy(level: level, type: type, requiredWins: needWins, currentWins: winsAfter)
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    showUnlockSheet = true
                 }
+                break
             }
         }
     }
-}
 
     var statsCapsule: some View {
         VStack(spacing: 20) {
@@ -225,82 +222,6 @@ func generateConfetti() {
                 .foregroundColor(.white)
                 .shadow(color: .white.opacity(0.8), radius: 4, x: 0, y: 2)
         }
-    }
-}
-
-// MARK: - Confetti Model
-
-enum ConfettiShape {
-    case circle, star, diamond, rectangle
-}
-
-struct Confetti: Identifiable {
-    let id = UUID()
-    let shape: ConfettiShape
-    let x: CGFloat
-    var y: CGFloat
-    let size: CGFloat
-    let color: Color
-    let opacity: Double
-    let duration: Double
-}
-
-// MARK: - Confetti Shape View
-
-struct ConfettiShapeView: View {
-    let piece: Confetti
-
-    var body: some View {
-        switch piece.shape {
-        case .circle:
-            Circle().fill(piece.color)
-        case .star:
-            StarShape().fill(piece.color)
-        case .diamond:
-            DiamondShape().fill(piece.color)
-        case .rectangle:
-            RoundedRectangle(cornerRadius: piece.size / 4)
-                .fill(piece.color)
-        }
-    }
-}
-
-// MARK: - Custom Shapes
-
-struct StarShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let radius = min(rect.width, rect.height) / 2
-        let points = 5
-        let angle = 2 * Double.pi / Double(points * 2)
-
-        for i in 0..<(points * 2) {
-            let pointAngle = Double(i) * angle - .pi / 2
-            let pointRadius = i % 2 == 0 ? radius : radius / 2.5
-            let x = center.x + CGFloat(cos(pointAngle)) * pointRadius
-            let y = center.y + CGFloat(sin(pointAngle)) * pointRadius
-            if i == 0 {
-                path.move(to: CGPoint(x: x, y: y))
-            } else {
-                path.addLine(to: CGPoint(x: x, y: y))
-            }
-        }
-        path.closeSubpath()
-        return path
-    }
-}
-
-struct DiamondShape: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let mid = CGPoint(x: rect.midX, y: rect.midY)
-        path.move(to: CGPoint(x: mid.x, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: mid.y))
-        path.addLine(to: CGPoint(x: mid.x, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.minX, y: mid.y))
-        path.closeSubpath()
-        return path
     }
 }
 

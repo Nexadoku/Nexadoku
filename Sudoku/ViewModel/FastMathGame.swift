@@ -15,7 +15,6 @@ class MathPuzzleGame: ObservableObject {
     @Published var questionTimeLeft = 2.5
     @Published var progress: CGFloat = 1.0
     @Published var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
-    
 
     let questions = [
         MathPuzzleQuestion(question: "1 + 2", answer: 3),
@@ -85,6 +84,7 @@ class MathPuzzleGame: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             if answer == self.questions[self.currentQuestionIndex].answer {
                 VibrationManager.shared.lightImpact()
+                SoundManager.shared.playSound(named: "FastMathCorrect")
                 self.score += 1
                 self.moveToNextQuestion()
             } else {

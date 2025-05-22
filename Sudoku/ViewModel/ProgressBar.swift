@@ -1,18 +1,24 @@
-//
-//  SwiftUIView.swift
-//  SUDOKU
-//
-//  Created by Helter Skelter on 22/05/25.
-//
 
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct ProgressBar: View {
+    var current: Int
+    var total: Int
+    
+    var progress: CGFloat {
+        guard total > 0 else { return 0 }
+        return min(1.0, CGFloat(current) / CGFloat(total))
     }
-}
-
-#Preview {
-    SwiftUIView()
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(Color.white.opacity(0.15))
+                Capsule()
+                    .fill(progress >= 1 ? Color.green : Color.green.opacity(0.8))
+                    .frame(width: geometry.size.width * progress)
+            }
+        }
+    }
 }

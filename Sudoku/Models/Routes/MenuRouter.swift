@@ -17,6 +17,8 @@ public struct MenuRouter: RouterProtocol {
             GameView(state: state)
         case .events:
             EventsView()
+        case .rewards:
+            RewardsView()
         }
     }
 }

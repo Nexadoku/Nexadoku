@@ -10,48 +10,52 @@ struct MenuView: View {
     var body: some View {
         ZStack {
             SystemDarkBackground()
-            VStack(spacing: 30) {
-                Text("SUDOKU")
-                    .font(.system(size: 50, weight: .heavy))
-                    .foregroundColor(.white)
-                    .padding(.top, 50)
-                
-                Image("logo")
-                    .resizable()
-                    .frame(width: 140, height: 140)
-                    .cornerRadius(30)
-                    .shadow(color: .purple, radius: 10)
-                    .shadow(color: .indigo, radius: 10)
-                
-                Spacer()
-                
-                VStack(spacing: 20) {
-                    if let game = savedGameManager.game {
-                        saveButton(title: "Continue Game", icon: "play.fill") {
-                            navigator.push(.menu(.game(.saved(game: game))))
+            ScrollView {
+                VStack(spacing: 30) {
+                    Text("SUDOKU")
+                        .font(.system(size: 50, weight: .heavy))
+                        .foregroundColor(.white)
+                        .padding(.top, 50)
+                    
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 140, height: 140)
+                        .cornerRadius(30)
+                        .shadow(color: .purple, radius: 10)
+                        .shadow(color: .indigo, radius: 10)
+                        .padding(.bottom, 50)
+                    
+                    VStack(spacing: 20) {
+                        if let game = savedGameManager.game {
+                            saveButton(title: "Continue Game", icon: "play.fill") {
+                                navigator.push(.menu(.game(.saved(game: game))))
+                                VibrationManager.shared.lightImpact()
+                            }
+                        }
+                        
+                        neonButton(title: "New Game", icon: "gamecontroller.fill") {
+                            navigator.push(.menu(.levelSelection))
                             VibrationManager.shared.lightImpact()
                         }
-                    }
-                    
-                    neonButton(title: "New Game", icon: "gamecontroller.fill") {
-                        navigator.push(.menu(.levelSelection))
-                        VibrationManager.shared.lightImpact()
-                    }
-                    
-                    neonButton(title: "Trials", icon: "brain.head.profile.fill") {
-                        navigator.push(.menu(.events))
-                        VibrationManager.shared.lightImpact()
+                        
+                        neonButton(title: "Trials", icon: "brain.head.profile.fill") {
+                            navigator.push(.menu(.events))
+                            VibrationManager.shared.lightImpact()
+                        }
+                        
+                        neonButton(title: "Rewards", icon: "star.fill") {
+                            navigator.push(.menu(.rewards))
+                        }
                     }
                 }
-                Spacer()
+                .padding(.bottom)
+                .opacity(animate ? 1 : 0)
+                .offset(y: animate ? 0 : 20)
+                .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
             }
-            .padding(.bottom)
-            .opacity(animate ? 1 : 0)
-            .offset(y: animate ? 0 : 20)
-            .animation(.easeOut(duration: 1.0).delay(0.2), value: animate)
-        }
-        .onAppear {
-            animate = true
+            .onAppear {
+                animate = true
+            }
         }
     }
     

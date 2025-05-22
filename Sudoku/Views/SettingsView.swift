@@ -34,14 +34,9 @@ struct SettingsView: View {
                         .padding()
                         
                         VStack(alignment: .leading, spacing: 10) {
-                                Text("General Settings")
-                                .padding(.horizontal)
-                                .font(.system(size: 17, weight: .heavy))
-                                .foregroundColor(.gray)
-                            
                             VStack {
                                 Toggle(isOn: $soundEnabled) {
-                                    Text("Sound")
+                                    Text("Sounds")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
@@ -55,19 +50,7 @@ struct SettingsView: View {
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
-                            }
-                            .background(
-                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                            .cornerRadius(25)
-                            .padding()
-                            
-                            Text("Game Settings")
-                                .padding(.horizontal)
-                                .font(.system(size: 17, weight: .heavy))
-                                .foregroundColor(.gray)
-                            
-                            VStack {
+                                
                                 Toggle(isOn: $timerEnabled) {
                                     Text("Timer")
                                         .font(.system(size: 20, weight: .semibold))
@@ -75,14 +58,26 @@ struct SettingsView: View {
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
-                                
+                            }
+                            .background(
+                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
+                            .cornerRadius(25)
+                            .padding()
+                            
+                            VStack(alignment: .leading, spacing: 0) {
                                 Toggle(isOn: $mistakesEnabled) {
-                                    Text("Mistakes")
+                                    Text("Mistake Limit")
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
+                                
+                                Text("Limit the number of possible mistakes to 3 per game")
+                                    .foregroundColor(.white.opacity(0.7))
+                                    .font(.system(size: 15))
+                                    .padding()
                             }
                             .background(
                                 LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
