@@ -60,7 +60,7 @@ struct SettingsView: View {
                                 .padding()
                             }
                             .background(
-                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
                             .cornerRadius(25)
                             .padding()
@@ -80,7 +80,7 @@ struct SettingsView: View {
                                     .padding()
                             }
                             .background(
-                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
                             .cornerRadius(25)
                             .padding()

@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct RewardsView: View {
@@ -49,7 +50,6 @@ struct RewardsView: View {
                                 ForEach(trophies.filter { $0.level == level }) { trophy in
                                     VStack(spacing: 10) {
                                         ZStack {
-                                           
                                             Image(trophy.imageName)
                                                 .resizable()
                                                 .scaledToFit()
@@ -108,7 +108,7 @@ struct BottomSheetView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            VStack { Spacer() // Push sheet to bottom
+            ZStack(alignment: .bottom) {
                 if let trophy = trophy {
                     VStack(spacing: 20) {
                         Capsule()
@@ -148,27 +148,47 @@ struct BottomSheetView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
                         .padding(.horizontal)
-                        .padding(.bottom, 20)
                     }
-                    .frame(width: geometry.size.width, height: geometry.size.height * 0.6)
                     .background(
-                        LinearGradient(colors: [.black, .black], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.purple.opacity(0.2), .black], startPoint: .top, endPoint: .bottom)
                             .ignoresSafeArea(edges: .bottom)
                     )
-                    .cornerRadius(30)
-                    .frame(maxHeight: .infinity, alignment: .bottom)
-                    .offset(y: trophy != nil ? 0 : geometry.size.height)
-                    .opacity(trophy != nil ? 1 : 0)
+                    .clipShape(RoundedCorner(radius: 20, corners: [.topLeft, .topRight]))
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
+            .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)
+            .offset(y: trophy != nil ? 0 : geometry.size.height)
+            .opacity(trophy != nil ? 1 : 0)
+            .allowsHitTesting(trophy != nil)
         }
-        .allowsHitTesting(trophy != nil)
     }
 }
+
+// MARK: - Custom CornerRadius Extension
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
+struct RoundedCorner: Shape {
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(
+            roundedRect: rect,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height: radius)
+        )
+        return Path(path.cgPath)
+    }
+}
+
 struct RewardsPreviews: PreviewProvider {
     static var previews: some View {
         RewardsView()
     }
 }
-
