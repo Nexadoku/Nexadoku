@@ -16,7 +16,7 @@ struct ProgressBar: View {
                 Capsule()
                     .fill(Color.white.opacity(0.15))
                 Capsule()
-                    .fill(progress >= 1 ? Color.green : Color.green.opacity(0.8))
+                    .fill(progress >= 1 ? Color.purple : Color.purple.opacity(0.8))
                     .frame(width: geometry.size.width * progress)
             }
         }

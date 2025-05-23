@@ -19,12 +19,7 @@ struct RewardsView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.black, .black], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            
-            BlurView(style: .systemChromeMaterialDark)
-                .edgesIgnoringSafeArea(.all)
-            
+            RewardsViewBackground()
             ScrollView {
                 VStack(spacing: 24) {
                     HStack {
@@ -57,7 +52,7 @@ struct RewardsView: View {
                                                 .opacity(trophy.isUnlocked ? 1 : 0.3)
                                             if !trophy.isUnlocked {
                                                 Image(systemName: "lock.fill")
-                                                    .foregroundColor(.white.opacity(0.8))
+                                                    .foregroundStyle(LinearGradient(colors: [.white.opacity(0.8), .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
                                             }
                                         }
                                         .onTapGesture {
@@ -130,7 +125,7 @@ struct BottomSheetView: View {
                             .foregroundColor(.white.opacity(0.85))
                             .padding(.horizontal)
                         if trophy.isUnlocked {
-                            Text("✅ Trophy unlocked!")
+                            Text("Trophy unlocked!")
                                 .foregroundColor(.green)
                                 .font(.headline)
                         } else {
