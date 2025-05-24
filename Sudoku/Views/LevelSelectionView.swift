@@ -212,5 +212,6 @@ struct LevelSelectionView_Previews: PreviewProvider {
         LevelSelectionView()
             .preferredColorScheme(.dark)
             .environmentObject(LanguageSettings())
+            .environmentObject(UnlockSheetManager())
     }
 }

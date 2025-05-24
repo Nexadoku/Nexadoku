@@ -3,6 +3,7 @@ import SwiftUI
 
 struct MenuTabView: View {
     @EnvironmentObject private var navigator: Navigator
+    @StateObject private var unlockManager = UnlockSheetManager()
     
     var body: some View {
         NavigationStack(path: $navigator.stack) {
@@ -19,12 +20,22 @@ struct MenuTabView: View {
                     Spacer()
                     CustomTabBar(selectedTab: $navigator.selectedTab)
                 }
+                
+                if let trophy = unlockManager.unlockedTrophy {
+                    RewardsUnlockSheet(trophy: trophy) {
+                        unlockManager.hide()
+                    }
+                    .zIndex(1000)
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .ignoresSafeArea()
+                }
             }
             .navigationDestination(
                 for: Destination.self,
                 destination: buildDestination
             )
         }
+        .environmentObject(unlockManager)
     }
     
     @ViewBuilder
@@ -50,6 +61,7 @@ struct MenuTabViewPreviews: PreviewProvider {
         MenuTabView()
             .environmentObject(Navigator())
             .environmentObject(LanguageSettings())
+            .environmentObject(UnlockSheetManager())
             .preferredColorScheme(.dark)
     }
 }

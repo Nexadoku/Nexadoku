@@ -14,7 +14,6 @@ struct SecondLaunchScreen: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            
             Text("SUDOKU")
                 .foregroundColor(.white)
                 .font(.system(size: 40, weight: .heavy))

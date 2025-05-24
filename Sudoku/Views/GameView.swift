@@ -230,5 +230,6 @@ struct GameViewPreviews: PreviewProvider {
         GameView(state: .new(level: .easy))
             .preferredColorScheme(.dark)
             .environmentObject(Navigator())
+            .environmentObject(UnlockSheetManager())
     }
 }

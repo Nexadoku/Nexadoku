@@ -57,8 +57,10 @@ class MathPuzzleGame: ObservableObject {
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             if self.questionTimeLeft > 0 {
-                self.questionTimeLeft -= 1
+                self.questionTimeLeft -= 1.0
             } else {
+                SoundManager.shared.playSound(named: "error")
+                VibrationManager.shared.strongErrorVibration()
                 self.timer?.invalidate()
                 self.finishGame()
             }

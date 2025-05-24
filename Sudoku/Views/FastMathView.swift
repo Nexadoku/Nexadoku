@@ -58,6 +58,7 @@ struct MathPuzzleView: View {
                         
                         Button(action: {
                             game.restartGame()
+                            VibrationManager.shared.lightImpact()
                         }) {
                             Text("Restart Game")
                                 .font(.title2)

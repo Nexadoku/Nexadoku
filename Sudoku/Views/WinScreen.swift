@@ -6,24 +6,29 @@ struct WinScreen: View {
     var timeElapsed: Int
     var mistakes: Int
     var level: DifficultyLevel
-    
+
+    @EnvironmentObject var unlockManager: UnlockSheetManager
     @EnvironmentObject private var navigator: Navigator
     @Environment(\.dismiss) var dismiss
-    
+
     @ObservedObject var progress = ProgressManager.shared
 
     @AppStorage("mistakesEnabled") var mistakesEnabled: Bool = true
     @AppStorage("timerEnabled") var timerEnabled: Bool = true
 
-    @State private var showUnlockSheet = false
-    @State private var unlockedTrophy: Trophy? = nil
     @State private var animate = false
     @State private var digitparticles: [DigitParticle] = []
-    @State private var winsBefore: Int = 0
+    @State private var checkedUnlock = false
 
     private let colors: [Color] = [
         .purple.opacity(0.3), .purple.opacity(0.4), .purple.opacity(0.5), .purple.opacity(0.6),
         Color.purple.opacity(0.7), Color.purple.opacity(0.8), Color.purple.opacity(0.9), .purple
+    ]
+    
+    private let unlocks: [(TrophyType, Int)] = [
+        (.bronze, 10),
+        (.silver, 30),
+        (.gold, 60)
     ]
 
     private func timeFormatted(_ totalSeconds: Int) -> String {
@@ -47,66 +52,63 @@ struct WinScreen: View {
             }
 
             VStack(spacing: 20) {
-                    VStack(spacing: 20) {
-                        Text("Congratulations!")
-                            .font(.system(size: 34, weight: .black))
-                            .foregroundStyle(
-                                Color.white
-                            )
-                            .shadow(radius: 12)
-                            .opacity(animate ? 1 : 0)
-                            .scaleEffect(animate ? 1 : 0.95)
-                            .animation(.easeOut(duration: 0.8).delay(0.3), value: animate)
-                        
-                        statsCapsule
-                            .opacity(animate ? 1 : 0)
-                            .offset(y: animate ? 0 : 20)
-                            .animation(.easeOut(duration: 1.0).delay(0.5), value: animate)
-                            .padding()
+                Text("Congratulations!")
+                    .font(.system(size: 34, weight: .black))
+                    .foregroundStyle(Color.white)
+                    .shadow(radius: 12)
+                    .opacity(animate ? 1 : 0)
+                    .scaleEffect(animate ? 1 : 0.95)
+                    .animation(.easeOut(duration: 0.8).delay(0.3), value: animate)
 
-                        
-                        Button(action: {
-                            navigator.pop()
-                        }) {
-                            Text("Return to Main Menu")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundColor(.white)
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 30)
-                                .background(
-                                    .purple
-                                )
-                                .cornerRadius(26)
-                                .shadow(radius: 8)
-                        }
-                        .padding(.bottom, 20)
-                        .opacity(animate ? 1 : 0)
-                        .offset(y: animate ? 0 : 20)
-                        .animation(.easeOut(duration: 1.0).delay(0.7), value: animate)
-                }
-            }
-            .blur(radius: showUnlockSheet ? 5 : 0)
-            
-            if showUnlockSheet, let trophy = unlockedTrophy {
-                RewardsUnlockSheet(trophy: trophy) {
-                    withAnimation(.easeInOut) {
-                        showUnlockSheet = false
+                statsCapsule
+                    .opacity(animate ? 1 : 0)
+                    .offset(y: animate ? 0 : 20)
+                    .animation(.easeOut(duration: 1.0).delay(0.5), value: animate)
+                    .padding()
+
+                Button(action: {
+                    if unlockManager.unlockedTrophy == nil {
+                        navigator.pop()
                     }
+                }) {
+                    Text("Return to Main Menu")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 30)
+                        .background(.purple)
+                        .cornerRadius(26)
+                        .shadow(radius: 8)
                 }
-                .zIndex(100)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .disabled(unlockManager.unlockedTrophy != nil)
+                .padding(.bottom, 20)
+                .opacity(animate ? 1 : 0)
+                .offset(y: animate ? 0 : 20)
+                .animation(.easeOut(duration: 1.0).delay(0.7), value: animate)
             }
         }
         .onAppear {
             animate = true
             launchDigitExplosions()
-            winsBefore = progress.winsCount(for: level)
-        }
-        .onChange(of: progress.winsCount(for: level)) { newWins in
-            checkForNewTrophy(winsBefore: winsBefore, winsAfter: newWins)
+            showTrophyIfNeeded()
         }
     }
     
+    func showTrophyIfNeeded() {
+        guard !checkedUnlock else { return }
+        checkedUnlock = true
+        let wins = progress.winsCount(for: level)
+        for (type, required) in unlocks {
+            if wins == required {
+                let trophy = Trophy(level: level, type: type, requiredWins: required, currentWins: wins)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                    unlockManager.show(trophy: trophy)
+                }
+                break
+            }
+        }
+    }
+
     func launchDigitExplosions() {
         let explosionCenters: [CGPoint] = (0..<5).map { _ in
             CGPoint(
@@ -116,28 +118,28 @@ struct WinScreen: View {
         }
         launchNextExplesion(from: explosionCenters, index: 0)
     }
-    
+
     func launchNextExplesion(from centers: [CGPoint], index: Int) {
         guard index < centers.count else { return }
-        
+
         let center = centers[index]
-        
+
         launchDigitExplosion(center: center) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
                 launchNextExplesion(from: centers, index: index + 1)
             }
         }
     }
-    
+
     func launchDigitExplosion(center: CGPoint, completion: @escaping () -> Void) {
         let digits = (0...9).map { "\($0)" }
-        
+
         for _ in 0..<35 {
             let angle = Double.random(in: 0...(2 * .pi))
             let radius = CGFloat.random(in: 100...200)
             let dx = cos(angle) * radius
             let dy = sin(angle) * radius
-            
+
             var particle = DigitParticle(
                 digit: digits.randomElement() ?? "5",
                 position: center,
@@ -146,9 +148,9 @@ struct WinScreen: View {
                 scale: 1,
                 color: .purple
             )
-            
+
             digitparticles.append(particle)
-            
+
             withAnimation(.easeOut(duration: 1)) {
                 if let index = digitparticles.indices.last {
                     digitparticles[index].offset = CGSize(width: dx, height: dy)
@@ -157,28 +159,10 @@ struct WinScreen: View {
                 }
             }
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             digitparticles.removeAll()
             completion()
-        }
-    }
-    
-    private func checkForNewTrophy(winsBefore: Int, winsAfter: Int) {
-        guard winsAfter > winsBefore else { return }
-        let unlocks: [(TrophyType, Int)] = [
-            (.bronze, 10),
-            (.silver, 30),
-            (.gold, 60)
-        ]
-        for (type, needWins) in unlocks {
-            if winsAfter >= needWins, winsBefore < needWins {
-                unlockedTrophy = Trophy(level: level, type: type, requiredWins: needWins, currentWins: winsAfter)
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    showUnlockSheet = true
-                }
-                break
-            }
         }
     }
 
@@ -191,11 +175,11 @@ struct WinScreen: View {
             if mistakesEnabled {
                 statRow(title: "Mistakes:", value: "\(mistakes)")
             }
-            
+
             if timerEnabled {
                 statRow(title: "Time:", value: "\(timeFormatted(timeElapsed))")
             }
-            
+
             statRow(title: "Level:", value: "\(level.rawValue.capitalized)")
         }
         .padding()
@@ -239,6 +223,6 @@ struct WinScreen_Previews: PreviewProvider {
     static var previews: some View {
         WinScreen(onExit: {}, timeElapsed: 87, mistakes: 2, level: .medium)
             .environmentObject(Navigator())
+            .environmentObject(UnlockSheetManager())
     }
 }
-
