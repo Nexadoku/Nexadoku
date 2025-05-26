@@ -4,7 +4,6 @@ import SwiftUI
 struct EventsView: View {
     @EnvironmentObject private var navigator: Navigator
     @Environment(\.dismiss) var dismiss
-    
     @State private var animate = false
     
     var body: some View {
