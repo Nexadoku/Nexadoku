@@ -59,6 +59,10 @@ struct AccountView: View {
                                 dismissButton: .default(Text("OK"))
                             )
                         }
+                        
+                        premiumButton(title: "Help", icon: "questionmark.circle.fill") {
+                            navigator.push(.account(.help))
+                        }
                     }
                 }
                 .padding(.top)

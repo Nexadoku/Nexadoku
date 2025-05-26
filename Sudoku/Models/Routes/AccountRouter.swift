@@ -17,6 +17,8 @@ public struct AccountRouter: RouterProtocol {
             SettingsView()
         case .aboutPremium:
             PrivacyPolicy()
+        case .help:
+            HelpView()
         }
     }
 }
