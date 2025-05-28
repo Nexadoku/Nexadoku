@@ -1,9 +1,3 @@
-//
-//  TabBarButton.swift
-//  Sudoku
-//
-//  Created by Helter Skelter on 19/03/25.
-//
 
 import SwiftUI
 

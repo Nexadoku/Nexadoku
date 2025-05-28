@@ -7,28 +7,18 @@ struct WinScreen: View {
     var mistakes: Int
     var level: DifficultyLevel
 
-    @EnvironmentObject var unlockManager: UnlockSheetManager
     @EnvironmentObject private var navigator: Navigator
     @Environment(\.dismiss) var dismiss
-
-    @ObservedObject var progress = ProgressManager.shared
 
     @AppStorage("mistakesEnabled") var mistakesEnabled: Bool = true
     @AppStorage("timerEnabled") var timerEnabled: Bool = true
 
     @State private var animate = false
     @State private var digitparticles: [DigitParticle] = []
-    @State private var checkedUnlock = false
 
     private let colors: [Color] = [
         .purple.opacity(0.3), .purple.opacity(0.4), .purple.opacity(0.5), .purple.opacity(0.6),
         Color.purple.opacity(0.7), Color.purple.opacity(0.8), Color.purple.opacity(0.9), .purple
-    ]
-    
-    private let unlocks: [(TrophyType, Int)] = [
-        (.bronze, 10),
-        (.silver, 30),
-        (.gold, 60)
     ]
 
     private func timeFormatted(_ totalSeconds: Int) -> String {
@@ -67,9 +57,7 @@ struct WinScreen: View {
                     .padding()
 
                 Button(action: {
-                    if unlockManager.unlockedTrophy == nil {
-                        navigator.pop()
-                    }
+                    navigator.pop()
                 }) {
                     Text("Return to Main Menu")
                         .font(.system(size: 20, weight: .semibold))
@@ -80,7 +68,6 @@ struct WinScreen: View {
                         .cornerRadius(26)
                         .shadow(radius: 8)
                 }
-                .disabled(unlockManager.unlockedTrophy != nil)
                 .padding(.bottom, 20)
                 .opacity(animate ? 1 : 0)
                 .offset(y: animate ? 0 : 20)
@@ -90,22 +77,6 @@ struct WinScreen: View {
         .onAppear {
             animate = true
             launchDigitExplosions()
-            showTrophyIfNeeded()
-        }
-    }
-    
-    func showTrophyIfNeeded() {
-        guard !checkedUnlock else { return }
-        checkedUnlock = true
-        let wins = progress.winsCount(for: level)
-        for (type, required) in unlocks {
-            if wins == required {
-                let trophy = Trophy(level: level, type: type, requiredWins: required, currentWins: wins)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                    unlockManager.show(trophy: trophy)
-                }
-                break
-            }
         }
     }
 
@@ -223,6 +194,5 @@ struct WinScreen_Previews: PreviewProvider {
     static var previews: some View {
         WinScreen(onExit: {}, timeElapsed: 87, mistakes: 2, level: .medium)
             .environmentObject(Navigator())
-            .environmentObject(UnlockSheetManager())
     }
 }

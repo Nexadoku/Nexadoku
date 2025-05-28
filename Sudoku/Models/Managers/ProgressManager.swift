@@ -8,6 +8,9 @@ class ProgressManager: ObservableObject {
     
     private let defaultsKey = "sudoku_wins"
     
+    @Published var shownTrophies: Set<String> = []
+    private let showTrophiesKey = "sudoku_shown_trophies"
+    
     private init() {
         loadWins()
     }
@@ -49,5 +52,30 @@ class ProgressManager: ObservableObject {
     private func saveWins() {
         let dict = wins.reduce(into: [String: Int]()) { $0[$1.key.rawValue] = $1.value }
         UserDefaults.standard.set(dict, forKey: defaultsKey)
+    }
+    
+    func markTrophyAsShown(_ trophy: Trophy) {
+        shownTrophies.insert(trophy.uniqueKey)
+        saveShownTrophies()
+    }
+    
+    func isTrophyShown(_ trophy: Trophy) -> Bool {
+        shownTrophies.contains(trophy.uniqueKey)
+    }
+    
+    private func loadShownTrophies() {
+        if let saved = UserDefaults.standard.array(forKey: showTrophiesKey) as? [String] {
+            shownTrophies = Set(saved)
+        }
+    }
+    
+    private func saveShownTrophies() {
+        UserDefaults.standard.set(Array(shownTrophies), forKey: showTrophiesKey)
+    }
+}
+
+extension Trophy {
+    var uniqueKey: String {
+        "\(level.rawValue)_\(type.rawValue)"
     }
 }

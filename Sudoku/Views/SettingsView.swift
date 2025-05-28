@@ -60,9 +60,9 @@ struct SettingsView: View {
                                 .padding()
                             }
                             .background(
-                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                RoundedRectangle(cornerRadius: 35)
+                                    .stroke(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
                             )
-                            .cornerRadius(25)
                             .padding()
                             
                             VStack(alignment: .leading, spacing: 0) {
@@ -80,9 +80,9 @@ struct SettingsView: View {
                                     .padding()
                             }
                             .background(
-                                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                RoundedRectangle(cornerRadius: 35)
+                                    .stroke(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
                             )
-                            .cornerRadius(25)
                             .padding()
                         }
                     }
