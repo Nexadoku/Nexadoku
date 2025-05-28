@@ -71,7 +71,7 @@ struct WinScreen: View {
                 .padding(.bottom, 20)
                 .opacity(animate ? 1 : 0)
                 .offset(y: animate ? 0 : 20)
-                .animation(.easeOut(duration: 1.0).delay(0.7), value: animate)
+                .animation(.easeOut(duration: 0.5).delay(0.1), value: animate)
             }
         }
         .onAppear {
@@ -111,7 +111,7 @@ struct WinScreen: View {
             let dx = cos(angle) * radius
             let dy = sin(angle) * radius
 
-            var particle = DigitParticle(
+            let particle = DigitParticle(
                 digit: digits.randomElement() ?? "5",
                 position: center,
                 offset: .zero,
