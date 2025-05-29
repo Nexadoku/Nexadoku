@@ -28,7 +28,7 @@ struct PuzzleCardView: View {
                         .font(.title2)
                         .fontWeight(.heavy)
                         .foregroundColor(.white)
-                        .padding(.top, 15)
+                        .padding(.top, 14)
                         .padding(.leading, 20)
                     
                     Text(description)
