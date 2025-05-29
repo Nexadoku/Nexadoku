@@ -13,6 +13,7 @@ class ProgressManager: ObservableObject {
     
     private init() {
         loadWins()
+        loadShownTrophies()
     }
     
     func recordWin(for level: DifficultyLevel) {

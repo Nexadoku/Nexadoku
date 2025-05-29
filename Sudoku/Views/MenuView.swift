@@ -57,7 +57,7 @@ struct MenuView: View {
             }
             .onAppear {
                 animate = true
-                if let trophy = firstJustUnlockedTrophy() {
+                if unlockedSheetTrophy == nil, let trophy = firstJustUnlockedTrophy() {
                     unlockedSheetTrophy = trophy
                 }
             }
