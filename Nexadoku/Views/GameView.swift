@@ -136,7 +136,7 @@ struct GameView: View {
                         .shadow(radius: 10)
                 }
 
-                Text("SUDOKU")
+                Text("NEXADOKU")
                     .font(.system(size: 40, weight: .heavy))
                     .foregroundColor(.white)
                     .shadow(radius: 10)

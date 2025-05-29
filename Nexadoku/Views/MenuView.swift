@@ -14,7 +14,7 @@ struct MenuView: View {
             SystemDarkBackground()
             ScrollView {
                 VStack(spacing: 30) {
-                    Text("SUDOKU")
+                    Text("NEXADOKU")
                         .font(.system(size: 50, weight: .heavy))
                         .foregroundColor(.white)
                         .padding(.top, 50)

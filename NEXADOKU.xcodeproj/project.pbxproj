@@ -11,14 +11,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		48A285BA2D8837F900714D56 /* SUDOKU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SUDOKU.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		48A285BA2D8837F900714D56 /* NEXADOKU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NEXADOKU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48C6ECA62DE7708A001B8D91 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		48A285BC2D8837F900714D56 /* Sudoku */ = {
+		48A285BC2D8837F900714D56 /* Nexadoku */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Sudoku;
+			path = Nexadoku;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -38,7 +38,7 @@
 		48A285B12D8837F800714D56 = {
 			isa = PBXGroup;
 			children = (
-				48A285BC2D8837F900714D56 /* Sudoku */,
+				48A285BC2D8837F900714D56 /* Nexadoku */,
 				48C6ECA32DE77078001B8D91 /* Frameworks */,
 				48A285BB2D8837F900714D56 /* Products */,
 			);
@@ -47,7 +47,7 @@
 		48A285BB2D8837F900714D56 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				48A285BA2D8837F900714D56 /* SUDOKU.app */,
+				48A285BA2D8837F900714D56 /* NEXADOKU.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,9 +63,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		48A285B92D8837F900714D56 /* SUDOKU */ = {
+		48A285B92D8837F900714D56 /* NEXADOKU */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 48A285C82D8837F900714D56 /* Build configuration list for PBXNativeTarget "SUDOKU" */;
+			buildConfigurationList = 48A285C82D8837F900714D56 /* Build configuration list for PBXNativeTarget "NEXADOKU" */;
 			buildPhases = (
 				48A285B62D8837F900714D56 /* Sources */,
 				48A285B72D8837F900714D56 /* Frameworks */,
@@ -76,13 +76,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				48A285BC2D8837F900714D56 /* Sudoku */,
+				48A285BC2D8837F900714D56 /* Nexadoku */,
 			);
-			name = SUDOKU;
+			name = NEXADOKU;
 			packageProductDependencies = (
 			);
 			productName = Sudoku;
-			productReference = 48A285BA2D8837F900714D56 /* SUDOKU.app */;
+			productReference = 48A285BA2D8837F900714D56 /* NEXADOKU.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -100,7 +100,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 48A285B52D8837F800714D56 /* Build configuration list for PBXProject "SUDOKU" */;
+			buildConfigurationList = 48A285B52D8837F800714D56 /* Build configuration list for PBXProject "NEXADOKU" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -114,7 +114,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				48A285B92D8837F900714D56 /* SUDOKU */,
+				48A285B92D8837F900714D56 /* NEXADOKU */,
 			);
 		};
 /* End PBXProject section */
@@ -274,7 +274,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Sudoku/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Nexadoku/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -310,7 +310,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Sudoku/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Nexadoku/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
@@ -340,7 +340,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48A285B52D8837F800714D56 /* Build configuration list for PBXProject "SUDOKU" */ = {
+		48A285B52D8837F800714D56 /* Build configuration list for PBXProject "NEXADOKU" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				48A285C62D8837F900714D56 /* Debug */,
@@ -349,7 +349,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		48A285C82D8837F900714D56 /* Build configuration list for PBXNativeTarget "SUDOKU" */ = {
+		48A285C82D8837F900714D56 /* Build configuration list for PBXNativeTarget "NEXADOKU" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				48A285C92D8837F900714D56 /* Debug */,
