@@ -13,8 +13,7 @@ struct FirstLaunchScreen: View {
                 .scaledToFit()
                 .frame(width: 150, height: 150)
                 .cornerRadius(30)
-                .shadow(color: .purple, radius: 10)
-                .shadow(color: .indigo, radius: 10)
+                .shadow(color: .purple, radius: 20)
                 .scaleEffect(logoScale)
                 .opacity(logoOpacity)
                 .onAppear {

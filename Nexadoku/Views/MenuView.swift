@@ -23,8 +23,7 @@ struct MenuView: View {
                         .resizable()
                         .frame(width: 140, height: 140)
                         .cornerRadius(30)
-                        .shadow(color: .purple, radius: 10)
-                        .shadow(color: .indigo, radius: 10)
+                        .shadow(color: .purple, radius: 15)
                         .padding(.bottom, 50)
 
                     VStack(spacing: 20) {

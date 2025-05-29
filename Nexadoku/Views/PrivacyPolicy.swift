@@ -35,8 +35,7 @@ struct PrivacyPolicy: View {
                     .resizable()
                     .frame(width: 100, height: 100)
                     .cornerRadius(20)
-                    .shadow(color: .purple.opacity(0.6), radius: 15, x: 0, y: 6)
-                    .shadow(color: .indigo.opacity(0.4), radius: 10, x: 0, y: -4)
+                    .shadow(color: .purple, radius: 15, x: 0, y: 6)
                     .padding(.top, 20)
 
                     VStack(alignment: .leading, spacing: 16) {
