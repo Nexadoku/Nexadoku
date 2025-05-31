@@ -13,7 +13,7 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-           RewardsViewBackground()
+           SettingsBackground()
             VStack {
                 ScrollView {
                     VStack(spacing: 30) {

@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct RewardsViewBackground: View {
+struct SettingsBackground: View {
     var body: some View {
         ZStack {
             Color.black
@@ -15,6 +15,6 @@ struct RewardsViewBackground: View {
 
 struct RewardsViewBackgroundPreviews: PreviewProvider {
     static var previews: some View {
-        RewardsViewBackground()
+        SettingsBackground()
     }
 }

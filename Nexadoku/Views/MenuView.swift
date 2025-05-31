@@ -9,17 +9,43 @@ struct MenuView: View {
     @State private var unlockedSheetTrophy: Trophy? = nil
     @State private var showContinueAlert = false
     @State private var alertAppear = false
+    @State private var glow = false
 
     var body: some View {
         ZStack {
             SystemDarkBackground()
-            
             ScrollView {
                 VStack(spacing: 30) {
-                    Text("NEXADOKU")
-                        .font(.system(size: 50, weight: .heavy))
-                        .foregroundColor(.white)
-                        .padding(.top, 50)
+                    HStack(spacing: 0) {
+                        Spacer()
+                        Button(action: {
+                            navigator.push(.menu(.premium))
+                            VibrationManager.shared.lightImpact()
+                        }) {
+                            Image("premium")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                                .shadow(color: .purple.opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12, x: 0, y: 0)
+                                .shadow(color: .white.opacity(glow ? 0.16 : 0.02), radius: glow ? 12 : 2, x: 0, y: 0)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 18)
+                                        .stroke(
+                                            LinearGradient(colors: [.purple, .white.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: glow ? 3.5 : 2
+                                        )
+                                        .blur(radius: glow ? 2.5 : 0)
+                                        .opacity(glow ? 0.86 : 0.18)
+                                )
+                                .scaleEffect(glow ? 1.08 : 1.0)
+                                .animation(.easeInOut(duration: 1.45).repeatForever(autoreverses: true), value: glow)
+                                .padding(.trailing)
+                        }
+                        .padding(.top, 8)
+                    }
+                        Text("NEXADOKU")
+                            .font(.system(size: 50, weight: .heavy))
+                            .foregroundColor(.white)
+                        
 
                     Image("logo")
                         .resizable()
@@ -28,7 +54,6 @@ struct MenuView: View {
                         .shadow(color: .purple, radius: 15)
                         .padding(.bottom, 50)
                     
-                    Spacer()
 
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
@@ -65,6 +90,9 @@ struct MenuView: View {
             }
             .onAppear {
                 animate = true
+                withAnimation(.easeInOut(duration: 1.45).repeatForever(autoreverses: true)) {
+                    glow = true
+                }
                 if unlockedSheetTrophy == nil, let trophy = firstJustUnlockedTrophy() {
                     unlockedSheetTrophy = trophy
                 }

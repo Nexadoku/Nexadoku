@@ -19,6 +19,8 @@ public struct MenuRouter: RouterProtocol {
             EventsView()
         case .rewards:
             RewardsView()
+        case .premium:
+            AboutPremium()
         }
     }
 }

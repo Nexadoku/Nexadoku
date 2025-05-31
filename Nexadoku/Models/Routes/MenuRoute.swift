@@ -6,4 +6,5 @@ public enum MenuRoute: Hashable {
     case game(GameState)
     case events
     case rewards
+    case premium
 }
