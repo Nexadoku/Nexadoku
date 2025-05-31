@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct MenuView: View {
@@ -8,10 +7,13 @@ struct MenuView: View {
     @ObservedObject var progress = ProgressManager.shared
     @State private var animate = false
     @State private var unlockedSheetTrophy: Trophy? = nil
+    @State private var showContinueAlert = false
+    @State private var alertAppear = false
 
     var body: some View {
         ZStack {
             SystemDarkBackground()
+            
             ScrollView {
                 VStack(spacing: 30) {
                     Text("NEXADOKU")
@@ -25,11 +27,18 @@ struct MenuView: View {
                         .cornerRadius(30)
                         .shadow(color: .purple, radius: 15)
                         .padding(.bottom, 50)
+                    
+                    Spacer()
 
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
                             saveButton(title: "Continue Game", icon: "play.fill") {
-                                navigator.push(.menu(.game(.saved(game: game))))
+                                withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
+                                    showContinueAlert = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.13) {
+                                    alertAppear = true
+                                }
                                 VibrationManager.shared.lightImpact()
                             }
                         }
@@ -39,10 +48,10 @@ struct MenuView: View {
                             VibrationManager.shared.lightImpact()
                         }
 
-                        neonButton(title: "Trials", icon: "brain.head.profile.fill") {
-                            navigator.push(.menu(.events))
-                            VibrationManager.shared.lightImpact()
-                        }
+//                        neonButton(title: "Trials", icon: "brain.head.profile.fill") {
+//                            navigator.push(.menu(.events))
+//                            VibrationManager.shared.lightImpact()
+//                        }
 
                         neonButton(title: "Rewards", icon: "star.fill") {
                             navigator.push(.menu(.rewards))
@@ -60,18 +69,55 @@ struct MenuView: View {
                     unlockedSheetTrophy = trophy
                 }
             }
-            
+
+            // Sheet награды (если нужно)
             if let trophy = unlockedSheetTrophy {
                 Color.black.opacity(0.6).ignoresSafeArea()
-                    .onTapGesture {
-                        closeSheet()
-                    }
+                    .onTapGesture { closeSheet() }
                 RewardsUnlockSheet(trophy: trophy) {
                     closeSheet()
                 }
                 .zIndex(1000)
                 .transition(.move(edge: .bottom).combined(with: .opacity))
                 .ignoresSafeArea()
+            }
+
+            // Кастомный alert в центре
+            if showContinueAlert {
+                Color.black.opacity(alertAppear ? 0.45 : 0)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .blur(radius: alertAppear ? 3 : 0)
+                    .animation(.easeInOut(duration: 0.23), value: alertAppear)
+                    .onTapGesture { closeContinueAlert() }
+                    .zIndex(1010)
+
+                ContinueAlert(
+                    appear: alertAppear,
+                    onContinue: {
+                        if let game = savedGameManager.game {
+                            navigator.push(.menu(.game(.saved(game: game))))
+                        }
+                        closeContinueAlert()
+                    },
+                    onCancel: {
+                        closeContinueAlert()
+                    }
+                )
+                .zIndex(1011)
+                .transition(.identity)
+                .allowsHitTesting(true)
+            }
+        }
+    }
+    
+    func closeContinueAlert() {
+        withAnimation(.easeInOut(duration: 0.13)) {
+            alertAppear = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.13) {
+            withAnimation(.easeInOut(duration: 0.18)) {
+                showContinueAlert = false
             }
         }
     }
@@ -97,7 +143,6 @@ struct MenuView: View {
         for trophy in trophies where trophy.isUnlocked && !progress.isTrophyShown(trophy) {
             return trophy
         }
-        
         return nil
     }
 
@@ -140,6 +185,73 @@ struct MenuView: View {
             .shadow(radius: 10)
         }
         .padding(.horizontal)
+    }
+}
+
+// MARK: - Кастомный центрированный алерт
+
+struct ContinueAlert: View {
+    var appear: Bool
+    var onContinue: () -> Void
+    var onCancel: () -> Void
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "gamecontroller.fill")
+                .font(.system(size: 44, weight: .bold))
+                .foregroundColor(.purple)
+                .shadow(radius: 16)
+                .padding(.top, 6)
+
+            Text("Continue Game?")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(.white)
+                .padding(.top, 2)
+            Text("Do you want to continue your saved game?")
+                .font(.system(size: 17))
+                .foregroundColor(.white.opacity(0.86))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 8)
+
+            HStack(spacing: 18) {
+                Button(action: onCancel) {
+                    Text("Cancel")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(14)
+                }
+                Button(action: onContinue) {
+                    Text("Continue")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color.purple)
+                        .cornerRadius(14)
+                }
+            }
+        }
+        .padding(.horizontal, 32)
+        .padding(.vertical, 28)
+        .background(
+            RoundedRectangle(cornerRadius: 35)
+                .fill(
+                    LinearGradient(colors: [.black], startPoint: .bottomTrailing, endPoint: .topLeading)
+                )
+                .shadow(radius: 20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 35)
+                        .stroke(Color.purple, lineWidth: 2)
+                )
+        )
+        .padding(.horizontal, 40)
+        .shadow(radius: 32)
+        .opacity(appear ? 1 : 0)
+        .scaleEffect(appear ? 1 : 0.84)
+        .animation(.interpolatingSpring(stiffness: 330, damping: 26), value: appear)
     }
 }
 

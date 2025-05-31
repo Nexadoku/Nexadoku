@@ -19,9 +19,10 @@ struct RewardsView: View {
 
     var body: some View {
         ZStack {
-            RewardsViewBackground()
+            SystemDarkBackground()
+            
             ScrollView {
-                VStack(spacing: 24) {
+                VStack(spacing: 18) {
                     HStack {
                         Button { dismiss() } label: {
                             Image(systemName: "chevron.left")
@@ -33,46 +34,23 @@ struct RewardsView: View {
                             .font(.system(size: 30, weight: .heavy))
                         Spacer()
                     }
-                    .padding()
+                    .padding(.top, 12)
+                    .padding(.horizontal)
                     
-                    ForEach(DifficultyLevel.allCases, id: \.self) { level in
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(level.rawValue.capitalized)
-                                .font(.system(size: 16, weight: .heavy))
-                                .foregroundColor(.white)
-                                .padding(.horizontal)
-                            HStack(spacing: 20) {
-                                ForEach(trophies.filter { $0.level == level }) { trophy in
-                                    VStack(spacing: 10) {
-                                        ZStack {
-                                            Image(trophy.imageName)
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 100, height: 100)
-                                                .opacity(trophy.isUnlocked ? 1 : 0.3)
-                                            if !trophy.isUnlocked {
-                                                Image(systemName: "lock.fill")
-                                                    .foregroundStyle(LinearGradient(colors: [.white.opacity(0.8), .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
-                                            }
-                                        }
-                                        .onTapGesture {
-                                            withAnimation(.easeInOut(duration: 0.35)) {
-                                                selectedTrophy = trophy
-                                            }
-                                        }
-                                        ProgressBar(current: trophy.currentWins, total: trophy.requiredWins)
-                                            .frame(height: 8)
-                                            .padding(.horizontal)
-                                    }
-                                }
+                    ForEach(trophies) { trophy in
+                        RewardRow(trophy: trophy) {
+                            withAnimation(.easeInOut(duration: 0.35)) {
+                                selectedTrophy = trophy
                             }
                         }
+                        .padding(.horizontal)
                     }
                 }
+                .padding(.bottom, 32)
             }
             .blur(radius: selectedTrophy != nil ? 3 : 0)
-
-            // Animated Bottom Sheet
+            
+            // Затемнение и sheet подробностей трофея
             if selectedTrophy != nil {
                 Color.black.opacity(0.6)
                     .ignoresSafeArea()
@@ -95,8 +73,57 @@ struct RewardsView: View {
     }
 }
 
-// MARK: - BottomSheetView
+// MARK: - Карточка одной награды
+struct RewardRow: View {
+    let trophy: Trophy
+    var onTap: () -> Void
 
+    var body: some View {
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("\(trophy.level.rawValue.capitalized) – \(trophy.type.rawValue.capitalized) Trophy")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.white)
+                if trophy.isUnlocked {
+                    Text("Unlocked! 🏆")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.green)
+                } else {
+                    Text("Win \(max(trophy.requiredWins - trophy.currentWins, 0)) more time(s) to unlock")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.white.opacity(0.68))
+                }
+                ProgressBar(current: trophy.currentWins, total: trophy.requiredWins)
+                    .frame(height: 7)
+                    .padding(.top, 5)
+                    .padding(.trailing, 24)
+            }
+            Spacer()
+            ZStack {
+                Image(trophy.imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 54, height: 54)
+                    .opacity(trophy.isUnlocked ? 1 : 0.23)
+                if !trophy.isUnlocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundStyle(LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .shadow(radius: 4)
+                }
+            }
+            .onTapGesture { onTap() }
+        }
+        .padding(16)
+        .background(
+            LinearGradient(colors: [Color.purple.opacity(0.22), Color.black.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+        .shadow(color: .purple.opacity(0.18), radius: 12, x: 0, y: 6)
+    }
+}
+
+// MARK: - BottomSheetView (Sheet подробностей трофея)
 struct BottomSheetView: View {
     let trophy: Trophy?
     let onClose: () -> Void
@@ -160,7 +187,7 @@ struct BottomSheetView: View {
     }
 }
 
-// MARK: - Custom CornerRadius Extension
+// MARK: - Кастомный CornerRadius Extension
 
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {

@@ -22,6 +22,8 @@ final class Game: ObservableObject {
     @AppStorage("mistakesEnabled") var mistakesEnabled = true
     @AppStorage("hintsUsedToday") private var hintsUsedToday = 0
     @AppStorage("lastHintResetDate") private var lastHintResetDate = ""
+    @AppStorage("highlightsEnabled") private var highlightsEnabled = true
+    
     
     var timer: GameTimer
     
@@ -405,16 +407,20 @@ final class Game: ObservableObject {
             hintsUsedToday = 0
         }
     }
-    
     private func updateHighlights(row: Int, col: Int) {
         highlightedCells = []
+        guard highlightsEnabled else {
+            // Если выключено — подсвечиваем только саму выбранную ячейку
+            highlightedCells.insert(CellCoordinate(row: row, col: col))
+            return
+        }
         let selectedValue = grid[row][col].value
-        
+
         for i in 0..<9 {
             highlightedCells.insert(CellCoordinate(row: row, col: i))
             highlightedCells.insert(CellCoordinate(row: i, col: col))
         }
-        
+
         if selectedValue != 0 {
             for r in 0..<9 {
                 for c in 0..<9 {

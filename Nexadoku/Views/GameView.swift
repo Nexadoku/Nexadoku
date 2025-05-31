@@ -52,10 +52,15 @@ struct GameView: View {
                     }
                 )
             }
-
+            
+// MARK: - Exit Confiramtion
+            
             if showExitConfirmation {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
+                    .transition(.opacity)
+                    .zIndex(20)
+                    .allowsHitTesting(true)
 
                 VStack(spacing: 25) {
                     Text("Are you sure you want to exit the game?")
@@ -93,7 +98,8 @@ struct GameView: View {
                     }
                 }
                 .padding(.horizontal, 30)
-                .zIndex(1)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .zIndex(30)
             }
         }
         .navigationBarBackButtonHidden(true)

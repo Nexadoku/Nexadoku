@@ -6,13 +6,14 @@ struct SettingsView: View {
     @AppStorage("soundEnabled") private var soundEnabled = true
     @AppStorage("timerEnabled") private var timerEnabled = true
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
+    @AppStorage("highlightsEnabled") private var highlightsEnabled = true
     @EnvironmentObject var languageSettings: LanguageSettings
     
     @State private var animate = false
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+           RewardsViewBackground()
             VStack {
                 ScrollView {
                     VStack(spacing: 30) {
@@ -60,9 +61,10 @@ struct SettingsView: View {
                                 .padding()
                             }
                             .background(
-                                RoundedRectangle(cornerRadius: 35)
-                                    .stroke(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
                             )
+                            
                             .padding()
                             
                             VStack(alignment: .leading, spacing: 0) {
@@ -73,17 +75,37 @@ struct SettingsView: View {
                                 }
                                 .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
+                                )
                                 
                                 Text("Limit the number of possible mistakes to 3 per game")
                                     .foregroundColor(.white.opacity(0.7))
                                     .font(.system(size: 15))
                                     .padding()
                             }
-                            .background(
-                                RoundedRectangle(cornerRadius: 35)
-                                    .stroke(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
-                            )
-                            .padding()
+                            .padding(.horizontal)
+                            
+                            VStack(alignment: .leading, spacing: 0) {
+                                Toggle(isOn: $highlightsEnabled) {
+                                    Text("Highlight Duplicates")
+                                        .font(.system(size: 20, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.purple, lineWidth: 1.5)
+                                )
+                                
+                                Text("Highlight repeating numbers in each row, column, and block")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.white.opacity(0.7))
+                                    .padding()
+                            }
+                            .padding(.horizontal)
                         }
                     }
                 }
