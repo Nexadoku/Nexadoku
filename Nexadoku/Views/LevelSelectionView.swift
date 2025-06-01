@@ -12,6 +12,7 @@ struct LevelSelectionView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigator: Navigator
     @ObservedObject private var progress = ProgressManager.shared
+    @AppStorage("isPremium") private var isPremium = false
     
     var body: some View {
         ZStack {
@@ -122,9 +123,14 @@ struct LevelSelectionView: View {
             }
             .navigationBarBackButtonHidden()
     }
-    
+   
     private func levelButton(title: DifficultyLevel, color: Color) -> some View {
-        let isUnlocked = progress.isLevelUnlocked(title)
+        let isUnlocked: Bool
+        if title == .epic {
+            isUnlocked = isPremium
+        } else {
+            isUnlocked = progress.isLevelUnlocked(title)
+        }
         return Button(action: {
             if isUnlocked {
                 withAnimation {
@@ -147,9 +153,21 @@ struct LevelSelectionView: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                     if !isUnlocked {
-                        Text("🔒")
-                            .font(.title2)
-                            .opacity(0.7)
+                        if title == .epic {
+                            // Premium lock
+                            HStack(spacing: 6) {
+                                Image(systemName: "lock.fill")
+                                    .foregroundColor(.yellow)
+                                Text("Premium")
+                                    .foregroundColor(.yellow)
+                                    .font(.caption.bold())
+                            }
+                        } else {
+                            // Обычный замок
+                            Text("🔒")
+                                .font(.title2)
+                                .opacity(0.7)
+                        }
                     } else {
                         Text("✓ \(progress.winsCount(for: title))")
                             .font(.caption)

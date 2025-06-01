@@ -194,7 +194,9 @@ struct PremiumPaySheet: View {
                         Spacer()
                         Text("$14.99")
                             .bold()
-                            .foregroundColor(.yellow)
+                            .foregroundStyle(
+                                LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
                             .font(.system(size: 20))
                     }
                 }

@@ -2,13 +2,12 @@
 import SwiftUI
 
 struct StatsView: View {
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigator: Navigator
     @ObservedObject private var statsManager = StatsManager.shared
     
     @State private var selectedLevel: DifficultyLevel = .easy
     @State private var animate = false
-    
-    @Environment(\.dismiss) var dismiss
     
     var stats: GameStats {
         statsManager.stats(for: selectedLevel)
@@ -16,8 +15,8 @@ struct StatsView: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
-          
+            DarkBackground()
+            ScrollView {
                 VStack(spacing: 30) {
                     HStack {
                         Button {
@@ -50,9 +49,9 @@ struct StatsView: View {
                     }
                     
                     
-                        .onChange(of: selectedLevel) { _ in
-                            VibrationManager.shared.lightImpact()
-                        }
+                    .onChange(of: selectedLevel) { _ in
+                        VibrationManager.shared.lightImpact()
+                    }
                     
                     Picker("Difficulty", selection: $selectedLevel) {
                         ForEach(DifficultyLevel.allCases) { level in
@@ -74,11 +73,12 @@ struct StatsView: View {
                 }
                 .padding()
             }
-        
-        .onAppear {
-            animate = true
+            
+            .onAppear {
+                animate = true
+            }
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)
     }
 
     var statsCapsule: some View {
@@ -120,6 +120,11 @@ struct StatsView: View {
                 .shadow(color: .white, radius: 4, x: 0, y: 2)
         }
         .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(.purple, lineWidth: 2)
+        )
     }
 }
 

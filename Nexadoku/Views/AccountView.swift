@@ -67,12 +67,6 @@ struct AccountView: View {
                 }
                 .padding(.top)
             }
-            .opacity(animate ? 1 : 0)
-            .offset(y: animate ? 0 : 20)
-            .animation(.easeOut(duration: 0.5).delay(0.1), value: animate)
-        }
-        .onAppear {
-            animate = true
         }
     }
 }

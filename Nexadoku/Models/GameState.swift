@@ -1,9 +1,3 @@
-//
-//  GameState.swift
-//  SUDOKU
-//
-//  Created by Helter Skelter on 22/04/25.
-//
 
 import Foundation
 

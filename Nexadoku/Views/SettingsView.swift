@@ -6,14 +6,15 @@ struct SettingsView: View {
     @AppStorage("soundEnabled") private var soundEnabled = true
     @AppStorage("timerEnabled") private var timerEnabled = true
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
-    @AppStorage("highlightsEnabled") private var highlightsEnabled = true
+    @AppStorage("highlightsEnabled") private var highlightsEnabled = false
+    @AppStorage("isPremium") private var isPremium = false
     @EnvironmentObject var languageSettings: LanguageSettings
     
     @State private var animate = false
     
     var body: some View {
         ZStack {
-           SettingsBackground()
+           DarkBackground()
             VStack {
                 ScrollView {
                     VStack(spacing: 30) {
@@ -93,17 +94,25 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
                                         .stroke(Color.purple, lineWidth: 1.5)
                                 )
+                                .disabled(!isPremium)
                                 
-                                Text("Highlight repeating numbers in each row, column, and block")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .padding()
+                                if !isPremium {
+                                    Text("Highlighting is avilable only for Premum users.")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.yellow)
+                                        .padding()
+                                } else {
+                                    Text("Highlight repeating numbers in each row, column, and block.")
+                                        .font(.system(size: 15))
+                                        .foregroundColor(.white.opacity(0.7))
+                                        .padding()
+                                }
                             }
                             .padding(.horizontal)
                         }
@@ -115,6 +124,9 @@ struct SettingsView: View {
             }
             .onAppear {
                 animate = true
+                if !isPremium {
+                    highlightsEnabled = false
+                }
             }
         }
         .navigationBarBackButtonHidden(true)
