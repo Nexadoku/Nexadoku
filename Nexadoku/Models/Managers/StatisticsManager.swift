@@ -2,10 +2,10 @@
 import Foundation
 import UIKit
 
-class StatsManager: ObservableObject {
+class StatisticsManager: ObservableObject {
     @Published private(set) var stats: [DifficultyLevel: GameStats]
     
-    static let shared = StatsManager()
+    static let shared = StatisticsManager()
     private let key = "sudoku_stats_by_level"
     
     private init() {

@@ -5,6 +5,10 @@ struct RewardsView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var progress = ProgressManager.shared
     @State private var selectedTrophy: Trophy? = nil
+    @State private var showPointsSheet = false
+    
+    @AppStorage("totalPoints") private var totalPoints: Int = 0
+    @AppStorage("earnedTrophyIDs") private var earnedTrophyIDs: String = ""
 
     var trophies: [Trophy] {
         DifficultyLevel.allCases.flatMap { level in
@@ -16,7 +20,32 @@ struct RewardsView: View {
             ]
         }
     }
-
+    
+    private func points(for trophy: Trophy) -> Int {
+        switch trophy.type {
+        case .bronze: return 10
+        case .silver: return 30
+        case .gold: return 60
+        }
+    }
+   
+    private func checkAndAwardPoints() {
+        var ids = Set(earnedTrophyIDs.split(separator: ",").map { String($0) })
+        var newPoints = 0
+        
+        for trophy in trophies where trophy.isUnlocked {
+            let id = trophy.uniqueID
+            if !ids.contains(id) {
+                newPoints += points(for: trophy)
+                ids.insert(id)
+            }
+        }
+        if newPoints > 0 {
+            totalPoints += newPoints
+            earnedTrophyIDs = ids.joined(separator: ",")
+        }
+    }
+    
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -33,6 +62,27 @@ struct RewardsView: View {
                             .foregroundColor(.white)
                             .font(.system(size: 30, weight: .heavy))
                         Spacer()
+                        
+                        Button {
+                            withAnimation(.spring(response: 0.38, dampingFraction: 0.78)) {
+                                showPointsSheet = true
+                            }
+                        } label : {
+                            HStack {
+                                Text("\(totalPoints)")
+                                    .foregroundColor(.white)
+                                    .font(.system(size: 19, weight: .heavy))
+                                    .shadow(radius: 4)
+                                Image("coin")
+                                    .resizable()
+                                    .frame(width: 28, height: 28)
+                            }
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .stroke(.purple, lineWidth: 2)
+                            )
+                        }
                     }
                     .padding(.top, 12)
                     .padding(.horizontal)
@@ -49,6 +99,26 @@ struct RewardsView: View {
                 .padding(.bottom, 32)
             }
             .blur(radius: selectedTrophy != nil ? 3 : 0)
+            
+            if showPointsSheet {
+                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .zIndex(20)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            showPointsSheet = false
+                        }
+                    }
+                
+                PointsAlert {
+                    withAnimation(.easeInOut(duration: 0.22)) {
+                        showPointsSheet = false
+                    }
+                }
+                .zIndex(21)
+                .transition(.scale.combined(with: .opacity))
+            }
             
             // Затемнение и sheet подробностей трофея
             if selectedTrophy != nil {
@@ -68,6 +138,7 @@ struct RewardsView: View {
                 }
             }
         }
+        .onAppear { checkAndAwardPoints() }
         .animation(.easeInOut(duration: 0.35), value: selectedTrophy)
         .navigationBarBackButtonHidden(true)
     }
@@ -188,13 +259,6 @@ struct BottomSheetView: View {
 }
 
 // MARK: - Кастомный CornerRadius Extension
-
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
@@ -212,5 +276,12 @@ struct RoundedCorner: Shape {
 struct RewardsPreviews: PreviewProvider {
     static var previews: some View {
         RewardsView()
+    }
+}
+
+
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
     }
 }

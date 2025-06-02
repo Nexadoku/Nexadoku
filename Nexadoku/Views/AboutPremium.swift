@@ -92,7 +92,7 @@ struct AboutPremium: View {
             
             VStack {
                 Button(action: { showPaySheet = true }) {
-                    Text("Activate Premium")
+                    Text("Get Premium")
                         .font(.system(size: 22, weight: .bold))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -205,7 +205,9 @@ struct PremiumPaySheet: View {
                 .background(RoundedRectangle(cornerRadius: 18).fill(Color.purple.opacity(0.18)))
                 .padding(.horizontal, 16)
 
-                Button(action: { /* Purchase action */ }) {
+                Button(action: {
+                    
+                }) {
                     Text("Buy Now")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)

@@ -26,3 +26,9 @@ extension Trophy {
         "\(level.rawValue.lowercased())_\(type.rawValue.lowercased())_trophy"
     }
 }
+
+extension Trophy {
+    var uniqueID: String {
+            "\(level.rawValue)_\(type.rawValue)"
+        }
+}

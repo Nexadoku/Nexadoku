@@ -383,7 +383,7 @@ final class Game: ObservableObject {
             isWon = true
             gameOver = true
             ProgressManager.shared.recordWin(for: level)
-            StatsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
+            StatisticsManager.shared.recordGame(won: true, flawless: mistakes == 0, time: finalTime, difficulty: level)
             GameSaveManager.shared.clearSavedGame()
         }
     }
@@ -392,7 +392,7 @@ final class Game: ObservableObject {
         timer.stop()
         isWon = false
         gameOver = true
-        StatsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
+        StatisticsManager.shared.recordGame(won: false, flawless: false, time: nil, difficulty: self.level)
         GameSaveManager.shared.clearSavedGame()
     }
     

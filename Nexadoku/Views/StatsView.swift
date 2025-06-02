@@ -4,7 +4,7 @@ import SwiftUI
 struct StatsView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject private var navigator: Navigator
-    @ObservedObject private var statsManager = StatsManager.shared
+    @ObservedObject private var statsManager = StatisticsManager.shared
     
     @State private var selectedLevel: DifficultyLevel = .easy
     @State private var animate = false
