@@ -14,7 +14,7 @@ struct RewardsView: View {
         DifficultyLevel.allCases.flatMap { level in
             let wins = progress.winsCount(for: level)
             return [
-                Trophy(level: level, type: .bronze, requiredWins: 15, currentWins: wins),
+                Trophy(level: level, type: .bronze, requiredWins: 18, currentWins: wins),
                 Trophy(level: level, type: .silver, requiredWins: 30, currentWins: wins),
                 Trophy(level: level, type: .gold, requiredWins: 45, currentWins: wins)
             ]

@@ -6,7 +6,7 @@ struct MenuView: View {
     
     @ObservedObject var progress = ProgressManager.shared
     @State private var animate = false
-    @State private var unlockedSheetTrophy: Trophy? = nil
+    @State private var unlockedTrophyBanner: Trophy? = nil
     @State private var showContinueAlert = false
     @State private var alertAppear = false
     @State private var glow = false
@@ -89,21 +89,19 @@ struct MenuView: View {
                 withAnimation(.easeInOut(duration: 1.45).repeatForever(autoreverses: true)) {
                     glow = true
                 }
-                if unlockedSheetTrophy == nil, let trophy = firstJustUnlockedTrophy() {
-                    unlockedSheetTrophy = trophy
+                if unlockedTrophyBanner == nil, let trophy = firstJustUnlockedTrophy() {
+                    unlockedTrophyBanner = trophy
                 }
             }
 
             // Sheet награды (если нужно)
-            if let trophy = unlockedSheetTrophy {
-                Color.black.opacity(0.6).ignoresSafeArea()
-                    .onTapGesture { closeSheet() }
-                RewardsUnlockSheet(trophy: trophy) {
-                    closeSheet()
+            if let bannerTrophy = unlockedTrophyBanner {
+                TrophyUnlockBanner(trophy: bannerTrophy) {
+                    progress.markTrophyAsShown(bannerTrophy)
+                    withAnimation { unlockedTrophyBanner = nil }
                 }
-                .zIndex(1000)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .ignoresSafeArea()
+                .transition(.move(edge: .top).combined(with: .opacity))
+                .zIndex(2000)
             }
 
             // Кастомный alert в центре
@@ -147,11 +145,11 @@ struct MenuView: View {
     }
     
     func closeSheet() {
-        if let trophy = unlockedSheetTrophy {
+        if let trophy = unlockedTrophyBanner {
             progress.markTrophyAsShown(trophy)
         }
         withAnimation {
-            unlockedSheetTrophy = nil
+            unlockedTrophyBanner = nil
         }
     }
     
@@ -159,7 +157,7 @@ struct MenuView: View {
         let trophies = DifficultyLevel.allCases.flatMap { level in
             let wins = progress.winsCount(for: level)
             return [
-                Trophy(level: level, type: .bronze, requiredWins: 15, currentWins: wins),
+                Trophy(level: level, type: .bronze, requiredWins: 18, currentWins: wins),
                 Trophy(level: level, type: .silver, requiredWins: 30, currentWins: wins),
                 Trophy(level: level, type: .gold, requiredWins: 45, currentWins: wins)
             ]
@@ -263,7 +261,7 @@ struct ContinueAlert: View {
         .background(
             RoundedRectangle(cornerRadius: 35)
                 .fill(
-                    LinearGradient(colors: [.black], startPoint: .bottomTrailing, endPoint: .topLeading)
+                    LinearGradient(colors: [.black, .purple], startPoint: .bottomTrailing, endPoint: .topLeading)
                 )
                 .shadow(radius: 20)
                 .overlay(
