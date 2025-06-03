@@ -11,6 +11,23 @@ struct MenuView: View {
     @State private var alertAppear = false
     @State private var glow = false
 
+    // Главное отличие: теперь AppStorage, чтобы View сам слушал изменения!
+    @AppStorage("claimedTrophyIDs") private var claimedTrophyIDs: String = ""
+
+    private var claimableTrophiesCount: Int {
+        let claimedIDs = Set(claimedTrophyIDs.split(separator: ",").map(String.init))
+        return DifficultyLevel.allCases.flatMap { level in
+            let wins = progress.winsCount(for: level)
+            return [
+                Trophy(level: level, type: .bronze, requiredWins: 15, currentWins: wins),
+                Trophy(level: level, type: .silver, requiredWins: 30, currentWins: wins),
+                Trophy(level: level, type: .gold, requiredWins: 45, currentWins: wins)
+            ]
+        }
+        .filter { $0.isUnlocked && !claimedIDs.contains($0.uniqueID) }
+        .count
+    }
+
     var body: some View {
         ZStack {
             SystemDarkBackground()
@@ -26,8 +43,8 @@ struct MenuView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 50, height: 50)
-                                .shadow(color: .purple.opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12, x: 0, y: 0)
-                                .shadow(color: .white.opacity(glow ? 0.16 : 0.02), radius: glow ? 12 : 2, x: 0, y: 0)
+                                .shadow(color: .purple.opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12)
+                                .shadow(color: .white.opacity(glow ? 0.16 : 0.02), radius: glow ? 12 : 2)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18)
                                         .stroke(
@@ -42,10 +59,10 @@ struct MenuView: View {
                         }
                         .padding(.top, 8)
                     }
-                        Text("NEXADOKU")
-                            .font(.system(size: 50, weight: .heavy))
-                            .foregroundColor(.white)
-                        
+                    
+                    Text("NEXADOKU")
+                        .font(.system(size: 50, weight: .heavy))
+                        .foregroundColor(.white)
 
                     Image("logo")
                         .resizable()
@@ -53,7 +70,6 @@ struct MenuView: View {
                         .cornerRadius(30)
                         .shadow(color: .purple, radius: 15)
                         .padding(.bottom, 50)
-                    
 
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
@@ -73,13 +89,15 @@ struct MenuView: View {
                             VibrationManager.shared.lightImpact()
                         }
 
-//                        neonButton(title: "Trials", icon: "brain.head.profile.fill") {
-//                            navigator.push(.menu(.events))
-//                            VibrationManager.shared.lightImpact()
-//                        }
-
-                        neonButton(title: "Rewards", icon: "star.fill") {
-                            navigator.push(.menu(.rewards))
+                        // Badge on Rewards
+                        ZStack(alignment: .topTrailing) {
+                            neonButton(title: "Rewards", icon: "star.fill") {
+                                navigator.push(.menu(.rewards))
+                            }
+                            if claimableTrophiesCount > 0 {
+                                BadgeView(count: claimableTrophiesCount)
+                                    .offset(x: -23, y: -12)
+                            }
                         }
                     }
                 }
@@ -94,7 +112,7 @@ struct MenuView: View {
                 }
             }
 
-            // Sheet награды (если нужно)
+            // Sheet for trophy unlock (if needed)
             if let bannerTrophy = unlockedTrophyBanner {
                 TrophyUnlockBanner(trophy: bannerTrophy) {
                     progress.markTrophyAsShown(bannerTrophy)
@@ -104,7 +122,7 @@ struct MenuView: View {
                 .zIndex(2000)
             }
 
-            // Кастомный alert в центре
+            // Custom alert in the center
             if showContinueAlert {
                 Color.black.opacity(alertAppear ? 0.45 : 0)
                     .ignoresSafeArea()
@@ -157,7 +175,7 @@ struct MenuView: View {
         let trophies = DifficultyLevel.allCases.flatMap { level in
             let wins = progress.winsCount(for: level)
             return [
-                Trophy(level: level, type: .bronze, requiredWins: 18, currentWins: wins),
+                Trophy(level: level, type: .bronze, requiredWins: 15, currentWins: wins),
                 Trophy(level: level, type: .silver, requiredWins: 30, currentWins: wins),
                 Trophy(level: level, type: .gold, requiredWins: 45, currentWins: wins)
             ]
@@ -209,7 +227,6 @@ struct MenuView: View {
         .padding(.horizontal)
     }
 }
-
 // MARK: - Кастомный центрированный алерт
 
 struct ContinueAlert: View {
