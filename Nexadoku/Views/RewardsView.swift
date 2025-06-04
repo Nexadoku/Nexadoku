@@ -61,7 +61,7 @@ struct RewardsView: View {
     
     var body: some View {
         ZStack {
-            DarkBackground()
+            SystemDarkBackground()
             ScrollView {
                 VStack(spacing: 18) {
                     HStack {

@@ -3,7 +3,8 @@ import SwiftUI
 
 struct MenuTabView: View {
     @EnvironmentObject private var navigator: Navigator
-
+    @EnvironmentObject private var storeManager: StoreManager
+    
     var body: some View {
         NavigationStack(path: $navigator.stack) {
             ZStack {
@@ -50,6 +51,7 @@ struct MenuTabViewPreviews: PreviewProvider {
         MenuTabView()
             .environmentObject(Navigator())
             .environmentObject(LanguageSettings())
+            .environmentObject(StoreManager())
             .preferredColorScheme(.dark)
     }
 }

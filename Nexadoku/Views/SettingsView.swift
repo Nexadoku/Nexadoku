@@ -7,7 +7,7 @@ struct SettingsView: View {
     @AppStorage("timerEnabled") private var timerEnabled = true
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
     @AppStorage("highlightsEnabled") private var highlightsEnabled = false
-    @AppStorage("isPremium") private var isPremium = true
+    @AppStorage("isPremium") private var isPremium = false
     
     @EnvironmentObject var languageSettings: LanguageSettings
     

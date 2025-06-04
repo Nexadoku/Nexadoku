@@ -13,6 +13,7 @@ struct SudokuApp: App {
     @StateObject private var navigator = Navigator()
     @StateObject private var languageSettings = LanguageSettings()
     @AppStorage("hasSeenOnboarding") private var hasSeenOnbiarding = false
+    @StateObject private var storeManager = StoreManager()
     
     var body: some Scene {
         WindowGroup {
@@ -21,6 +22,7 @@ struct SudokuApp: App {
                     .environmentObject(languageSettings)
                     .environmentObject(GameSaveManager.shared)
                     .environment(\.locale, languageSettings.currentLocale)
+                    .environmentObject(storeManager)
         }
     }
 }
