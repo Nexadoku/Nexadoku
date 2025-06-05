@@ -15,7 +15,7 @@ struct StatsView: View {
 
     var body: some View {
         ZStack {
-            DarkBackground()
+            SystemDarkBackground()
             ScrollView {
                 VStack(spacing: 30) {
                     HStack {
@@ -112,12 +112,12 @@ struct StatsView: View {
         HStack {
             Text(title)
                 .font(.system(size: 18, weight: .medium, design: .rounded))
-                .foregroundColor(.white.opacity(0.6))
+                .foregroundColor(.white)
             Spacer()
             Text(value)
                 .font(.system(size: 26, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
-                .shadow(color: .white, radius: 4, x: 0, y: 2)
+                
         }
         .transition(.opacity.combined(with: .move(edge: .bottom)))
         .padding()

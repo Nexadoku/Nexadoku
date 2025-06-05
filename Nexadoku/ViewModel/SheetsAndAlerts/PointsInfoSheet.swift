@@ -34,25 +34,27 @@ Points are kept forever and show your progress.
                 .foregroundColor(.purple)
                 .font(.body.weight(.medium))
             
-            Button("Close") {
-                onClose()
-            }
-            .font(.headline)
-            .foregroundColor(.white)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.purple)
-            .cornerRadius(18)
-        }
-        .padding(.vertical, 34)
-        .padding(.horizontal, 28)
-        .background(
-            RoundedRectangle(cornerRadius: 35)
-                .fill(Color.black)
-                .shadow(radius: 22)
-        )
-        .frame(maxWidth: 370)
-        .padding(.horizontal, 24)
-        .transition(.scale.combined(with: .opacity))
-    }
-}
+            Button(action: {
+                           onClose()
+                       }) {
+                           Text("Close")
+                               .font(.headline)
+                               .foregroundColor(.white)
+                               .frame(maxWidth: .infinity)
+                               .padding()
+                               .background(Color.purple)
+                               .cornerRadius(18)
+                       }
+                   }
+                   .padding(.vertical, 34)
+                   .padding(.horizontal, 28)
+                   .background(
+                       RoundedRectangle(cornerRadius: 35)
+                           .fill(Color.black)
+                           .shadow(radius: 22)
+                   )
+                   .frame(maxWidth: 370)
+                   .padding(.horizontal, 24)
+                   .transition(.scale.combined(with: .opacity))
+               }
+           }

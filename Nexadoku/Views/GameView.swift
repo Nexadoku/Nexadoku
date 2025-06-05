@@ -233,7 +233,7 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(state: .new(level: .easy))
+        GameView(state: .new(level: .epic))
             .preferredColorScheme(.dark)
             .environmentObject(Navigator())
             .environmentObject(UnlockSheetManager())
