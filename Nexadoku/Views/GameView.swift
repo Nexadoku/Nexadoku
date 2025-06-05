@@ -8,6 +8,8 @@ struct GameView: View {
 
     @AppStorage("timerEnabled") private var timerEnabled = true
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
+    @AppStorage("isPremium") private var isPremium = true
+
 
     @State private var showGameOverAlert = false
     @State private var isPaused = false
@@ -148,6 +150,15 @@ struct GameView: View {
                     .shadow(radius: 10)
 
                 Spacer()
+                
+                Button(action: {
+                    
+                }) {
+                    Image(systemName: "gear")
+                        .font(.system(size: 30, weight: .bold))
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
+                }
 
                 Button(action: {
                     isPaused = true
@@ -233,7 +244,7 @@ struct GameView: View {
 
 struct GameViewPreviews: PreviewProvider {
     static var previews: some View {
-        GameView(state: .new(level: .epic))
+        GameView(state: .new(level: .easy))
             .preferredColorScheme(.dark)
             .environmentObject(Navigator())
             .environmentObject(UnlockSheetManager())
