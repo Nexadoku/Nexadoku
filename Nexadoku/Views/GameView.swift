@@ -26,7 +26,7 @@ struct GameView: View {
     var body: some View {
         ZStack {
             SystemDarkBackground()
-                .blur(radius: (isPaused || showExitConfirmation) ? 10 : 0)
+                .blur(radius: isPaused ? 10 : 0)
 
             VStack(spacing: .zero) {
                 if game.isLoading || game.grid.isEmpty {
@@ -35,7 +35,7 @@ struct GameView: View {
                     content
                 }
             }
-            .blur(radius: (isPaused || showExitConfirmation) ? 10 : 0)
+            .blur(radius: isPaused ? 10 : 0)
 
             if isPaused {
                 Color.black.opacity(0.6)
@@ -55,54 +55,88 @@ struct GameView: View {
                     }
                 )
             }
-            
-// MARK: - Exit Confiramtion
-            
             if showExitConfirmation {
-                Color.black.opacity(0.4)
+                Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .transition(.opacity)
-                    .zIndex(20)
-                    .allowsHitTesting(true)
+                    .zIndex(100)
+                    .onTapGesture {
+                        // Тап по фону закрывает алерт
+                        withAnimation { showExitConfirmation = false }
+                    }
 
-                VStack(spacing: 25) {
-                    Text("Are you sure you want to exit the game?")
-                        .font(.title2.bold())
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 32)
-                        .padding(.vertical, 24)
-                        .background(
-                            LinearGradient(
-                                colors: [.black.opacity(0.4), .purple.opacity(0.4)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 30)
-                                    .stroke(.purple, lineWidth: 3)
-                            )
+                VStack(spacing: 24) {
+                    // Иконка или арт — можешь любую
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 44))
+                        .foregroundStyle(
+                            LinearGradient(colors: [.purple, .red], startPoint: .top, endPoint: .bottom)
+                        )
+                        .shadow(color: .purple, radius: 10)
+                        .padding(.top, 8)
+
+                    Text("Exit Game?")
+                        .font(.system(size: 28, weight: .heavy, design: .rounded))
+                        .foregroundStyle(
+                            LinearGradient(colors: [.red, .purple], startPoint: .top, endPoint: .bottom)
                         )
 
-                    HStack(spacing: 20) {
-                        AppButton(text: "Cancel") {
-                            showExitConfirmation = false
-                            VibrationManager.shared.lightImpact()
-                        }
-                        .appButtonVariation(.primary)
+                    Text("Are you sure you want to exit the game?")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(.white.opacity(0.85))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
 
-                        AppButton(text: "Save and Exit") {
+                    HStack(spacing: 18) {
+                        Button(action: {
+                            withAnimation { showExitConfirmation = false }
+                            VibrationManager.shared.lightImpact()
+                        }) {
+                            Text("Cancel")
+                                .font(.system(size: 20, weight: .bold))
+                                .frame(width: 120, height: 48)
+                                .background(
+                                    LinearGradient(colors: [.purple], startPoint: .leading, endPoint: .trailing)
+                                )
+                                .foregroundColor(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        }
+
+                        Button(action: {
                             game.saveCurrentGame()
                             navigator.pop()
                             VibrationManager.shared.lightImpact()
+                        }) {
+                            Text("Exit")
+                                .font(.system(size: 20, weight: .bold))
+                                .frame(width: 120, height: 48)
+                                .background(
+                                    LinearGradient(colors: [.red], startPoint: .leading, endPoint: .trailing)
+                                )
+                                .foregroundColor(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
-                        .appButtonVariation(.destructive)
                     }
+                    .padding(.bottom, 6)
                 }
-                .padding(.horizontal, 30)
-                .transition(.move(edge: .bottom).combined(with: .opacity))
-                .zIndex(30)
+                .padding(.vertical, 30)
+                .padding(.horizontal, 24)
+                .background(
+                    LinearGradient(
+                        colors: [Color.purple.opacity(0.93), Color.black.opacity(0.96)],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                    .shadow(color: .purple.opacity(0.6), radius: 30, x: 0, y: 8)
+                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 28)
+                            .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .leading, endPoint: .trailing), lineWidth: 3)
+                    )
+                )
+                .padding(.horizontal, 36)
+                .frame(maxWidth: 390)
+                .transition(.scale.combined(with: .opacity))
+                .zIndex(101)
             }
         }
         .navigationBarBackButtonHidden(true)

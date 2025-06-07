@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct CellView: View {
@@ -6,9 +7,12 @@ struct CellView: View {
     let isHighlighted: Bool
     let completedNumber: Int?
     let onTap: () -> Void
+
     @AppStorage("mistakesEnabled") private var mistakesEnabled: Bool = true
-    @State private var pulse = false
-    
+    @State private var animateCells = false
+    @State private var glow = false
+    @State private var lastAnimationID = 0
+
     private var drawsGradient: Bool {
         !(cell.isIncorrect || isSelected || isHighlighted)
     }
@@ -20,16 +24,12 @@ struct CellView: View {
                 .cornerRadius(1)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.2), lineWidth: 0.5))
                 .animation(.easeInOut(duration: 1), value: shouldAnimate)
-                
 
             if drawsGradient {
                 Rectangle()
                     .fill(
                         RadialGradient(
-                            gradient: Gradient(colors: [
-                                Color.white.opacity(0.5),
-                                Color.indigo
-                            ]),
+                            gradient: Gradient(colors: [Color.white.opacity(0.5), Color.indigo]),
                             center: .center,
                             startRadius: 5,
                             endRadius: 80
@@ -38,11 +38,12 @@ struct CellView: View {
                     .frame(width: 40, height: 40)
                     .cornerRadius(1)
             }
-            
+
             if cell.value != 0 {
                 Text("\(cell.value)")
                     .foregroundColor(mistakesEnabled && cell.isIncorrect ? .red : cell.isOriginal ? .black : isSelected ? .white : .indigo)
                     .font(.system(size: 20, weight: .bold))
+                    
             } else if !cell.notes.isEmpty {
                 notesGrid
             }
@@ -53,7 +54,7 @@ struct CellView: View {
             VibrationManager.shared.lightImpact()
         }
     }
-    
+
     private var shouldAnimate: Bool {
         isHighlighted && completedNumber == cell.value && cell.value != 0
     }

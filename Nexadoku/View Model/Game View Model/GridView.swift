@@ -12,7 +12,6 @@ struct GridView: View {
         GeometryReader { geometry in
             let gridSize = cellSize * 9
             let offset = (geometry.size.width - gridSize) / 2
-            let highlightCoords = game.coordinatesOfAllSameValue()
 
             ZStack {
                 Color.white
@@ -21,13 +20,13 @@ struct GridView: View {
                 // Ячейки
                 ForEach(0..<9, id: \.self) { row in
                     ForEach(0..<9, id: \.self) { col in
-                        let showCross = highlightCoords.contains(where: { $0.row == row && $0.col == col })
                         CellView(
                             cell: game.grid[row][col],
-                            isSelected: game.isSelected(row: row, col: col),
-                            isHighlighted: game.isHighlighted(row: row, col: col),
-                            completedNumber: game.completedNumbers,
-                            onTap: { game.selectCell(row: row, col: col) }
+                                                       isSelected: game.isSelected(row: row, col: col),
+                                                       isHighlighted: game.isHighlighted(row: row, col: col),
+                                                       completedNumber: game.completedNumbers,
+                                                       onTap: { game.selectCell(row: row, col: col) }
+                                                      
                      
                         )
                         .position(

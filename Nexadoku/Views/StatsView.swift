@@ -64,6 +64,14 @@ struct StatsView: View {
                     .opacity(animate ? 1 : 0)
                     .animation(.easeOut(duration: 0.6).delay(0.2), value: animate)
                     
+                    
+                    StatsPieChart(stats: stats)
+                        HStack(spacing: 18) {
+                            legendDot(.purple, "Wins")
+                            legendDot(.yellow, "Flawless")
+                            legendDot(.gray, "Losses")
+                        }
+                    Divider().background(.white.opacity(0.5)).padding(.bottom, 2)
                     statsCapsule
                         .opacity(animate ? 1 : 0)
                         .offset(y: animate ? 0 : 20)
@@ -86,26 +94,56 @@ struct StatsView: View {
                 Text("Game")
                     .foregroundColor(.white)
                     .font(.title3.bold())
-                statRow(title: "Total Games", value: "\(stats.totalGames)")
-                statRow(title: "Wins", value: "\(stats.totalWins)")
-                statRow(title: "Flawless Wins", value: "\(stats.flawlessWins)")
-                statRow(title: "Win %", value: String(format: "%.0f%%", stats.winPercentage))
+                VStack {
+                    statRow(title: "Total Games", value: "\(stats.totalGames)")
+                    Divider().background(.white.opacity(0.5))
+                    statRow(title: "Wins", value: "\(stats.totalWins)")
+                    Divider().background(.white.opacity(0.5))
+                    statRow(title: "Flawless Wins", value: "\(stats.flawlessWins)")
+                    Divider().background(.white.opacity(0.5))
+                    statRow(title: "Win %", value: String(format: "%.0f%%", stats.winPercentage))
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(.purple, lineWidth: 2)
+                )
                 Text("Time")
                     .foregroundColor(.white)
                     .font(.title3.bold())
-                statRow(title: "Best Time", value: formatTime(stats.bestTime))
-                statRow(title: "Average Time", value: formatTime(stats.averageTime))
+                VStack {
+                    statRow(title: "Best Time", value: formatTime(stats.bestTime))
+                    Divider().background(.white.opacity(0.5))
+                    statRow(title: "Average Time", value: formatTime(stats.averageTime))
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(.purple, lineWidth: 2)
+                )
                 Text("Streak")
                     .font(.title3.bold())
                     .foregroundColor(.white)
-                statRow(title: "Current Winning Streak", value: "\(stats.currentWinningStreak)")
-                statRow(title: "Best Winning Streak", value: "\(stats.bestWinningStreak)")
+                VStack {
+                    statRow(title: "Current Winning Streak", value: "\(stats.currentWinningStreak)")
+                    Divider().background(.white.opacity(0.5))
+                    statRow(title: "Best Winning Streak", value: "\(stats.bestWinningStreak)")
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(.purple, lineWidth: 2)
+                )
             }
         }
     
     func formatTime(_ seconds: Int?) -> String {
         guard let seconds = seconds else { return "-" }
         return String(format: "%02d:%02d", seconds / 60, seconds % 60)
+    }
+    
+    func legendDot(_ color: Color, _ label: String) -> some View {
+        HStack(spacing: 6) {
+            Circle().fill(color).frame(width: 14, height: 14)
+            Text(label).foregroundColor(.white.opacity(0.7)).font(.caption)
+        }
     }
     
     func statRow(title: String, value: String) -> some View {
@@ -115,16 +153,12 @@ struct StatsView: View {
                 .foregroundColor(.white)
             Spacer()
             Text(value)
-                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .font(.system(size: 20, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
                 
         }
         .transition(.opacity.combined(with: .move(edge: .bottom)))
         .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(.purple, lineWidth: 2)
-        )
     }
 }
 
@@ -132,7 +166,6 @@ struct StatsViewPreviews: PreviewProvider {
     static var previews: some View {
         StatsView()
             .environmentObject(Navigator())
-           
     }
 }
 
