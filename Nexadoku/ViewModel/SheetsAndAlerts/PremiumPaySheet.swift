@@ -82,10 +82,6 @@ struct PremiumPaySheet: View {
             guard purchased else { return }
             dismiss()
         }
-        .onChange(of: storeManager.isPurchased) { purchased in
-            guard purchased else { return }
-            dismiss()
-        }
     }
 }
 

@@ -12,6 +12,7 @@ struct GameView: View {
 
 
     @State private var showGameOverAlert = false
+    @State private var showQuickSettings = false
     @State private var isPaused = false
     @State private var showExitConfirmation = false
     @State private var lockedNumber: Int? = nil
@@ -129,6 +130,10 @@ struct GameView: View {
                 )
             }
         }
+        
+        .sheet(isPresented: $showQuickSettings) {
+            GameQuickSettingsSheet()
+        }
     }
 
     private var content: some View {
@@ -152,9 +157,9 @@ struct GameView: View {
                 Spacer()
                 
                 Button(action: {
-                    
+                    showQuickSettings = true
                 }) {
-                    Image(systemName: "gear")
+                    Image(systemName: "switch.2")
                         .font(.system(size: 30, weight: .bold))
                         .foregroundColor(.white)
                         .shadow(radius: 10)

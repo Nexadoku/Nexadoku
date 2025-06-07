@@ -13,6 +13,7 @@ public enum DifficultyLevel: String, Codable, Sendable, Hashable {
     case hard = "Hard"
     case master = "Master"
     case epic = "Epic"
+    case legend = "Legend"
     
     public var numberOfClues: Int {
         switch self {
@@ -21,13 +22,14 @@ public enum DifficultyLevel: String, Codable, Sendable, Hashable {
         case .hard: 35
         case .master: 30
         case .epic: 25
+        case .legend: 20
         }
     }
 }
 
 extension DifficultyLevel: CaseIterable, Identifiable {
     public static var allCases: [DifficultyLevel] {
-        return [.easy, .medium, .hard, .master, .epic]
+        return [.easy, .medium, .hard, .master, .epic, .legend]
     }
     
     public var id: String { rawValue }

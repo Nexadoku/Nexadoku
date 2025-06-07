@@ -6,9 +6,10 @@ struct SettingsView: View {
     @AppStorage("soundEnabled") private var soundEnabled = true
     @AppStorage("timerEnabled") private var timerEnabled = true
     @AppStorage("mistakesEnabled") private var mistakesEnabled = true
-    @AppStorage("highlightsEnabled") private var highlightsEnabled = false
-    @AppStorage("isPremium") private var isPremium = true
-    
+    @AppStorage("highlightsEnabled") private var highlightsEnabled = true
+    @AppStorage("highlightLinesEnabled") private var highlightLinesEnabled = false
+    @AppStorage("isPremium") private var isPremium = false
+
     @EnvironmentObject var languageSettings: LanguageSettings
     
     @State private var animate = false
@@ -95,6 +96,25 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.purple, lineWidth: 1.5)
+                                )
+                                    Text("Highlight repeating numbers in each row, column, and block.")
+                                        .font(.system(size: 15))
+                                        .foregroundColor(.white.opacity(0.7))
+                                        .padding()
+                            }
+                            .padding(.horizontal)
+                            
+                            VStack(alignment: .leading, spacing: 0) {
+                                Toggle(isOn: $highlightLinesEnabled) {
+                                    Text("Highlight Lines")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.white)
+                                }
                                 .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
                                 .padding()
                                 .background(
@@ -104,12 +124,12 @@ struct SettingsView: View {
                                 .disabled(!isPremium)
                                 
                                 if !isPremium {
-                                    Text("Highlighting is avilable only for Premum users.")
-                                        .font(.system(size: 14))
+                                    Text("Highlighting Lines is available only for Premium users.")
+                                        .font(.system(size: 15))
                                         .foregroundColor(.yellow)
                                         .padding()
                                 } else {
-                                    Text("Highlight repeating numbers in each row, column, and block.")
+                                    Text("Highlight Lines repeating numbers in each row, column, and line.")
                                         .font(.system(size: 15))
                                         .foregroundColor(.white.opacity(0.7))
                                         .padding()
@@ -141,3 +161,5 @@ struct SettingsViewPreviews: PreviewProvider {
             .environmentObject(LanguageSettings())
     }
 }
+
+

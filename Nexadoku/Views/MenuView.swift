@@ -259,7 +259,7 @@ struct ContinueAlert: View {
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(.ultraThinMaterial)
+                        .background(.black)
                         .cornerRadius(14)
                 }
                 Button(action: onContinue) {

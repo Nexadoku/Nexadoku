@@ -11,7 +11,7 @@ struct AboutPremium: View {
         .init(title: "No Ads", description: "Enjoy a clean game with zero ads — no banners, no popups, just pure focus."),
         .init(title: "Special Rewards", description: "Earn exclusive trophies and rewards only available to Premium users."),
         .init(title: "Epic Level", description: "Get access to the Epic difficulty mode, available only with Premium."),
-        .init(title: "Smart Highlights", description: "Enable Highlights to automatically show all matching numbers on the board.")
+        .init(title: "Smart Highlight Lines", description: "Enable Highlight Lines to automatically show all matching lines on the board.")
     ]
 
     // "Скоро будут" — можешь сюда добавить больше, если хочешь
@@ -90,22 +90,42 @@ struct AboutPremium: View {
                 .padding(.top, 30)
                 .padding(.bottom, 30)
             }
-            
             VStack {
-                Button(action: { showPaySheet = true }) {
-                    Text("Get Premium")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(
-                            LinearGradient(colors: [.purple, .indigo], startPoint: .leading, endPoint: .trailing)
-                        )
-                        .cornerRadius(24)
-                        .shadow(color: .purple.opacity(0.6), radius: 10, x: 0, y: 8)
+                Button(action: {
+                    if !storeManager.isPurchased {
+                        showPaySheet = true
+                    }
+                }) {
+                    HStack(spacing: 8) {
+                        if storeManager.isPurchased {
+                            Image(systemName: "checkmark.seal.fill")
+                                .foregroundColor(.green)
+                                .transition(.scale)
+                        }
+                        Text(storeManager.isPurchased ? "Purchased" : "Get Premium")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        storeManager.isPurchased
+                        ? LinearGradient(colors: [.gray.opacity(0.5), .gray.opacity(0.8)], startPoint: .leading, endPoint: .trailing)
+                        : LinearGradient(colors: [.purple, .indigo], startPoint: .leading, endPoint: .trailing)
+                    )
+                    .cornerRadius(24)
+                    .shadow(color: storeManager.isPurchased ? .gray : .purple.opacity(0.6), radius: 10, x: 0, y: 8)
+                    .overlay(
+                        storeManager.isPurchased ?
+                            RoundedRectangle(cornerRadius: 24)
+                                .stroke(.green, lineWidth: 2)
+                            : nil
+                    )
+                    .animation(.easeInOut(duration: 0.3), value: storeManager.isPurchased)
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 38)
+                .disabled(storeManager.isPurchased)
             }
             .ignoresSafeArea(.keyboard)
             .sheet(isPresented: $showPaySheet) {

@@ -46,6 +46,7 @@ struct LevelSelectionView: View {
                             HStack {
                                 levelButton(title: .master, color: .red)
                                 levelButton(title: .epic, color: .black)
+                                levelButton(title: .legend, color: .teal)
                             }
                         }
                         .transition(.scale.combined(with: .opacity))
@@ -126,7 +127,7 @@ struct LevelSelectionView: View {
    
     private func levelButton(title: DifficultyLevel, color: Color) -> some View {
         let isUnlocked: Bool
-        if title == .epic {
+        if title == .legend {
             isUnlocked = isPremium
         } else {
             isUnlocked = progress.isLevelUnlocked(title)
@@ -153,13 +154,17 @@ struct LevelSelectionView: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                     if !isUnlocked {
-                        if title == .epic {
+                        if title == .legend {
                             // Premium lock
                             HStack(spacing: 6) {
                                 Image(systemName: "lock.fill")
-                                    .foregroundColor(.yellow)
+                                    .foregroundStyle(
+                                        LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    )
                                 Text("Premium")
-                                    .foregroundColor(.yellow)
+                                    .foregroundStyle(
+                                        LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    )
                                     .font(.caption.bold())
                             }
                         } else {
@@ -196,6 +201,25 @@ struct LevelSelectionView: View {
                         .foregroundColor(.white.opacity(0.9))
                         .font(.body)
                         .multilineTextAlignment(.leading)
+                    
+                    Divider().background(.white.opacity(0.2))
+                    
+                    HStack(alignment: .top, spacing: 6) {
+                        Image(systemName: "sparkles")
+                            .foregroundColor(.purple)
+                            .font(.system(size: 20))
+                            .padding(.top, 2)
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Legend level")
+                                .font(.headline.bold())
+                                .foregroundColor(.purple)
+                            Text("""
+                                The **Legend** level is only available for Premium users.
+                                Buy Premium to challange yourself with the most epic Sudoku puzzles ever!
+                                """)
+                            .foregroundColor(.white.opacity(0.85))
+                        }
+                    }
                 }
                 .padding()
             }

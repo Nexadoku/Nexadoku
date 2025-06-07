@@ -23,7 +23,8 @@ final class Game: ObservableObject {
     @AppStorage("hintsUsedToday") private var hintsUsedToday = 0
     @AppStorage("lastHintResetDate") private var lastHintResetDate = ""
     @AppStorage("highlightsEnabled") private var highlightsEnabled = true
-    
+    @AppStorage("highlightLinesEnabled") private var highlightLinesEnabled = false
+    @AppStorage("isPremium") private var isPremium = false
     
     var timer: GameTimer
     
@@ -152,7 +153,21 @@ final class Game: ObservableObject {
         remainingHints = max(0, 3 - hintsUsedToday)
     }
     
-    
+    func coordinatesOfAllSameValue() -> [CellCoordinate] {
+        guard highlightsEnabled, isPremium else { return [] }
+        guard let selected = selectedCell else { return [] }
+        let val = grid[selected.row][selected.col].value
+        guard val != 0 else { return [] }
+        var coords: [CellCoordinate] = []
+        for r in 0..<9 {
+            for c in 0..<9 {
+                if grid[r][c].value == val {
+                    coords.append(CellCoordinate(row: r, col: c))
+                }
+            }
+        }
+        return coords
+    }
     
     func restart() {
         for row in 0..<9 {
@@ -407,25 +422,46 @@ final class Game: ObservableObject {
             hintsUsedToday = 0
         }
     }
-   
     private func updateHighlights(row: Int, col: Int) {
         highlightedCells = []
         
-        for i in 0..<9 {
-            highlightedCells.insert(CellCoordinate(row: row, col: i))
-            highlightedCells.insert(CellCoordinate(row: i, col: col))
+        let selectedValue = grid[row][col].value
+        var duplicateCoords: [CellCoordinate] = []
+        
+        let startRow = (row / 3) * 3
+        let startCol = (col / 3) * 3
+        for r in startRow..<startRow+3 {
+            for c in startCol..<startCol+3 {
+                highlightedCells.insert(CellCoordinate(row: r, col: c))
+            }
         }
 
-        if highlightsEnabled {
-            let selectedValue = grid[row][col].value
-            if selectedValue != 0 {
-                for r in 0..<9 {
-                    for c in 0..<9 {
-                        if grid[r][c].value == selectedValue {
-                            highlightedCells.insert(CellCoordinate(row: r, col: c))
-                        }
+        // Подсвечиваем одинаковые цифры (только фон)
+        if highlightsEnabled, selectedValue != 0 {
+            for r in 0..<9 {
+                for c in 0..<9 {
+                    if grid[r][c].value == selectedValue {
+                        duplicateCoords.append(CellCoordinate(row: r, col: c))
                     }
                 }
+            }
+            // Просто выделяем блоки
+            highlightedCells.formUnion(duplicateCoords)
+        }
+
+        // Если включен Highlight Lines (и премиум), то делаем линии
+        if highlightLinesEnabled, isPremium, selectedValue != 0 {
+            for dup in duplicateCoords {
+                for i in 0..<9 {
+                    highlightedCells.insert(CellCoordinate(row: dup.row, col: i))
+                    highlightedCells.insert(CellCoordinate(row: i, col: dup.col))
+                }
+            }
+        } else {
+            // Стандартная линия только для выбранной клетки
+            for i in 0..<9 {
+                highlightedCells.insert(CellCoordinate(row: row, col: i))
+                highlightedCells.insert(CellCoordinate(row: i, col: col))
             }
         }
     }
