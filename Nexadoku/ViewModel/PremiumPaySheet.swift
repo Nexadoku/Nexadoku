@@ -4,6 +4,7 @@ import SwiftUI
 struct PremiumPaySheet: View {
     @EnvironmentObject var storeManager: StoreManager
     @Environment(\.dismiss) var dismiss
+    
     let stars: [StarBackgroundStar] = (0..<50).map { _ in
         StarBackgroundStar(
             x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
@@ -61,12 +62,7 @@ struct PremiumPaySheet: View {
                 .padding(.horizontal, 16)
 
                 Button(action: {
-                    Task {
-                        await storeManager.purchasePremium()
-                        if storeManager.isPurchased {
-                            dismiss()
-                        }
-                    }
+                    Task { await storeManager.purchasePremium() }
                 }) {
                     Text(storeManager.isPurchased ? "Purchased" : "Buy Now")
                         .font(.system(size: 20, weight: .bold))
@@ -81,6 +77,14 @@ struct PremiumPaySheet: View {
             }
             .padding()
             .presentationDetents([.medium, .large])
+        }
+        .onReceive(storeManager.$isPurchased) { purchased in
+            guard purchased else { return }
+            dismiss()
+        }
+        .onChange(of: storeManager.isPurchased) { purchased in
+            guard purchased else { return }
+            dismiss()
         }
     }
 }

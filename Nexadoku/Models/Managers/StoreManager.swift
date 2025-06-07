@@ -4,20 +4,25 @@ import Foundation
 import StoreKit
 
 @MainActor
-class StoreManager: ObservableObject {
+final class StoreManager: ObservableObject {
     @Published var premiumProduct: Product?
     @Published var isPurchased: Bool = false
+    @AppStorage("isPremium") private var isPremium = false
     private let productID = "lifetime_premium"
     
+    private var updatesTask: Task<Void, Never>? = nil
+
     init() {
         Task { await loadProduct() }
         Task { await checkPurchased() }
+        startTransactionUpdatesListener()
     }
     
     func loadProduct() async {
         do {
             let storeProducts = try await Product.products(for: [productID])
             premiumProduct = storeProducts.first
+            print("Fetched product: \(storeProducts)")
         } catch {
             print("Error loading product: \(error)")
         }
@@ -45,16 +50,29 @@ class StoreManager: ObservableObject {
     func checkPurchased() async {
         for await result in Transaction.currentEntitlements {
             if case .verified(let signedType) = result,
-                signedType.productID == productID {
-                    await setPremiumPurchased()
-                    break
-                }
+               signedType.productID == productID {
+                await setPremiumPurchased()
             }
+        }
     }
     
-    @AppStorage("isPremium") private var isPremium = false
-    private func setPremiumPurchased() {
+    private func setPremiumPurchased() async {
         isPremium = true
         isPurchased = true
+    }
+
+    private func startTransactionUpdatesListener() {
+        updatesTask = Task.detached { [weak self] in
+            for await update in Transaction.updates {
+                if case .verified(let transaction) = update,
+                   transaction.productID == self?.productID {
+                    await self?.setPremiumPurchased()
+                }
+            }
+        }
+    }
+    
+    deinit {
+        updatesTask?.cancel()
     }
 }
