@@ -69,17 +69,14 @@ struct GameView: View {
                     // Иконка или арт — можешь любую
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 44))
-                        .foregroundStyle(
-                            LinearGradient(colors: [.purple, .red], startPoint: .top, endPoint: .bottom)
-                        )
-                        .shadow(color: .purple, radius: 10)
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
                         .padding(.top, 8)
 
                     Text("Exit Game?")
                         .font(.system(size: 28, weight: .heavy, design: .rounded))
-                        .foregroundStyle(
-                            LinearGradient(colors: [.red, .purple], startPoint: .top, endPoint: .bottom)
-                        )
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
 
                     Text("Are you sure you want to exit the game?")
                         .font(.system(size: 17, weight: .medium))
@@ -95,10 +92,8 @@ struct GameView: View {
                             Text("Cancel")
                                 .font(.system(size: 20, weight: .bold))
                                 .frame(width: 120, height: 48)
-                                .background(
-                                    LinearGradient(colors: [.purple], startPoint: .leading, endPoint: .trailing)
-                                )
-                                .foregroundColor(.white)
+                                .background(.white)
+                                .foregroundColor(.purple)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
 
@@ -110,11 +105,10 @@ struct GameView: View {
                             Text("Exit")
                                 .font(.system(size: 20, weight: .bold))
                                 .frame(width: 120, height: 48)
-                                .background(
-                                    LinearGradient(colors: [.red], startPoint: .leading, endPoint: .trailing)
-                                )
+                                .background(.purple)
                                 .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .shadow(radius: 10)
                         }
                     }
                     .padding(.bottom, 6)
@@ -123,7 +117,7 @@ struct GameView: View {
                 .padding(.horizontal, 24)
                 .background(
                     LinearGradient(
-                        colors: [Color.purple.opacity(0.93), Color.black.opacity(0.96)],
+                        colors: [Color.purple.opacity(0.93), Color.purple.opacity(0.96)],
                         startPoint: .top, endPoint: .bottom
                     )
                     .shadow(color: .purple.opacity(0.6), radius: 30, x: 0, y: 8)
@@ -167,6 +161,7 @@ struct GameView: View {
         
         .sheet(isPresented: $showQuickSettings) {
             GameQuickSettingsSheet()
+                .presentationDetents([.medium])
         }
     }
 

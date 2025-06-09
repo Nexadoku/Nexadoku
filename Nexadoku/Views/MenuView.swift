@@ -238,7 +238,7 @@ struct ContinueAlert: View {
         VStack(spacing: 20) {
             Image(systemName: "gamecontroller.fill")
                 .font(.system(size: 44, weight: .bold))
-                .foregroundColor(.purple)
+                .foregroundColor(.white)
                 .shadow(radius: 16)
                 .padding(.top, 6)
 
@@ -265,10 +265,10 @@ struct ContinueAlert: View {
                 Button(action: onContinue) {
                     Text("Continue")
                         .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.white)
+                        .foregroundColor(.purple)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(Color.purple)
+                        .background(Color.white)
                         .cornerRadius(14)
                 }
             }
@@ -278,7 +278,7 @@ struct ContinueAlert: View {
         .background(
             RoundedRectangle(cornerRadius: 35)
                 .fill(
-                    LinearGradient(colors: [.black, .purple], startPoint: .bottomTrailing, endPoint: .topLeading)
+                    LinearGradient(colors: [.purple, .purple], startPoint: .bottomTrailing, endPoint: .topLeading)
                 )
                 .shadow(radius: 20)
                 .overlay(

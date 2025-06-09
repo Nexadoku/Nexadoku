@@ -157,13 +157,9 @@ struct LevelSelectionView: View {
                         if title == .legend {
                             // Premium lock
                             HStack(spacing: 6) {
-                                Image(systemName: "lock.fill")
-                                    .foregroundStyle(
-                                        LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                    )
                                 Text("Premium")
                                     .foregroundStyle(
-                                        LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        LinearGradient(colors: [.purple, .white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
                                     )
                                     .font(.caption.bold())
                             }
