@@ -3,6 +3,7 @@ import SwiftUI
 
 struct StatsPieChart: View {
     let stats: GameStats
+    var animatedPercent: Double
     
     var winPercent: Double { stats.winPercentage }
     var flawlessPercent: Double {
@@ -15,11 +16,11 @@ struct StatsPieChart: View {
     var body: some View {
         ZStack {
             Circle()
-                .trim(from: 0, to: CGFloat(losePercent / 100))
+                .trim(from: 0, to: CGFloat(animatedPercent * (losePercent / 100)))
                 .stroke(Color.gray.opacity(0.3), lineWidth: 26)
                 .rotationEffect(.degrees(-90))
             Circle()
-                .trim(from: 0, to: CGFloat(winPercent / 100))
+                .trim(from: 0, to: CGFloat(animatedPercent * (winPercent / 100)))
                 .stroke(
                     LinearGradient(colors: [.purple, .indigo], startPoint: .top, endPoint: .bottom),
                     style: StrokeStyle(lineWidth: 26, lineCap: .round)
@@ -27,7 +28,7 @@ struct StatsPieChart: View {
                 .rotationEffect(.degrees(-90))
             
             Circle()
-                .trim(from: 0, to: CGFloat(flawlessPercent / 100))
+                .trim(from: 0, to: CGFloat(animatedPercent * (flawlessPercent / 100)))
                 .stroke(
                     LinearGradient(colors: [.yellow, .green], startPoint: .top, endPoint: .bottom),
                     style: StrokeStyle(lineWidth: 10, lineCap: .round)

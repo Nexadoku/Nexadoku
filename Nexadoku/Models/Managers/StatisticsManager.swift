@@ -32,6 +32,10 @@ class StatisticsManager: ObservableObject {
             currentStats.totalWins += 1
             currentStats.currentWinningStreak += 1
             currentStats.bestWinningStreak = max(currentStats.bestWinningStreak, currentStats.currentWinningStreak)
+            
+            let today = Calendar.current.startOfDay(for: Date())
+            currentStats.winDates.append(today)
+            
         } else {
             currentStats.currentWinningStreak = 0
         }
