@@ -61,7 +61,7 @@ struct RewardsView: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             ScrollView {
                 VStack(spacing: 18) {
                     HStack {
@@ -81,19 +81,15 @@ struct RewardsView: View {
                             }
                         } label : {
                             HStack {
+                                Image("coin")
+                                    .resizable()
+                                    .frame(width: 28, height: 28)
                                 Text("\(totalPoints)")
                                     .foregroundColor(.white)
                                     .font(.system(size: 19, weight: .heavy))
                                     .shadow(radius: 4)
-                                Image("coin")
-                                    .resizable()
-                                    .frame(width: 28, height: 28)
                             }
                             .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(.purple, lineWidth: 2)
-                            )
                         }
                     }
                     .padding(.top, 12)
@@ -117,7 +113,7 @@ struct RewardsView: View {
             .blur(radius: selectedTrophy != nil ? 3 : 0)
             
             if showPointsSheet {
-                LinearGradient(colors: [.purple.opacity(0.3), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .transition(.opacity)
                     .zIndex(20)
@@ -153,9 +149,9 @@ struct RewardsView: View {
                     selectedTrophy = nil
                 }
             }
+            .onAppear { checkAndAwardPoints() }
+            .animation(.easeInOut(duration: 0.35), value: selectedTrophy)
         }
-        .onAppear { checkAndAwardPoints() }
-        .animation(.easeInOut(duration: 0.35), value: selectedTrophy)
         .navigationBarBackButtonHidden(true)
     }
 }

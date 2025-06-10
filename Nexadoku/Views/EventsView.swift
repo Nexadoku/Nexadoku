@@ -8,7 +8,7 @@ struct EventsView: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             ScrollView {
                 VStack(spacing: 35) {
                     HStack {

@@ -8,14 +8,15 @@ struct PointsAlert: View {
         VStack(spacing: 24) {
             Image("coin")
                 .resizable()
-                .frame(width: 54, height: 54)
-                .shadow(radius: 8)
+                .frame(width: 100, height: 100)
+                .shadow(color: .white, radius: 50)
             
-            Text("What are Points?")
-                .font(.title2.bold())
-                .foregroundColor(.purple)
-            
-            Text("""
+            VStack(spacing: 5) {
+                Text("What are Points?")
+                    .font(.title2.bold())
+                    .foregroundColor(.white)
+                
+                Text("""
 Earn points by unlocking trophies!
 
 • Bronze Trophy: +10 points  
@@ -28,11 +29,12 @@ Points are kept forever and show your progress.
                 .foregroundColor(.white)
                 .font(.body)
                 .padding(.horizontal)
-            
-            Text("Coming soon: You’ll be able to spend points on exclusive content, customization, and more!")
-                .multilineTextAlignment(.center)
-                .foregroundColor(.purple)
-                .font(.body.weight(.medium))
+                
+                Text("Coming soon: You’ll be able to spend points on exclusive content, customization, and more!")
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.white)
+                    .font(.body.weight(.medium))
+            }
             
             Button(action: {
                            onClose()
@@ -42,7 +44,7 @@ Points are kept forever and show your progress.
                                .foregroundColor(.white)
                                .frame(maxWidth: .infinity)
                                .padding()
-                               .background(Color.purple)
+                               .background(Color.indigo)
                                .cornerRadius(18)
                        }
                    }
@@ -50,7 +52,7 @@ Points are kept forever and show your progress.
                    .padding(.horizontal, 28)
                    .background(
                        RoundedRectangle(cornerRadius: 35)
-                           .fill(Color.black)
+                           .fill(Color.purple)
                            .shadow(radius: 22)
                    )
                    .frame(maxWidth: 370)

@@ -30,13 +30,6 @@ struct RewardRow: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 54, height: 54)
-                        .opacity(trophy.isUnlocked ? 1 : 0.23)
-                    if !trophy.isUnlocked {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundStyle(LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .shadow(radius: 4)
-                    }
                 }
                 .onTapGesture { onTap() }
             }
@@ -45,6 +38,7 @@ struct RewardRow: View {
                 .frame(height: 8)
                 .padding(.horizontal, 2)
                 .padding(.bottom, 2)
+                .shadow(radius: 20)
             
             Button(action: {
                 if trophy.isUnlocked && !claimed {
@@ -71,12 +65,13 @@ struct RewardRow: View {
                 .background(buttonBackground)
                 .cornerRadius(15)
                 .shadow(color: .purple.opacity(trophy.isUnlocked && !claimed ? 0.28 : 0), radius: 5)
+                .shadow(radius: 20)
             }
             .disabled(!trophy.isUnlocked || claimed)
         }
         .padding(16)
         .background(
-            LinearGradient(colors: [Color.purple.opacity(0.22), Color.black.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
         )
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: .purple.opacity(0.18), radius: 12, x: 0, y: 6)
@@ -85,18 +80,18 @@ struct RewardRow: View {
     private var buttonBackground: some View {
         Group {
             if claimed {
-                Color.black.opacity(0.8)
+                Color.gray
             } else if trophy.isUnlocked {
-                Color.purple
+                Color.green
             } else {
-                Color.gray.opacity(0.2)
+                Color.indigo
             }
         }
     }
     
     private var buttonTextColor: Color {
         if claimed || !trophy.isUnlocked {
-            return .purple
+            return .white
         } else {
             return .white
         }

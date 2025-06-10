@@ -15,20 +15,18 @@ struct PauseOverlay: View {
         VStack(spacing: 30) {
             Text("Paused")
                 .font(.system(size: 40, weight: .heavy))
-                .foregroundStyle(LinearGradient(colors: [.white, .white.opacity(0.9)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                .foregroundStyle(LinearGradient(colors: [.white], startPoint: .topLeading, endPoint: .bottomTrailing))
              
             VStack(spacing: 16) {
                 overlayItem(title: "Level", value: level.rawValue)
-                Divider().background(Color.white.opacity(0.4))
                 overlayItem(title: "Mistakes", value: "\(mistakes)/3")
-                Divider().background(Color.white.opacity(0.4))
                 overlayItem(title: "Time", value: timeFormatted(pausedTime))
             }
             .padding(.horizontal, 32)
             .padding(.vertical, 24)
             .background(
                 LinearGradient(
-                    colors: [.black.opacity(0.4), .purple.opacity(0.4)],
+                    colors: [.purple],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing)
             .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))

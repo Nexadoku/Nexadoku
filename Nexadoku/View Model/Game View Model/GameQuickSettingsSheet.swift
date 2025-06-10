@@ -21,26 +21,31 @@ struct GameQuickSettingsSheet: View {
             
             Text("Quick Settings")
                 .font(.title2.bold())
-                .foregroundColor(.purple)
+                .foregroundColor(.white)
             
             Toggle("Sounds", isOn: $soundEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+            
             Toggle("Vibration", isOn: $vibrationEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+           
             Toggle("Mistake Limit", isOn: $mistakesEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+           
             Toggle("Timer", isOn: $timerEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+           
             Toggle("Highlight Duplicates", isOn: $highlightsEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+          
             Toggle("Highlight Lines", isOn: $highlightLinesEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
+                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .indigo : .gray))
                 .disabled(!isPremium)
             
             Spacer()
@@ -49,16 +54,16 @@ struct GameQuickSettingsSheet: View {
                 dismiss()
             }
             .font(.headline)
-            .foregroundColor(.white)
+            .foregroundColor(.purple)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(.purple)
+            .background(.white)
             .cornerRadius(18)
             .padding(.bottom, 18)
         }
         .padding()
         .background(
-            DarkBackground()
+            .purple
         )
         .presentationDetents([.medium, .large])
     }

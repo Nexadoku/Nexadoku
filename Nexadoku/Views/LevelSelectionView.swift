@@ -16,7 +16,7 @@ struct LevelSelectionView: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
                 .animation(Animation.easeInOut(duration: 3).repeatForever(), value: animateBackground)
                 .onAppear {
                     animateBackground.toggle()
@@ -202,13 +202,17 @@ struct LevelSelectionView: View {
                     
                     HStack(alignment: .top, spacing: 6) {
                         Image(systemName: "sparkles")
-                            .foregroundColor(.purple)
+                            .foregroundStyle(
+                                LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                            )
                             .font(.system(size: 20))
                             .padding(.top, 2)
                         VStack(alignment: .leading, spacing: 6) {
                             Text("Legend level")
                                 .font(.headline.bold())
-                                .foregroundColor(.purple)
+                                .foregroundStyle(
+                                    LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                )
                             Text("""
                                 The **Legend** level is only available for Premium users.
                                 Buy Premium to challange yourself with the most epic Sudoku puzzles ever!
@@ -227,17 +231,17 @@ struct LevelSelectionView: View {
             }) {
                 Text("Close")
                     .font(.headline.bold())
-                    .foregroundColor(.white)
+                    .foregroundColor(.purple)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(.purple)
+                    .background(.white)
                     .cornerRadius(16)
                     .shadow(radius: 10)
             }
             .padding(.horizontal)
             .padding(.bottom, 20)
         }
-        .background(LinearGradient(colors: [.black, .purple.opacity(0.8)], startPoint: .top, endPoint: .bottom))
+        .background(LinearGradient(colors: [.purple], startPoint: .top, endPoint: .bottom))
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .frame(maxWidth: .infinity)
         .frame(height: 400)

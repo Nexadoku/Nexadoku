@@ -9,7 +9,7 @@ struct HelpView: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             VStack(spacing: 0) {
                 TabView(selection: $page) {
                     ForEach(Array(steps.enumerated()), id: \.offset) { idx, step in

@@ -13,11 +13,11 @@ struct BlurView: UIViewRepresentable {
     }
 }
 
-struct SystemDarkBackground: View {
+struct SystemBackground: View {
     var body: some View {
         ZStack {
             
-            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.indigo, .purple], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
             BlurView(style: .systemChromeMaterialDark)
@@ -36,7 +36,7 @@ struct SystemDarkBackground: View {
 
 struct SystemDarkBackgroundPreviews: PreviewProvider {
     static var previews: some View {
-        SystemDarkBackground()
+        SystemBackground()
     }
 }
 

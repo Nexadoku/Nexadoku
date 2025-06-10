@@ -10,7 +10,7 @@ struct AboutPremium: View {
     let currentPremiumFeatures: [PremiumFeature] = [
         .init(title: "No Ads", description: "Enjoy a clean game with zero ads — no banners, no popups, just pure focus."),
         .init(title: "Special Rewards", description: "Earn exclusive trophies and rewards only available to Premium users."),
-        .init(title: "Epic Level", description: "Get access to the Epic difficulty mode, available only with Premium."),
+        .init(title: "Legend Level", description: "Get access to the Epic difficulty mode, available only with Premium."),
         .init(title: "Smart Highlight Lines", description: "Enable Highlight Lines to automatically show all matching lines on the board.")
     ]
 
@@ -51,8 +51,8 @@ struct AboutPremium: View {
                         .scaledToFit()
                         .frame(width: 120, height: 120)
                         .cornerRadius(30)
-                        .shadow(color: .purple, radius: 10, x: 10, y: -10)
-                        .shadow(color: .indigo, radius: 10, x: -10, y: 10)
+                        .shadow(color: .purple, radius: 10)
+         
 
                     // Блок текущих фичей
                     VStack(alignment: .leading, spacing: 18) {
@@ -130,6 +130,7 @@ struct AboutPremium: View {
             .ignoresSafeArea(.keyboard)
             .sheet(isPresented: $showPaySheet) {
                 PremiumPaySheet()
+                    .presentationDetents([.medium])
                     .environmentObject(storeManager)
             }
         }

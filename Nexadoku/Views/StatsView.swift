@@ -18,7 +18,7 @@ struct StatsView: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             ScrollView {
                 VStack(spacing: 30) {
                     HStack {
@@ -137,7 +137,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple.opacity(0.5), .indigo.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .cornerRadius(20)
             )
@@ -153,7 +153,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple.opacity(0.5), .indigo.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .cornerRadius(20)
             )
@@ -169,7 +169,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple.opacity(0.5), .indigo.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .cornerRadius(20)
             )

@@ -25,7 +25,7 @@ struct GameView: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
                 .blur(radius: isPaused ? 10 : 0)
 
             VStack(spacing: .zero) {
@@ -161,7 +161,7 @@ struct GameView: View {
         
         .sheet(isPresented: $showQuickSettings) {
             GameQuickSettingsSheet()
-                .presentationDetents([.medium])
+                .presentationDetents([.medium,])
         }
     }
 

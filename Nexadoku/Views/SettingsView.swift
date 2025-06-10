@@ -16,7 +16,7 @@ struct SettingsView: View {
     
     var body: some View {
         ZStack {
-           DarkBackground()
+           SystemBackground()
             VStack {
                 ScrollView {
                     VStack(spacing: 30) {
@@ -35,7 +35,7 @@ struct SettingsView: View {
                             
                             Spacer()
                         }
-                        .padding()
+                        .padding(.horizontal)
                         
                         VStack(alignment: .leading, spacing: 10) {
                             VStack {
@@ -44,7 +44,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
                                 .padding()
                                 
                                 Toggle(isOn: $vibrationEnabled) {
@@ -52,7 +52,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
                                 .padding()
                                 
                                 Toggle(isOn: $timerEnabled) {
@@ -60,12 +60,14 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
                                 .padding()
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
                                     .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
+                                    .background(.purple)
+                                    .cornerRadius(20)
                             )
                             
                             .padding()
@@ -76,11 +78,13 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
                                         .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
+                                        .background(.purple)
+                                        .cornerRadius(20)
                                 )
                                 
                                 Text("Limit the number of possible mistakes to 3 per game")
@@ -96,11 +100,13 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
                                         .stroke(Color.purple, lineWidth: 1.5)
+                                        .background(.purple)
+                                        .cornerRadius(20)
                                 )
                                     Text("Highlight repeating numbers in each row, column, and block.")
                                         .font(.system(size: 15))
@@ -115,11 +121,13 @@ struct SettingsView: View {
                                     .font(.system(size: 20, weight: .semibold))
                                     .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
+                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .indigo : .gray))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
                                         .stroke(Color.purple, lineWidth: 1.5)
+                                        .background(.purple)
+                                        .cornerRadius(20)
                                 )
                                 .disabled(!isPremium)
                                 

@@ -8,7 +8,7 @@ struct PrivacyPolicy: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
                 .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
@@ -42,34 +42,34 @@ struct PrivacyPolicy: View {
                         Group {
                             Text("1. No Data Collection")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("We do not collect, store, or share any personal data. All gameplay data is stored locally on your device.")
                             
                             Text("2. No Internet Connection Required")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("The app works fully offline. It doesn't require or use an internet connection.")
                             
                             Text("3. Third-Party Services")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("We do not use any third-party analytics, tracking, or advertising services.")
                             
                             Text("4. Children's Privacy")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("The app does not collect anu information and is safe for all ages.")
                         }
                         
                         Group {
                             Text("5. Changes to This Policy")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("We may update this Privacy Policy in the future. All changes will be displayed here.")
 
                             Text("6. Contact Us")
                                 .font(.headline)
-                                .foregroundColor(.purple)
+                                .foregroundColor(.white)
                             Text("If you have any questions or concerns, please contact us through the support section of the app.")
                         }
                     }
@@ -78,7 +78,7 @@ struct PrivacyPolicy: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.black.opacity(0.3))
+                            .fill(Color.purple)
                             .blur(radius: 0.2)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)

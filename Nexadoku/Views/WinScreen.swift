@@ -17,8 +17,7 @@ struct WinScreen: View {
     @State private var digitparticles: [DigitParticle] = []
 
     private let colors: [Color] = [
-        .purple.opacity(0.3), .purple.opacity(0.4), .purple.opacity(0.5), .purple.opacity(0.6),
-        Color.purple.opacity(0.7), Color.purple.opacity(0.8), Color.purple.opacity(0.9), .purple
+        .white
     ]
 
     private func timeFormatted(_ totalSeconds: Int) -> String {
@@ -29,7 +28,7 @@ struct WinScreen: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             
             ForEach(digitparticles) { particle in
                 Text(particle.digit)
@@ -117,7 +116,7 @@ struct WinScreen: View {
                 offset: .zero,
                 opacity: 1,
                 scale: 1,
-                color: .purple
+                color: .white
             )
 
             digitparticles.append(particle)
@@ -156,7 +155,7 @@ struct WinScreen: View {
         .padding()
         .background(
             LinearGradient(
-                colors: [.purple.opacity(0.4), .black.opacity(0.4)],
+                colors: [.purple],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -170,12 +169,12 @@ struct WinScreen: View {
         HStack {
             Text(title)
                 .font(.system(size: 18, weight: .medium, design: .rounded))
-                .foregroundColor(.white.opacity(0.6))
+                .foregroundColor(.white)
             Spacer()
             Text(value)
                 .font(.system(size: 20, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
-                .shadow(color: .white.opacity(0.8), radius: 4, x: 0, y: 2)
+                .shadow(color: .white.opacity(0.5), radius: 4, x: 0, y: 2)
         }
     }
 }

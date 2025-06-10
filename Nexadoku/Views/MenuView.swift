@@ -30,7 +30,7 @@ struct MenuView: View {
 
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             ScrollView {
                 VStack(spacing: 30) {
                     HStack(spacing: 0) {
@@ -197,14 +197,9 @@ struct MenuView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(.black.opacity(0.3))
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 25)
-                    .stroke(.purple, lineWidth: 3)
-            )
+            .background(.indigo)
             .cornerRadius(25)
-            .shadow(color: .purple, radius: 20)
+            .shadow(radius: 10)
         }
         .padding(.horizontal)
     }
@@ -259,16 +254,17 @@ struct ContinueAlert: View {
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(.black)
+                        .background(.white)
                         .cornerRadius(14)
                 }
                 Button(action: onContinue) {
                     Text("Continue")
                         .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.purple)
+                        .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(Color.white)
+                        .background(Color.purple)
+                        .shadow(radius: 15)
                         .cornerRadius(14)
                 }
             }

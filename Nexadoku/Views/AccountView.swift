@@ -12,7 +12,7 @@ struct AccountView: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             ScrollView {
                 VStack(spacing: 30) {
                     premiumButton(title: "Statistics", icon: "trophy.fill") {

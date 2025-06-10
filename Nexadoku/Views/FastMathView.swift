@@ -10,7 +10,7 @@ struct MathPuzzleView: View {
     
     var body: some View {
         ZStack {
-            SystemDarkBackground()
+            SystemBackground()
             
             VStack {
                 HStack {

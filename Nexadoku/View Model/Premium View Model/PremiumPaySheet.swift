@@ -17,20 +17,20 @@ struct PremiumPaySheet: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.purple.ignoresSafeArea()
             ForEach(stars) { star in
                 Image(systemName: "star.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: star.size, height: star.size)
-                    .foregroundColor(Color.purple.opacity(star.opacity))
+                    .foregroundColor(Color.white.opacity(star.opacity))
                     .rotationEffect(.degrees(star.angle))
                     .position(x: star.x, y: star.y)
             }
             VStack(spacing: 24) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 48, weight: .bold))
-                    .foregroundColor(.purple)
+                    .foregroundColor(.white)
                     .shadow(radius: 18)
                     .padding(.top, 8)
 
@@ -51,14 +51,15 @@ struct PremiumPaySheet: View {
                         Text("$14.99")
                             .bold()
                             .foregroundStyle(
-                                LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                LinearGradient(colors: [.white], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
                             .font(.system(size: 20))
                     }
                 }
                 .font(.system(size: 18))
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 18).fill(Color.purple.opacity(0.18)))
+                .background(RoundedRectangle(cornerRadius: 18).fill(LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)))
+                .shadow(radius: 20)
                 .padding(.horizontal, 16)
 
                 Button(action: {
@@ -66,10 +67,10 @@ struct PremiumPaySheet: View {
                 }) {
                     Text(storeManager.isPurchased ? "Purchased" : "Buy Now")
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(storeManager.isPurchased ? .purple : .white)
+                        .foregroundColor(storeManager.isPurchased ? .white : .purple)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(storeManager.isPurchased ? .gray : .purple)
+                        .background(storeManager.isPurchased ? .green : .white)
                         .cornerRadius(18)
                 }
                 .padding(.horizontal, 40)
