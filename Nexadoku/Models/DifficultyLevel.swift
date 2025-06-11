@@ -1,9 +1,3 @@
-//
-//  DifficultyLevel.swift
-//  SUDOKU
-//
-//  Created by Helter Skelter on 13/04/25.
-//
 
 import Foundation
 

@@ -44,7 +44,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                                 
                                 Toggle(isOn: $vibrationEnabled) {
@@ -52,7 +52,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                                 
                                 Toggle(isOn: $timerEnabled) {
@@ -60,13 +60,15 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
-                                    .background(.purple)
+                                    .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
+                                    .background(
+                                        LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                    )
                                     .cornerRadius(20)
                             )
                             
@@ -78,12 +80,14 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.5)
-                                        .background(.purple)
+                                        .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
+                                        .background(
+                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        )
                                         .cornerRadius(20)
                                 )
                                 
@@ -100,12 +104,14 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                                .toggleStyle(SwitchToggleStyle(tint: .purple))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.purple, lineWidth: 1.5)
-                                        .background(.purple)
+                                        .stroke(Color.purple, lineWidth: 3)
+                                        .background(
+                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        )
                                         .cornerRadius(20)
                                 )
                                     Text("Highlight repeating numbers in each row, column, and block.")
@@ -125,8 +131,10 @@ struct SettingsView: View {
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.purple, lineWidth: 1.5)
-                                        .background(.purple)
+                                        .stroke(Color.purple, lineWidth: 3)
+                                        .background(
+                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        )
                                         .cornerRadius(20)
                                 )
                                 .disabled(!isPremium)

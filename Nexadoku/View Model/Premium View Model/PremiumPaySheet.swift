@@ -17,25 +17,28 @@ struct PremiumPaySheet: View {
     
     var body: some View {
         ZStack {
-            Color.purple.ignoresSafeArea()
+            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
+            
+            BlurView(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
+            
             ForEach(stars) { star in
                 Image(systemName: "star.fill")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: star.size, height: star.size)
-                    .foregroundColor(Color.white.opacity(star.opacity))
+                    .foregroundColor(Color.purple.opacity(star.opacity))
                     .rotationEffect(.degrees(star.angle))
                     .position(x: star.x, y: star.y)
             }
             VStack(spacing: 24) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 48, weight: .bold))
-                    .foregroundColor(.white)
-                    .shadow(radius: 18)
+                    .foregroundColor(.purple)
+                    .shadow(color: .purple, radius: 18)
                     .padding(.top, 8)
 
-                Text("Lifetime Premium")
-                    .font(.system(size: 28, weight: .bold))
+                Text("LIFETIME PREMIUM")
+                    .font(.system(size: 28, weight: .heavy, design: .rounded))
                     .foregroundColor(.white)
                 Text("One payment. Forever Premium access. No subscriptions. No ads.")
                     .font(.system(size: 17, weight: .regular))
@@ -58,7 +61,7 @@ struct PremiumPaySheet: View {
                 }
                 .font(.system(size: 18))
                 .padding()
-                .background(RoundedRectangle(cornerRadius: 18).fill(LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)))
+                .background(RoundedRectangle(cornerRadius: 18).fill(LinearGradient(colors: [.purple.opacity(0.4), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing)))
                 .shadow(radius: 20)
                 .padding(.horizontal, 16)
 
@@ -67,10 +70,10 @@ struct PremiumPaySheet: View {
                 }) {
                     Text(storeManager.isPurchased ? "Purchased" : "Buy Now")
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(storeManager.isPurchased ? .white : .purple)
+                        .foregroundColor(storeManager.isPurchased ? .purple : .white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(storeManager.isPurchased ? .green : .white)
+                        .background(storeManager.isPurchased ? .black : .purple)
                         .cornerRadius(18)
                 }
                 .padding(.horizontal, 40)

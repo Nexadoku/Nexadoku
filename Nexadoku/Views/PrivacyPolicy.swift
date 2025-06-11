@@ -78,11 +78,13 @@ struct PrivacyPolicy: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 25)
-                            .fill(Color.purple)
+                            .fill(
+                                LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                            )
                             .blur(radius: 0.2)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(Color.purple.opacity(0.4), lineWidth: 0.5)
+                                    .stroke(Color.purple, lineWidth: 3)
                             )
                     )
                     .padding(.horizontal)

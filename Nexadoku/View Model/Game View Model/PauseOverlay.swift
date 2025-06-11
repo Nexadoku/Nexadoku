@@ -13,7 +13,7 @@ struct PauseOverlay: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Text("Paused")
+            Text("PAUSED")
                 .font(.system(size: 40, weight: .heavy))
                 .foregroundStyle(LinearGradient(colors: [.white], startPoint: .topLeading, endPoint: .bottomTrailing))
              
@@ -25,17 +25,14 @@ struct PauseOverlay: View {
             .padding(.horizontal, 32)
             .padding(.vertical, 24)
             .background(
-                LinearGradient(
-                    colors: [.purple],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing)
+                LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                )
             .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
-                    .stroke(.purple, lineWidth: 1.5)
+                    .stroke(.purple, lineWidth: 3)
                    )
             .cornerRadius(30)
-            )
             
             HStack {
                 Button(action: {

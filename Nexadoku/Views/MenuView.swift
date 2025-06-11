@@ -197,7 +197,10 @@ struct MenuView: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(.indigo)
+            .background(
+                LinearGradient(colors: [.black.opacity(0.3), .black.opacity(0.3)], startPoint: .bottomLeading, endPoint: .topTrailing)
+            )
+            .overlay(RoundedRectangle(cornerRadius: 25).stroke(.purple, lineWidth: 3))
             .cornerRadius(25)
             .shadow(radius: 10)
         }
@@ -233,7 +236,7 @@ struct ContinueAlert: View {
         VStack(spacing: 20) {
             Image(systemName: "gamecontroller.fill")
                 .font(.system(size: 44, weight: .bold))
-                .foregroundColor(.white)
+                .foregroundColor(.purple)
                 .shadow(radius: 16)
                 .padding(.top, 6)
 
@@ -251,10 +254,10 @@ struct ContinueAlert: View {
                 Button(action: onCancel) {
                     Text("Cancel")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.red)
+                        .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(.white)
+                        .background(.black)
                         .cornerRadius(14)
                 }
                 Button(action: onContinue) {
@@ -274,7 +277,7 @@ struct ContinueAlert: View {
         .background(
             RoundedRectangle(cornerRadius: 35)
                 .fill(
-                    LinearGradient(colors: [.purple, .purple], startPoint: .bottomTrailing, endPoint: .topLeading)
+                    LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
                 )
                 .shadow(radius: 20)
                 .overlay(

@@ -11,11 +11,11 @@ struct PointsAlert: View {
                 .frame(width: 100, height: 100)
                 .shadow(color: .white, radius: 50)
             
-            VStack(spacing: 5) {
-                Text("What are Points?")
-                    .font(.title2.bold())
+                Text("WHAT ARE POINTS?")
+                    .font(.system(size: 30, weight: .heavy))
                     .foregroundColor(.white)
-                
+            
+            VStack(spacing: 0) {
                 Text("""
 Earn points by unlocking trophies!
 
@@ -29,11 +29,14 @@ Points are kept forever and show your progress.
                 .foregroundColor(.white)
                 .font(.body)
                 .padding(.horizontal)
+                .padding(.bottom)
                 
-                Text("Coming soon: You’ll be able to spend points on exclusive content, customization, and more!")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .font(.body.weight(.medium))
+                VStack {
+                    Text("Coming soon: You’ll be able to spend points on exclusive content, customization, and more!")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.purple)
+                        .font(.body.weight(.medium))
+                }
             }
             
             Button(action: {
@@ -44,7 +47,7 @@ Points are kept forever and show your progress.
                                .foregroundColor(.white)
                                .frame(maxWidth: .infinity)
                                .padding()
-                               .background(Color.indigo)
+                               .background(Color.purple)
                                .cornerRadius(18)
                        }
                    }
@@ -52,7 +55,9 @@ Points are kept forever and show your progress.
                    .padding(.horizontal, 28)
                    .background(
                        RoundedRectangle(cornerRadius: 35)
-                           .fill(Color.purple)
+                           .fill(
+                            LinearGradient(colors: [.purple, .black], startPoint: .top, endPoint: .bottom)
+                           )
                            .shadow(radius: 22)
                    )
                    .frame(maxWidth: 370)

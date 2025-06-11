@@ -8,7 +8,7 @@ struct LineChartExplanationSheet: View {
             VStack(spacing: 18) {
                 Text("Line Chart")
                     .font(.system(size: 30, weight: .heavy, design: .rounded))
-                    .foregroundColor(.purple)
+                    .foregroundColor(.white)
                     .padding(.top, 24)
                 
                 StatsLineChart(stats: stats)
@@ -25,6 +25,6 @@ struct LineChartExplanationSheet: View {
             }
         }
         .padding()
-        .background(DarkBackground().ignoresSafeArea())
+        .background(Color.purple.ignoresSafeArea())
     }
 }

@@ -17,7 +17,7 @@ struct SystemBackground: View {
     var body: some View {
         ZStack {
             
-            LinearGradient(colors: [.indigo, .purple], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
             BlurView(style: .systemChromeMaterialDark)

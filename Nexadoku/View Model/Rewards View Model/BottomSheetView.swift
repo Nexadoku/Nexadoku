@@ -18,7 +18,7 @@ struct BottomSheetView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 150, height: 150)
-                                .shadow(color: .white, radius: 30)
+                                .shadow(color: .purple, radius: 30)
                                 .shadow(color: .white, radius: 60)
                             Text("\(trophy.level.rawValue.capitalized) – \(trophy.type.rawValue.capitalized) Trophy")
                                 .font(.title3.bold())
@@ -42,13 +42,16 @@ struct BottomSheetView: View {
                                     .font(.headline)
                                     .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(Color.indigo)
+                                    .background(Color.purple)
                                     .foregroundColor(.white)
                                     .clipShape(RoundedRectangle(cornerRadius: 20))
                             }
                             .padding(.horizontal)
                         }
-                        .background(Color.purple.ignoresSafeArea())
+                        .background(
+                            LinearGradient(colors: [.purple.opacity(0.5), .black], startPoint: .top, endPoint: .bottom)
+                        )
+                        .ignoresSafeArea()
                     }
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottom)

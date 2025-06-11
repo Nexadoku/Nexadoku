@@ -61,7 +61,7 @@ struct StatsView: View {
                     .pickerStyle(.segmented)
                     .colorScheme(.dark)
                     .background(
-                        LinearGradient(colors: [.purple, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5), .purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
                     .cornerRadius(10)
                     .opacity(animate ? 1 : 0)
@@ -137,7 +137,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )
@@ -153,7 +153,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )
@@ -169,7 +169,7 @@ struct StatsView: View {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(.purple, lineWidth: 5)
                     .background(
-                        LinearGradient(colors: [.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )

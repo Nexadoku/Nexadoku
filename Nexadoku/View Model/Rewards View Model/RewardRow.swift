@@ -71,7 +71,7 @@ struct RewardRow: View {
         }
         .padding(16)
         .background(
-            LinearGradient(colors: [Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(colors: [Color.purple.opacity(0.5), Color.black], startPoint: .topLeading, endPoint: .bottomTrailing)
         )
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: .purple.opacity(0.18), radius: 12, x: 0, y: 6)
@@ -84,7 +84,7 @@ struct RewardRow: View {
             } else if trophy.isUnlocked {
                 Color.green
             } else {
-                Color.indigo
+                Color.purple
             }
         }
     }

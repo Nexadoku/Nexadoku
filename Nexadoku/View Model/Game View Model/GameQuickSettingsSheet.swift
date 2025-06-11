@@ -10,61 +10,41 @@ struct GameQuickSettingsSheet: View {
     @AppStorage("highlightsEnabled") private var highlightsEnabled: Bool = true
     @AppStorage("highlightLinesEnabled") private var highlightLinesEnabled: Bool = false
     @AppStorage("isPremium") private var isPremium: Bool = false
-    @Environment(\.dismiss) var dismiss
+    var onClose: (() -> Void)? = nil
     
     var body: some View {
         VStack(spacing: 20) {
-            Capsule()
-                .frame(width: 44, height: 6)
-                .foregroundColor(.gray.opacity(0.3))
-                .padding(.top, 14)
             
-            Text("Quick Settings")
-                .font(.title2.bold())
+            Text("QUICK SETTINGS")
+                .font(.system(size: 30, weight: .heavy, design: .rounded))
                 .foregroundColor(.white)
             
             Toggle("Sounds", isOn: $soundEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
             
             Toggle("Vibration", isOn: $vibrationEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
            
             Toggle("Mistake Limit", isOn: $mistakesEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
            
             Toggle("Timer", isOn: $timerEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
            
             Toggle("Highlight Duplicates", isOn: $highlightsEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: .indigo))
+                .toggleStyle(SwitchToggleStyle(tint: .purple))
           
             Toggle("Highlight Lines", isOn: $highlightLinesEnabled)
                 .foregroundColor(.white)
-                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .indigo : .gray))
+                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
                 .disabled(!isPremium)
             
-            Spacer()
-            
-            Button("Close") {
-                dismiss()
-            }
-            .font(.headline)
-            .foregroundColor(.purple)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(.white)
-            .cornerRadius(18)
-            .padding(.bottom, 18)
         }
-        .padding()
-        .background(
-            .purple
-        )
-        .presentationDetents([.medium, .large])
+        .padding(22)
     }
 }

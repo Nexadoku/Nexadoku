@@ -111,7 +111,7 @@ struct AboutPremium: View {
                     .background(
                         storeManager.isPurchased
                         ? LinearGradient(colors: [.gray.opacity(0.5), .gray.opacity(0.8)], startPoint: .leading, endPoint: .trailing)
-                        : LinearGradient(colors: [.purple, .indigo], startPoint: .leading, endPoint: .trailing)
+                        : LinearGradient(colors: [.purple], startPoint: .leading, endPoint: .trailing)
                     )
                     .cornerRadius(24)
                     .shadow(color: storeManager.isPurchased ? .gray : .purple.opacity(0.6), radius: 10, x: 0, y: 8)

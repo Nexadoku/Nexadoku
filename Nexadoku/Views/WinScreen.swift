@@ -155,13 +155,13 @@ struct WinScreen: View {
         .padding()
         .background(
             LinearGradient(
-                colors: [.purple],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                colors: [.black.opacity(0.5), .purple.opacity(0.5)],
+                startPoint: .top,
+                endPoint: .bottom
             )
         )
         .cornerRadius(20)
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.white.opacity(0.1), lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.purple, lineWidth: 3))
         .shadow(radius: 10)
     }
 

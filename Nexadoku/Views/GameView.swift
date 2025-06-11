@@ -55,6 +55,31 @@ struct GameView: View {
                     }
                 )
             }
+            
+            if showQuickSettings {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .zIndex(101)
+                    .onTapGesture {
+                        withAnimation(.easeOut(duration: 0.28)) { showQuickSettings = false }
+                    }
+                GameQuickSettingsSheet()
+                    .frame(maxWidth: 300, maxHeight: 500)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30, style: .continuous)
+                            .fill(
+                                LinearGradient(
+                                    colors: [.purple.opacity(0.92), .black.opacity(0.98)], startPoint: .topLeading, endPoint: .bottomTrailing
+                                )
+                            )
+                            .shadow(color: .purple.opacity(0.9), radius: 30, x: 0, y: 8)
+                    )
+                    .padding(.horizontal, 32)
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(102)
+            }
+            
             if showExitConfirmation {
                 Color.black.opacity(0.5)
                     .ignoresSafeArea()
@@ -69,8 +94,8 @@ struct GameView: View {
                     // Иконка или арт — можешь любую
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 44))
-                        .foregroundColor(.white)
-                        .shadow(radius: 10)
+                        .foregroundColor(.purple)
+                        .shadow(color: .purple, radius: 10)
                         .padding(.top, 8)
 
                     Text("Exit Game?")
@@ -92,8 +117,8 @@ struct GameView: View {
                             Text("Cancel")
                                 .font(.system(size: 20, weight: .bold))
                                 .frame(width: 120, height: 48)
-                                .background(.white)
-                                .foregroundColor(.purple)
+                                .background(.purple)
+                                .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
 
@@ -105,7 +130,7 @@ struct GameView: View {
                             Text("Exit")
                                 .font(.system(size: 20, weight: .bold))
                                 .frame(width: 120, height: 48)
-                                .background(.purple)
+                                .background(.black)
                                 .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                                 .shadow(radius: 10)
@@ -117,8 +142,8 @@ struct GameView: View {
                 .padding(.horizontal, 24)
                 .background(
                     LinearGradient(
-                        colors: [Color.purple.opacity(0.93), Color.purple.opacity(0.96)],
-                        startPoint: .top, endPoint: .bottom
+                        colors: [Color.black.opacity(0.93), Color.purple.opacity(0.96)],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
                     )
                     .shadow(color: .purple.opacity(0.6), radius: 30, x: 0, y: 8)
                     .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
@@ -158,12 +183,7 @@ struct GameView: View {
                 )
             }
         }
-        
-        .sheet(isPresented: $showQuickSettings) {
-            GameQuickSettingsSheet()
-                .presentationDetents([.medium,])
-        }
-    }
+   }
 
     private var content: some View {
         VStack {
@@ -186,7 +206,9 @@ struct GameView: View {
                 Spacer()
                 
                 Button(action: {
-                    showQuickSettings = true
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                        showQuickSettings = true
+                    }
                 }) {
                     Image(systemName: "switch.2")
                         .font(.system(size: 30, weight: .bold))

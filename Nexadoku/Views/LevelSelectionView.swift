@@ -205,6 +205,8 @@ struct LevelSelectionView: View {
                             .foregroundStyle(
                                 LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
                             )
+                            .shadow(color: .teal, radius: 10)
+                            .shadow(color: .purple, radius: 10)
                             .font(.system(size: 20))
                             .padding(.top, 2)
                         VStack(alignment: .leading, spacing: 6) {
@@ -213,6 +215,8 @@ struct LevelSelectionView: View {
                                 .foregroundStyle(
                                     LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
                                 )
+                                .shadow(color: .teal, radius: 10)
+                                .shadow(color: .purple, radius: 10)
                             Text("""
                                 The **Legend** level is only available for Premium users.
                                 Buy Premium to challange yourself with the most epic Sudoku puzzles ever!
@@ -231,17 +235,19 @@ struct LevelSelectionView: View {
             }) {
                 Text("Close")
                     .font(.headline.bold())
-                    .foregroundColor(.purple)
+                    .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(.white)
+                    .background(.purple)
                     .cornerRadius(16)
                     .shadow(radius: 10)
             }
             .padding(.horizontal)
             .padding(.bottom, 20)
         }
-        .background(LinearGradient(colors: [.purple], startPoint: .top, endPoint: .bottom))
+        .background(
+            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .frame(maxWidth: .infinity)
         .frame(height: 400)
