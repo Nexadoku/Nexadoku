@@ -6,4 +6,5 @@ public enum AccountRoute: Hashable {
     case settings
     case aboutPremium
     case help
+    case terms
 }

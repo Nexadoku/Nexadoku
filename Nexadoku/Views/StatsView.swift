@@ -30,22 +30,23 @@ struct StatsView: View {
                                 .font(.system(size: 24, weight: .bold))
                                 .foregroundColor(.white)
                                 .shadow(radius: 10)
+                            
+                            Text("STATISTICS")
+                                .font(.system(size: 30, weight: .heavy))
+                                .foregroundColor(.white)
+                                .shadow(radius: 10)
+                                .opacity(animate ? 1 : 0)
+                                .scaleEffect(animate ? 1 : 0.95)
+                                .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
+                            
+                            
+                            Image(systemName: "trophy.fill")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20, weight: .black, design: .rounded))
+                                .shadow(radius: 10)
+                                .opacity(animate ? 1 : 0)
+                                .animation(.easeInOut(duration: 0.8).delay(0.1), value: animate)
                         }
-
-                        Text("STATISTICS")
-                            .font(.system(size: 30, weight: .heavy))
-                            .foregroundColor(.white)
-                            .shadow(radius: 10)
-                            .opacity(animate ? 1 : 0)
-                            .scaleEffect(animate ? 1 : 0.95)
-                            .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
-
-                        Image(systemName: "trophy.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 20, weight: .black, design: .rounded))
-                            .shadow(radius: 10)
-                            .opacity(animate ? 1 : 0)
-                            .animation(.easeInOut(duration: 0.8).delay(0.1), value: animate)
 
                         Spacer()
                     }

@@ -37,12 +37,13 @@ struct AboutPremium: View {
                                 .font(.system(size: 24, weight: .heavy))
                                 .padding(.leading)
                             
+                            
+                            Text("About Premium")
+                                .font(.system(size: 40, weight: .heavy))
+                                .foregroundStyle(
+                                    LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                )
                         }
-                        Text("About Premium")
-                            .font(.system(size: 40, weight: .heavy))
-                            .foregroundStyle(
-                                LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
                           Spacer()
                     }
 

@@ -17,7 +17,7 @@ struct PremiumPaySheet: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
+            LinearGradient(colors: [.black], startPoint: .top, endPoint: .bottom).ignoresSafeArea()
             
             BlurView(style: .systemChromeMaterialDark).edgesIgnoringSafeArea(.all)
             

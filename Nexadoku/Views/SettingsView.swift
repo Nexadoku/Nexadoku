@@ -28,10 +28,11 @@ struct SettingsView: View {
                                 Image(systemName: "chevron.left")
                                     .foregroundColor(.white)
                                     .font(.system(size: 24, weight: .heavy))
+                                
+                                Text("SETTINGS")
+                                    .font(.system(size: 30, weight: .heavy))
+                                    .foregroundColor(.white)
                             }
-                            Text("SETTINGS")
-                                .font(.system(size: 30, weight: .heavy))
-                                .foregroundColor(.white)
                             
                             Spacer()
                         }

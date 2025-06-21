@@ -19,6 +19,8 @@ public struct AccountRouter: RouterProtocol {
             PrivacyPolicy()
         case .help:
             HelpView()
+        case .terms:
+            TermsAndConditions()
         }
     }
 }

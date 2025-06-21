@@ -3,74 +3,105 @@ import SwiftUI
 
 struct PrivacyPolicy: View {
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var animate = false
-    
+
     var body: some View {
         ZStack {
             SystemBackground()
                 .ignoresSafeArea()
             ScrollView(showsIndicators: false) {
-            VStack(spacing: 20) {
-                HStack {
-                    Button {
-                        dismiss()
-                        VibrationManager.shared.lightImpact()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
-                            .font(.system(size: 24, weight: .heavy))
+                VStack(spacing: 22) {
+                    HStack {
+                        Button {
+                            dismiss()
+                            VibrationManager.shared.lightImpact()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
+                                .font(.system(size: 24, weight: .heavy))
+                            
+                            Text("PRIVACY POLICY")
+                                .foregroundColor(.white)
+                                .font(.system(size: 30, weight: .heavy))
+                                .lineLimit(2)
+                        }
+                        Spacer()
                     }
-                    
-                    Text("PRIVACY POLICY")
-                        .foregroundColor(.white)
-                        .font(.system(size: 30, weight: .heavy))
-                        .lineLimit(3)
-                    
-                    Spacer()
-                }
-                .padding()
-                
-                Image("logo")
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(20)
-                    .shadow(color: .purple, radius: 15, x: 0, y: 6)
-                    .padding(.top, 20)
+                    .padding()
+
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(20)
+                        .shadow(color: .purple, radius: 15, x: 0, y: 6)
+                        .padding(.top, 16)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Group {
-                            Text("1. No Data Collection")
+                            Text("1. Introduction")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("We do not collect, store, or share any personal data. All gameplay data is stored locally on your device.")
-                            
-                            Text("2. No Internet Connection Required")
+                            Text("""
+This Privacy Policy explains how we handle your information when you use the Nexadoku app (“the App”). By using the App, you agree to the terms described here.
+""")
+                            Text("2. Data Collection")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("The app works fully offline. It doesn't require or use an internet connection.")
-                            
-                            Text("3. Third-Party Services")
+                            Text("""
+• We do **not collect** or store any personal information.
+• All game progress, settings, and stats are stored **locally** on your device and never leave your phone.
+• No user analytics, tracking, or advertising SDKs are integrated.
+""")
+                            Text("3. In-App Purchases")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("We do not use any third-party analytics, tracking, or advertising services.")
-                            
-                            Text("4. Children's Privacy")
+                            Text("""
+• All purchases are handled by Apple’s In-App Purchase system.
+• We do **not** access, collect, or store any payment information.
+""")
+                            Text("4. Internet & Connectivity")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("The app does not collect anu information and is safe for all ages.")
+                            Text("""
+• The App works completely offline. Internet is not required for gameplay.
+• No gameplay data or stats are sent to servers.
+""")
+                            Text("5. Children’s Privacy")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Text("""
+• The app does not collect any data and is safe for all ages, including children under 13.
+""")
                         }
-                        
                         Group {
-                            Text("5. Changes to This Policy")
+                            Text("6. Data Security")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("We may update this Privacy Policy in the future. All changes will be displayed here.")
-
-                            Text("6. Contact Us")
+                            Text("""
+• All your game data stays on your device.
+• We recommend keeping your device secure with a passcode.
+""")
+                            Text("7. Changes to This Policy")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                            Text("If you have any questions or concerns, please contact us through the support section of the app.")
+                            Text("""
+• We may update this Privacy Policy from time to time.
+• All updates will appear here in the app.
+""")
+                            Text("8. Contact Us")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Text("""
+If you have any questions, please email us at:
+futuresudoku@gmail.com
+""")
+                            Text("9. Compliance")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                            Text("""
+• We comply with all Apple App Store requirements, including the End User License Agreement (EULA).
+""")
                         }
                     }
                     .font(.system(size: 15, weight: .regular, design: .rounded))
@@ -93,11 +124,9 @@ struct PrivacyPolicy: View {
             }
             .opacity(animate ? 1 : 0)
             .offset(y: animate ? 0 : 20)
-            .animation(.easeOut(duration: 0.5).delay(0.1), value: animate)
+            .animation(.easeOut(duration: 0.5).delay(0.08), value: animate)
         }
-        .onAppear {
-            animate = true
-        }
+        .onAppear { animate = true }
         .navigationBarBackButtonHidden(true)
     }
 }

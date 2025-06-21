@@ -4,6 +4,7 @@ import SwiftUI
 struct RewardsView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var progress = ProgressManager.shared
+    @State private var selectedTeb: RewardTab = .levels
     @State private var selectedTrophy: Trophy? = nil
     @State private var showPointsSheet = false
     
@@ -11,15 +12,29 @@ struct RewardsView: View {
     @AppStorage("earnedTrophyIDs") private var earnedTrophyIDs: String = ""
     @AppStorage("claimedTrophyIDs") private var claimedTrophyIDs: String = ""
 
-    var trophies: [Trophy] {
-        DifficultyLevel.allCases.flatMap { level in
-            let wins = progress.winsCount(for: level)
-            return [
-                Trophy(level: level, type: .bronze, requiredWins: 15, currentWins: wins),
-                Trophy(level: level, type: .silver, requiredWins: 30, currentWins: wins),
-                Trophy(level: level, type: .gold, requiredWins: 45, currentWins: wins)
-            ]
-        }
+    var levelsTrophies: [Trophy] {
+        DifficultyLevel.allCases
+            .filter { $0 != .legend }
+            .flatMap { level in
+                let wins = progress.winsCount(for: level)
+                return [
+                    Trophy(level: level, type: .bronze, requiredWins: 5, currentWins: wins),
+                    Trophy(level: level, type: .silver, requiredWins: 10, currentWins: wins),
+                    Trophy(level: level, type: .gold, requiredWins: 15, currentWins: wins)
+                ]
+            }
+    }
+    
+    var premiumTrophies: [PremiumTrophy] {
+        [PremiumTrophy(
+            id: UUID(),
+            level: .legend,
+            requiredWins: 5,
+            currentWins: progress.winsCount(for: .legend),
+            imageName: "legend_premium_trophy",
+            title: "Legend Master",
+            description: "Win The Legend level 5 times to unlock the ultimate trophy!"
+        )]
     }
     
     private func points(for trophy: Trophy) -> Int {
@@ -46,7 +61,7 @@ struct RewardsView: View {
         var ids = Set(earnedTrophyIDs.split(separator: ",").map { String($0) })
         var newPoints = 0
         
-        for trophy in trophies where trophy.isUnlocked {
+        for trophy in levelsTrophies where trophy.isUnlocked {
             let id = trophy.uniqueID
             if !ids.contains(id) {
                 newPoints += points(for: trophy)
@@ -69,10 +84,11 @@ struct RewardsView: View {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.white)
                                 .font(.system(size: 24, weight: .heavy))
+                            
+                            Text("REWARDS")
+                                .foregroundColor(.white)
+                                .font(.system(size: 30, weight: .heavy))
                         }
-                        Text("REWARDS")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30, weight: .heavy))
                         Spacer()
                         
                         Button {
@@ -93,9 +109,12 @@ struct RewardsView: View {
                         }
                     }
                     .padding(.top, 12)
-                    .padding(.horizontal)
                     
-                    ForEach(trophies) { trophy in
+                    .pickerStyle(.segmented)
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 8)
+                    
+                    ForEach(levelsTrophies) { trophy in
                         RewardRow(
                             trophy: trophy,
                             claimed: claimedIDs.contains(trophy.uniqueID),
@@ -177,6 +196,9 @@ struct RewardsPreviews: PreviewProvider {
     }
 }
 
+extension Trophy: AnyTrophyProtocol {}
+extension PremiumTrophy: AnyTrophyProtocol {}
+extension SpecialTrophy: AnyTrophyProtocol {}
 
 extension View {
     func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {

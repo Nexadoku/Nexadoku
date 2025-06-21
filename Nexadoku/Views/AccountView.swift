@@ -20,14 +20,14 @@ struct AccountView: View {
                         VibrationManager.shared.lightImpact()
                     }
                     
-                    premiumSection(title: "SETTINGS AND PRIVACY") {
+                    premiumSection(title: "SETTINGS AND HELP") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
                             VibrationManager.shared.lightImpact()
                         }
                         
-                        premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
-                            navigator.push(.account(.aboutPremium))
+                        premiumButton(title: "Help", icon: "questionmark.circle.fill") {
+                            navigator.push(.account(.help))
                             VibrationManager.shared.lightImpact()
                         }
                     }
@@ -60,8 +60,12 @@ struct AccountView: View {
                             )
                         }
                         
-                        premiumButton(title: "Help", icon: "questionmark.circle.fill") {
-                            navigator.push(.account(.help))
+                        premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
+                            navigator.push(.account(.aboutPremium))
+                        }
+                        
+                        premiumButton(title: "Terms And Conditions", icon: "text.document.fill") {
+                            navigator.push(.account(.terms))
                         }
                     }
                 }

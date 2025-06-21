@@ -145,14 +145,14 @@ A: Yes! Buying once gives you lifetime access to all current premium features.
                                 .font(.system(size: 28, weight: .bold))
                                 .foregroundColor(.white)
                                 .shadow(radius: 10)
+                            
+                            Text("HELP & GUIDE")
+                                .font(.system(size: 32, weight: .heavy))
+                                .foregroundStyle(LinearGradient(colors: [.white], startPoint: .top, endPoint: .bottom))
                         }
-                        Text("HELP & GUIDE")
-                            .font(.system(size: 32, weight: .heavy))
-                            .foregroundStyle(LinearGradient(colors: [.white], startPoint: .top, endPoint: .bottom))
                         Spacer()
                     }
-                    .padding(.top)
-                    .padding(.bottom, 12)
+                    .padding(.horizontal)
 
                     ForEach(sections.indices, id: \.self) { idx in
                         HelpSectionCard(
