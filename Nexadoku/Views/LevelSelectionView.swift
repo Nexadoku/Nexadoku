@@ -126,12 +126,9 @@ struct LevelSelectionView: View {
     }
    
     private func levelButton(title: DifficultyLevel, color: Color) -> some View {
-        let isUnlocked: Bool
-        if title == .legend {
-            isUnlocked = isPremium
-        } else {
-            isUnlocked = progress.isLevelUnlocked(title)
-        }
+        let isUnlocked = progress.isLevelUnlocked(title)
+        let isLegend = title == .legend
+        
         return Button(action: {
             if isUnlocked {
                 withAnimation {
@@ -153,9 +150,11 @@ struct LevelSelectionView: View {
                     Text(title.rawValue)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
+                    
+                    // Блокировка/лейблы
                     if !isUnlocked {
-                        if title == .legend {
-                            // Premium lock
+                        if isLegend && !isPremium {
+                            // Показываем "Premium" и замок
                             HStack(spacing: 6) {
                                 Text("Premium")
                                     .foregroundStyle(
@@ -164,7 +163,7 @@ struct LevelSelectionView: View {
                                     .font(.caption.bold())
                             }
                         } else {
-                            // Обычный замок
+                            // Только замок
                             Text("🔒")
                                 .font(.title2)
                                 .opacity(0.7)
@@ -193,7 +192,7 @@ struct LevelSelectionView: View {
                         .font(.title2.bold())
                         .foregroundColor(.white)
                     
-                    Text("• To unlock Medium, win Easy 2 times\n• To unlock Hard, win Medium 4 times\n• To unlock Master, win Hard 6 times\n• To unlock Epic, win Master 8 times\n\nPlay and discover new levels!")
+                    Text("• To unlock Medium, win Easy 2 times\n• To unlock Hard, win Medium 4 times\n• To unlock Master, win Hard 6 times\n• To unlock Epic, win Master 8 times\n• To unlock Legend, win Epic 5 times\n\nPlay and discover new levels!")
                         .foregroundColor(.white.opacity(0.9))
                         .font(.body)
                         .multilineTextAlignment(.leading)
@@ -246,7 +245,7 @@ struct LevelSelectionView: View {
             .padding(.bottom, 20)
         }
         .background(
-            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.purple, .black], startPoint: .top, endPoint: .bottom)
         )
         .clipShape(RoundedRectangle(cornerRadius: 30))
         .frame(maxWidth: .infinity)

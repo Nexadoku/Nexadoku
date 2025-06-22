@@ -128,7 +128,7 @@ struct SettingsView: View {
                                     .font(.system(size: 20, weight: .semibold))
                                     .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .indigo : .gray))
+                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)

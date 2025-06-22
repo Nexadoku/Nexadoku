@@ -38,7 +38,7 @@ class ProgressManager: ObservableObject {
         case .epic:
             return winsCount(for: .master) >= 8
         case .legend:
-            return winsCount(for: .epic) >= 10
+            return winsCount(for: .epic) >= 5
         }
     }
     

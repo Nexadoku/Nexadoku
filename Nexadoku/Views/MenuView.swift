@@ -19,9 +19,9 @@ struct MenuView: View {
         return DifficultyLevel.allCases.flatMap { level in
             let wins = progress.winsCount(for: level)
             return [
-                Trophy(level: level, type: .bronze, requiredWins: 5, currentWins: wins),
-                Trophy(level: level, type: .silver, requiredWins: 10, currentWins: wins),
-                Trophy(level: level, type: .gold, requiredWins: 15, currentWins: wins)
+                Trophy(level: level, type: .bronze, requiredWins: 10, currentWins: wins),
+                Trophy(level: level, type: .silver, requiredWins: 20, currentWins: wins),
+                Trophy(level: level, type: .gold, requiredWins: 30, currentWins: wins)
             ]
         }
         .filter { $0.isUnlocked && !claimedIDs.contains($0.uniqueID) }
@@ -175,9 +175,9 @@ struct MenuView: View {
         let trophies = DifficultyLevel.allCases.flatMap { level in
             let wins = progress.winsCount(for: level)
             return [
-                Trophy(level: level, type: .bronze, requiredWins: 5, currentWins: wins),
-                Trophy(level: level, type: .silver, requiredWins: 10, currentWins: wins),
-                Trophy(level: level, type: .gold, requiredWins: 15, currentWins: wins)
+                Trophy(level: level, type: .bronze, requiredWins: 10, currentWins: wins),
+                Trophy(level: level, type: .silver, requiredWins: 20, currentWins: wins),
+                Trophy(level: level, type: .gold, requiredWins: 30, currentWins: wins)
             ]
         }
         for trophy in trophies where trophy.isUnlocked && !progress.isTrophyShown(trophy) {

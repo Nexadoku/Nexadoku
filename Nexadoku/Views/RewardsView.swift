@@ -18,9 +18,9 @@ struct RewardsView: View {
             .flatMap { level in
                 let wins = progress.winsCount(for: level)
                 return [
-                    Trophy(level: level, type: .bronze, requiredWins: 5, currentWins: wins),
-                    Trophy(level: level, type: .silver, requiredWins: 10, currentWins: wins),
-                    Trophy(level: level, type: .gold, requiredWins: 15, currentWins: wins)
+                    Trophy(level: level, type: .bronze, requiredWins: 10, currentWins: wins),
+                    Trophy(level: level, type: .silver, requiredWins: 20, currentWins: wins),
+                    Trophy(level: level, type: .gold, requiredWins: 30, currentWins: wins)
                 ]
             }
     }
