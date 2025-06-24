@@ -56,6 +56,15 @@ final class StoreManager: ObservableObject {
         }
     }
     
+    func restorePurchases() async {
+        do {
+            try await AppStore.sync()
+            await checkPurchased()
+        } catch {
+            print("Restore failed: \(error)")
+        }
+    }
+    
     private func setPremiumPurchased() async {
         isPremium = true
         isPurchased = true

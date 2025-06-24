@@ -20,15 +20,9 @@ struct CustomTabBar: View {
                 }
             Spacer()
         }
-        .frame(height: 70)
+        .frame(height: 50)
         .background(
-            Color.purple
-                .blur(radius: 10)
-                .background(.purple.opacity(0.6))
-                .cornerRadius(30)
-                .shadow(radius: 10)
+            .thinMaterial
         )
-        .padding(.horizontal, 20)
-        .padding(.bottom, 10)
     }
 }

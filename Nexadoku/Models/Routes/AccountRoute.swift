@@ -4,7 +4,8 @@ import Foundation
 public enum AccountRoute: Hashable {
     case statistics
     case settings
-    case aboutPremium
+    case privacyPolicy
     case help
     case terms
+    case premium
 }

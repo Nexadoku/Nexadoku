@@ -4,6 +4,7 @@ import MessageUI
 
 struct AccountView: View {
     @EnvironmentObject private var navigator: Navigator
+    @EnvironmentObject private var storeManager: StoreManager
     
     @State private var showMailView = false
     @State private var showMailError = false
@@ -15,11 +16,23 @@ struct AccountView: View {
             SystemBackground()
             ScrollView {
                 VStack(spacing: 30) {
-                    premiumButton(title: "Statistics", icon: "trophy.fill") {
-                        navigator.push(.account(.statistics))
-                        VibrationManager.shared.lightImpact()
+                    premiumSection(title: "") {
+                        premiumButton(title: "Statistics", icon: "trophy.fill") {
+                            navigator.push(.account(.statistics))
+                            VibrationManager.shared.lightImpact()
+                        }
+                        
+                        premiumButton(title: "Premium Membership", icon: "star.fill") {
+                            navigator.push(.account(.premium))
+                        }
+                        
+                        premiumButton(title: "Restore Purchase", icon: "arrow.clockwise.circle.fill") {
+                            Task {
+                                await storeManager.restorePurchases()
+                                VibrationManager.shared.lightImpact()
+                            }
+                        }
                     }
-                    
                     premiumSection(title: "SETTINGS AND HELP") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
@@ -61,12 +74,13 @@ struct AccountView: View {
                         }
                         
                         premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
-                            navigator.push(.account(.aboutPremium))
+                            navigator.push(.account(.privacyPolicy))
                         }
                         
                         premiumButton(title: "Terms And Conditions", icon: "text.document.fill") {
                             navigator.push(.account(.terms))
                         }
+                        
                     }
                 }
                 .padding(.top)

@@ -15,12 +15,14 @@ public struct AccountRouter: RouterProtocol {
             StatsView()
         case .settings:
             SettingsView()
-        case .aboutPremium:
-            PrivacyPolicy()
         case .help:
+            PrivacyPolicy()
+        case .privacyPolicy:
             HelpView()
         case .terms:
             TermsAndConditions()
+        case .premium:
+            AboutPremium()
         }
     }
 }
