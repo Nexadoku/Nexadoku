@@ -131,7 +131,7 @@ struct MenuView: View {
                     .animation(.easeInOut(duration: 0.23), value: alertAppear)
                     .onTapGesture { closeContinueAlert() }
                     .zIndex(1010)
-
+                
                 ContinueAlert(
                     appear: alertAppear,
                     onContinue: {
