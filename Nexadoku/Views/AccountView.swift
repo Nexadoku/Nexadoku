@@ -53,6 +53,7 @@ struct AccountView: View {
                                 VibrationManager.shared.lightImpact()
                             }
                         }
+                        
                         .sheet(isPresented: $showMailView) {
                             MailView(
                                 subject: "Sudoku App Feedback", recipients: ["futuresudoku@gmail.com"], body: "Hi! I wanted to share the following feedback..."
