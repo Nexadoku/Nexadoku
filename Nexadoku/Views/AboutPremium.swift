@@ -131,6 +131,7 @@ struct AboutPremium: View {
                                 .stroke(.green, lineWidth: 2)
                             : nil
                     )
+                    
                     .animation(.easeInOut(duration: 0.3), value: storeManager.isPurchased)
                 }
                 .padding(.horizontal, 40)
