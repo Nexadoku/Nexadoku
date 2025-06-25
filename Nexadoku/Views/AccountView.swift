@@ -25,13 +25,6 @@ struct AccountView: View {
                         premiumButton(title: "Premium Membership", icon: "star.fill") {
                             navigator.push(.account(.premium))
                         }
-                        
-                        premiumButton(title: "Restore Purchase", icon: "arrow.clockwise.circle.fill") {
-                            Task {
-                                await storeManager.restorePurchases()
-                                VibrationManager.shared.lightImpact()
-                            }
-                        }
                     }
                     premiumSection(title: "SETTINGS AND HELP") {
                         premiumButton(title: "Settings", icon: "gearshape.fill") {

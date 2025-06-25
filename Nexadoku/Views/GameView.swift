@@ -263,6 +263,7 @@ struct GameView: View {
         let mistakesView = Text("Mistakes: \(game.mistakes)/3")
             .font(.system(size: 18, weight: .heavy))
             .foregroundColor(.white)
+           
 
         let timerView = HStack {
             Image(systemName: "hourglass")
@@ -277,7 +278,7 @@ struct GameView: View {
             timerEnabled ? AnyView(timerView) : nil
         ].compactMap { $0 }
 
-        return HStack(spacing: 40) {
+        return HStack(spacing: UIDevice.current.userInterfaceIdiom == .pad ? 60 : 20) {
             ForEach(0..<activeViews.count, id: \.self) { index in
                 activeViews[index]
             }

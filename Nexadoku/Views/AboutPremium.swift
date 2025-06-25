@@ -38,13 +38,22 @@ struct AboutPremium: View {
                                 .padding(.leading)
                             
                             
-                            Text("About Premium")
+                            Text("Premium")
                                 .font(.system(size: 40, weight: .heavy))
                                 .foregroundStyle(
                                     LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
                                 )
                         }
                           Spacer()
+                        
+                        Button("Restore") {
+                            Task {
+                                await storeManager.restorePurchases()
+                            }
+                        }
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.8))
+                        .padding(.trailing)
                     }
 
                     Image("logo")
