@@ -130,6 +130,5 @@ struct AccountViewPreviews: PreviewProvider {
         AccountView()
             .environmentObject(Navigator())
             .environmentObject(LanguageSettings())
-            .preferredColorScheme(.dark)
     }
 }

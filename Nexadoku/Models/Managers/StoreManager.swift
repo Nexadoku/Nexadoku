@@ -8,16 +8,19 @@ final class StoreManager: ObservableObject {
     @Published var premiumProduct: Product?
     @Published var isPurchased: Bool = false
     @AppStorage("isPremium") private var isPremium = false
-
+    
     private let productID = "lifetime_premium"
     private var updatesTask: Task<Void, Never>? = nil
-
+    
     init() {
-        Task { await loadProduct() }
-        // ❗️Больше не вызываем checkPurchased() автоматически
         startTransactionUpdatesListener()
+        Task { await loadProduct() }
     }
-
+    
+    deinit {
+        updatesTask?.cancel()
+    }
+    
     func loadProduct() async {
         do {
             let storeProducts = try await Product.products(for: [productID])
@@ -27,10 +30,10 @@ final class StoreManager: ObservableObject {
             print("❌ StoreManager: Failed to load product: \(error.localizedDescription)")
         }
     }
-
+    
     func purchasePremium() async {
         guard let product = premiumProduct else { return }
-
+        
         do {
             let result = try await product.purchase()
             switch result {
@@ -51,39 +54,59 @@ final class StoreManager: ObservableObject {
             print("❌ Purchase failed: \(error.localizedDescription)")
         }
     }
-
-    func restorePurchases() async {
+    
+    func restorePurchases() async -> Bool {
         do {
             try await AppStore.sync()
-            await checkPurchased()
-            print("✅ Restore attempted and check completed")
+            return await checkPurchased()
         } catch {
             print("❌ Restore failed: \(error.localizedDescription)")
+            return false
         }
     }
-
-    func checkPurchased() async {
+    
+    func checkPurchased() async -> Bool {
         print("🔍 Checking for existing purchases")
+        
+        var found = false
+        
         for await result in Transaction.currentEntitlements {
             switch result {
             case .verified(let transaction):
-                if transaction.productID == productID {
-                    await setPremiumPurchased()
-                    print("✅ Verified previous purchase via checkPurchased")
-                    return
+                // Only accept if not revoked and still active
+                if transaction.productID == productID,
+                   transaction.revocationDate == nil,
+                   transaction.expirationDate == nil || transaction.expirationDate! > Date() {
+
+                    found = true
+                    break
                 }
             default:
                 continue
             }
         }
-        print("🔁 No previous verified purchase found")
-    }
 
+        if found {
+            await setPremiumPurchased()
+            print("✅ Verified previous active purchase via checkPurchased")
+            return true
+        } else {
+            await clearPremium()
+            print("🔁 No previous active verified purchase found")
+            return false
+        }
+    }
+    
+    private func clearPremium() async {
+        isPremium = false
+        isPurchased = false
+    }
+    
     private func setPremiumPurchased() async {
         isPremium = true
         isPurchased = true
     }
-
+    
     private func startTransactionUpdatesListener() {
         updatesTask = Task.detached { [weak self] in
             for await update in Transaction.updates {
@@ -98,9 +121,5 @@ final class StoreManager: ObservableObject {
                 }
             }
         }
-    }
-
-    deinit {
-        updatesTask?.cancel()
     }
 }

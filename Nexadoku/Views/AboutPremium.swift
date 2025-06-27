@@ -4,9 +4,10 @@ import SwiftUI
 struct AboutPremium: View {
     @StateObject private var storeManager = StoreManager()
     @State private var showPaySheet = false
+    @State private var showRestoreAlert = false
+    @State private var showRestoreFailedAlert = false
     @Environment(\.dismiss) var dismiss
 
-    // Основные, уже готовые фичи
     let currentPremiumFeatures: [PremiumFeature] = [
         .init(title: "No Ads", description: "Enjoy a clean game with zero ads — no banners, no popups, just pure focus."),
         .init(title: "Special Rewards", description: "Earn exclusive trophies and rewards only available to Premium users."),
@@ -14,7 +15,6 @@ struct AboutPremium: View {
         .init(title: "Smart Highlight Lines", description: "Enable Highlight Lines to automatically show all matching lines on the board.")
     ]
 
-    // "Скоро будут" — можешь сюда добавить больше, если хочешь
     let upcomingPremiumFeatures: [PremiumFeature] = [
         .init(title: "Exclusive Themes", description: "Get access to unique color themes and visual styles."),
         .init(title: "Custom Board Animations", description: "Choose special board and cell animation effects."),
@@ -37,7 +37,6 @@ struct AboutPremium: View {
                                 .font(.system(size: 24, weight: .heavy))
                                 .padding(.leading)
                             
-                            
                             Text("Premium")
                                 .font(.system(size: 40, weight: .heavy))
                                 .foregroundStyle(
@@ -48,7 +47,24 @@ struct AboutPremium: View {
                         
                         Button("Restore") {
                             Task {
-                                await storeManager.restorePurchases()
+                                let success = await storeManager.restorePurchases()
+                                withAnimation {
+                                    if success {
+                                        showRestoreAlert = true // Успешный алерт
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                               withAnimation {
+                                                   showRestoreAlert = false
+                                               }
+                                           }
+                                    } else {
+                                        showRestoreFailedAlert = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                withAnimation {
+                                                    showRestoreFailedAlert = false
+                                                }
+                                            }// Новый алерт, если покупка не была найдена
+                                    }
+                                }
                             }
                         }
                         .font(.system(size: 16))
@@ -143,6 +159,85 @@ struct AboutPremium: View {
                 PremiumPaySheet()
                     .presentationDetents([.medium])
                     .environmentObject(storeManager)
+            }
+            
+            if showRestoreAlert {
+                VStack(spacing: 18) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 44, weight: .bold))
+                        .foregroundColor(.green)
+                        .shadow(radius: 16)
+                    
+                    Text("Purchase Restored")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    Text("Your premium access has been successfully restored.")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.85))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
+                }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 26)
+                .background(
+                    RoundedRectangle(cornerRadius: 35)
+                        .fill(
+                            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+                        )
+                        .shadow(radius: 20)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 35)
+                                .stroke(Color.purple, lineWidth: 2)
+                        )
+                )
+                .padding(.horizontal, 40)
+                .shadow(radius: 30)
+                .opacity(showRestoreAlert ? 1 : 0)
+                .scaleEffect(showRestoreAlert ? 1 : 0.84)
+                .animation(.interpolatingSpring(stiffness: 300, damping: 25), value: showRestoreAlert)
+                .transition(.scale.combined(with: .opacity))
+                .zIndex(101)
+            }
+            
+            if showRestoreFailedAlert {
+                VStack(spacing: 18) {
+                    Image(systemName: "xmark.octagon.fill")
+                        .font(.system(size: 44, weight: .bold))
+                        .foregroundColor(.red)
+                        .shadow(radius: 16)
+                    
+                    Text("Restore Failed")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    Text("No previous purchases were found fot this account.")
+                        .font(.system(size: 16))
+                        .foregroundColor(.white.opacity(0.85))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 12)
+                }
+                .padding(.horizontal, 30)
+                .padding(.vertical, 26)
+                .background(
+                    RoundedRectangle(cornerRadius: 35)
+                        .fill(
+                            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+                        )
+                        .shadow(radius: 20)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 35)
+                                .stroke(Color.purple, lineWidth: 2)
+                        )
+                )
+                .padding(.horizontal, 40)
+                .shadow(radius: 30)
+                .opacity(showRestoreFailedAlert ? 1 : 0)
+                .scaleEffect(showRestoreFailedAlert ? 1 : 0.84)
+                .animation(.interpolatingSpring(stiffness: 300, damping: 25), value: showRestoreFailedAlert)
+                .transition(.scale.combined(with: .opacity))
+                .zIndex(101)
+                
             }
         }
         .navigationBarBackButtonHidden(true)

@@ -20,19 +20,14 @@ struct CustomTabBar: View {
                 }
             Spacer()
         }
-        .padding(.vertical, 14)
+        .padding()
         .background(
-            RoundedRectangle(cornerRadius: 25)
-                .fill(
-                    LinearGradient(
-                        colors: [Color.purple.opacity(0.5), Color.purple.opacity(0.5)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .shadow(color: .purple.opacity(0.3), radius: 20, y: -5)
+           RoundedRectangle(cornerRadius: 35)
+            .stroke(.purple, lineWidth: 1)
+            .background(.purple)
+            .cornerRadius(35)
         )
-        .padding(.horizontal, 24)
-        .padding(.bottom, 12)
+        .shadow(radius: 10)
+        .padding(.horizontal)
     }
 }

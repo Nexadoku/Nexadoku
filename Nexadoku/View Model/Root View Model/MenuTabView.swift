@@ -16,8 +16,7 @@ struct MenuTabView: View {
                         AccountView()
                     }
                 }
-                VStack {
-                    Spacer()
+                .safeAreaInset(edge: .bottom) {
                     CustomTabBar(selectedTab: $navigator.selectedTab)
                 }
             }
