@@ -3,7 +3,6 @@ import SwiftUI
 
 struct AboutPremium: View {
     @StateObject private var storeManager = StoreManager()
-    @State private var showPaySheet = false
     @State private var showRestoreAlert = false
     @State private var showRestoreFailedAlert = false
     @Environment(\.dismiss) var dismiss
@@ -26,43 +25,39 @@ struct AboutPremium: View {
             PremiumBackground()
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 32) {
+                    // Header
                     HStack {
                         Button(action: {
                             dismiss()
                         }) {
                             Image(systemName: "chevron.left")
-                                .foregroundStyle(
-                                    LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                )
+                                .foregroundStyle(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing))
                                 .font(.system(size: 24, weight: .heavy))
                                 .padding(.leading)
                             
                             Text("Premium")
                                 .font(.system(size: 40, weight: .heavy))
-                                .foregroundStyle(
-                                    LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                )
+                                .foregroundStyle(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing))
                         }
-                          Spacer()
-                        
+                        Spacer()
                         Button("Restore") {
                             Task {
                                 let success = await storeManager.restorePurchases()
                                 withAnimation {
                                     if success {
-                                        showRestoreAlert = true // Успешный алерт
+                                        showRestoreAlert = true
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                               withAnimation {
-                                                   showRestoreAlert = false
-                                               }
-                                           }
+                                            withAnimation {
+                                                showRestoreAlert = false
+                                            }
+                                        }
                                     } else {
                                         showRestoreFailedAlert = true
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                                withAnimation {
-                                                    showRestoreFailedAlert = false
-                                                }
-                                            }// Новый алерт, если покупка не была найдена
+                                            withAnimation {
+                                                showRestoreFailedAlert = false
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -72,15 +67,60 @@ struct AboutPremium: View {
                         .padding(.trailing)
                     }
 
+                    // Logo
                     Image("logo")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 120, height: 120)
                         .cornerRadius(30)
                         .shadow(color: .purple, radius: 10)
-         
 
-                    // Блок текущих фичей
+                    // Payment block
+                    VStack(spacing: 12) {
+                        Text("LIFETIME PREMIUM")
+                            .font(.system(size: 26, weight: .heavy, design: .rounded))
+                            .foregroundColor(.white)
+
+                        Text("One-time payment. No ads. All features. Forever.")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.8))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+
+                        HStack {
+                            Text("Access:")
+                                .foregroundColor(.white)
+                            Spacer()
+                            Text("$14.99")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+
+                        Button(action: {
+                            Task {
+                                await storeManager.purchasePremium()
+                            }
+                        }) {
+                            Text(storeManager.isPurchased ? "Purchased" : "Buy Now")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(storeManager.isPurchased ? .purple : .white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 14)
+                                .background(storeManager.isPurchased ? Color.black : Color.purple)
+                                .cornerRadius(18)
+                        }
+                        .disabled(storeManager.isPurchased)
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 24)
+                            .fill(LinearGradient(colors: [.purple.opacity(0.35), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            .shadow(radius: 18)
+                    )
+                    .padding(.horizontal, 30)
+
+                    // Current features
                     VStack(alignment: .leading, spacing: 18) {
                         Text("Premium Features")
                             .font(.system(size: 22, weight: .bold))
@@ -92,7 +132,7 @@ struct AboutPremium: View {
                     }
                     .padding(.horizontal)
 
-                    // Блок "скоро"
+                    // Coming soon
                     VStack(alignment: .leading, spacing: 18) {
                         Text("Coming Soon in Premium")
                             .font(.system(size: 22, weight: .bold))
@@ -103,11 +143,9 @@ struct AboutPremium: View {
                             FeatureRow(feature: feature, icon: "sparkles")
                         }
                         Text("We’re working on these new features for Premium users. Stay tuned!")
-                            .font(.system(size: 14, weight: .regular))
+                            .font(.system(size: 14))
                             .foregroundColor(.white.opacity(0.7))
                             .padding(.top, 8)
-                            .padding(.leading, 4)
-                            .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding(.horizontal)
 
@@ -116,136 +154,76 @@ struct AboutPremium: View {
                 .padding(.top, 30)
                 .padding(.bottom, 30)
             }
-            VStack {
-                Button(action: {
-                    if !storeManager.isPurchased {
-                        showPaySheet = true
-                    }
-                }) {
-                    HStack(spacing: 8) {
-                        if storeManager.isPurchased {
-                            Image(systemName: "checkmark.seal.fill")
-                                .foregroundColor(.green)
-                                .transition(.scale)
-                        }
-                        Text(storeManager.isPurchased ? "Purchased" : "Get Premium")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundColor(.white)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(
-                        storeManager.isPurchased
-                        ? LinearGradient(colors: [.gray.opacity(0.5), .gray.opacity(0.8)], startPoint: .leading, endPoint: .trailing)
-                        : LinearGradient(colors: [.purple], startPoint: .leading, endPoint: .trailing)
-                    )
-                    .cornerRadius(24)
-                    .shadow(color: storeManager.isPurchased ? .gray : .purple.opacity(0.6), radius: 10, x: 0, y: 8)
-                    .overlay(
-                        storeManager.isPurchased ?
-                            RoundedRectangle(cornerRadius: 24)
-                                .stroke(.green, lineWidth: 2)
-                            : nil
-                    )
-                    
-                    .animation(.easeInOut(duration: 0.3), value: storeManager.isPurchased)
-                }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 38)
-                .disabled(storeManager.isPurchased)
-            }
-            .ignoresSafeArea(.keyboard)
-            .sheet(isPresented: $showPaySheet) {
-                PremiumPaySheet()
-                    .presentationDetents([.medium])
-                    .environmentObject(storeManager)
-            }
-            
+
+            // Alerts
             if showRestoreAlert {
-                VStack(spacing: 18) {
-                    Image(systemName: "checkmark.seal.fill")
-                        .font(.system(size: 44, weight: .bold))
-                        .foregroundColor(.green)
-                        .shadow(radius: 16)
-                    
-                    Text("Purchase Restored")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
-                    
-                    Text("Your premium access has been successfully restored.")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white.opacity(0.85))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 12)
-                }
-                .padding(.horizontal, 30)
-                .padding(.vertical, 26)
-                .background(
-                    RoundedRectangle(cornerRadius: 35)
-                        .fill(
-                            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
-                        )
-                        .shadow(radius: 20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 35)
-                                .stroke(Color.purple, lineWidth: 2)
-                        )
+                PremiumAlertView(
+                    icon: "checkmark.seal.fill",
+                    title: "Purchase Restored",
+                    message: "Your premium access has been successfully restored.",
+                    color: .green
                 )
-                .padding(.horizontal, 40)
-                .shadow(radius: 30)
-                .opacity(showRestoreAlert ? 1 : 0)
-                .scaleEffect(showRestoreAlert ? 1 : 0.84)
-                .animation(.interpolatingSpring(stiffness: 300, damping: 25), value: showRestoreAlert)
-                .transition(.scale.combined(with: .opacity))
-                .zIndex(101)
             }
-            
             if showRestoreFailedAlert {
-                VStack(spacing: 18) {
-                    Image(systemName: "xmark.octagon.fill")
-                        .font(.system(size: 44, weight: .bold))
-                        .foregroundColor(.red)
-                        .shadow(radius: 16)
-                    
-                    Text("Restore Failed")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.white)
-                    
-                    Text("No previous purchases were found fot this account.")
-                        .font(.system(size: 16))
-                        .foregroundColor(.white.opacity(0.85))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 12)
-                }
-                .padding(.horizontal, 30)
-                .padding(.vertical, 26)
-                .background(
-                    RoundedRectangle(cornerRadius: 35)
-                        .fill(
-                            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
-                        )
-                        .shadow(radius: 20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 35)
-                                .stroke(Color.purple, lineWidth: 2)
-                        )
+                PremiumAlertView(
+                    icon: "xmark.octagon.fill",
+                    title: "Restore Failed",
+                    message: "No previous purchases were found for this account.",
+                    color: .red
                 )
-                .padding(.horizontal, 40)
-                .shadow(radius: 30)
-                .opacity(showRestoreFailedAlert ? 1 : 0)
-                .scaleEffect(showRestoreFailedAlert ? 1 : 0.84)
-                .animation(.interpolatingSpring(stiffness: 300, damping: 25), value: showRestoreFailedAlert)
-                .transition(.scale.combined(with: .opacity))
-                .zIndex(101)
-                
             }
         }
         .navigationBarBackButtonHidden(true)
     }
 }
 
+struct PremiumAlertView: View {
+    let icon: String
+    let title: String
+    let message: String
+    let color: Color
+
+    var body: some View {
+        VStack(spacing: 18) {
+            Image(systemName: icon)
+                .font(.system(size: 44, weight: .bold))
+                .foregroundColor(color)
+                .shadow(radius: 16)
+
+            Text(title)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.white)
+
+            Text(message)
+                .font(.system(size: 16))
+                .foregroundColor(.white.opacity(0.85))
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 12)
+        }
+        .padding(.horizontal, 30)
+        .padding(.vertical, 26)
+        .background(
+            RoundedRectangle(cornerRadius: 35)
+                .fill(
+                    LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
+                )
+                .shadow(radius: 20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 35)
+                        .stroke(color, lineWidth: 2)
+                )
+        )
+        .padding(.horizontal, 40)
+        .shadow(radius: 30)
+        .transition(.scale.combined(with: .opacity))
+        .zIndex(101)
+    }
+}
+
 struct PremiumPreviews: PreviewProvider {
     static var previews: some View {
         AboutPremium()
+            .environmentObject(StoreManager())
+            .preferredColorScheme(.dark)
     }
 }
