@@ -8,7 +8,6 @@ struct AboutPremium: View {
     @Environment(\.dismiss) var dismiss
 
     let currentPremiumFeatures: [PremiumFeature] = [
-        .init(title: "No Ads", description: "Enjoy a clean game with zero ads — no banners, no popups, just pure focus."),
         .init(title: "Special Rewards", description: "Earn exclusive trophies and rewards only available to Premium users."),
         .init(title: "Legend Level", description: "Get access to the Epic difficulty mode, available only with Premium."),
         .init(title: "Smart Highlight Lines", description: "Enable Highlight Lines to automatically show all matching lines on the board.")
@@ -67,23 +66,23 @@ struct AboutPremium: View {
                         .padding(.trailing)
                     }
 
-                    // Logo
-                    Image("logo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 120, height: 120)
-                        .cornerRadius(30)
-                        .shadow(color: .purple, radius: 10)
+                    ZStack {
+                        Image("logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 120, height: 120)
+                            .cornerRadius(30)
+                            .shadow(color: .purple, radius: 10)
+                    }
 
-                    // Payment block
                     VStack(spacing: 12) {
                         Text("LIFETIME PREMIUM")
                             .font(.system(size: 26, weight: .heavy, design: .rounded))
                             .foregroundColor(.white)
 
-                        Text("One-time payment. No ads. All features. Forever.")
-                            .font(.system(size: 16))
-                            .foregroundColor(.white.opacity(0.8))
+                        Text("One-time payment. All features. Forever.")
+                            .font(.system(size: 14))
+                            .foregroundColor(.white.opacity(0.7))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
 
