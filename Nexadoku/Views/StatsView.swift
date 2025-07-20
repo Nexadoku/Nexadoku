@@ -22,34 +22,24 @@ struct StatsView: View {
             ScrollView {
                 VStack(spacing: 30) {
                     HStack {
-                        Button {
-                            dismiss()
-                            VibrationManager.shared.lightImpact()
-                        } label:  {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(.white)
-                                .shadow(radius: 10)
-                            
-                            Text("STATISTICS")
-                                .font(.system(size: 30, weight: .heavy))
-                                .foregroundColor(.white)
-                                .shadow(radius: 10)
-                                .opacity(animate ? 1 : 0)
-                                .scaleEffect(animate ? 1 : 0.95)
-                                .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
-                            
-                            
-                            Image(systemName: "trophy.fill")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20, weight: .black, design: .rounded))
-                                .shadow(radius: 10)
-                                .opacity(animate ? 1 : 0)
-                                .animation(.easeInOut(duration: 0.8).delay(0.1), value: animate)
-                        }
-
+                        
+                        Image(systemName: "trophy.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 28, weight: .heavy))
+                            .shadow(radius: 10)
+                            .opacity(animate ? 1 : 0)
+                            .animation(.easeInOut(duration: 0.8).delay(0.1), value: animate)
+                        Text("Statistics")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                            .shadow(radius: 10)
+                            .opacity(animate ? 1 : 0)
+                            .scaleEffect(animate ? 1 : 0.95)
+                            .animation(.easeOut(duration: 0.8).delay(0.1), value: animate)
+                        
                         Spacer()
                     }
+                    
                     .onChange(of: selectedLevel) { _ in
                         VibrationManager.shared.lightImpact()
                     }
@@ -117,6 +107,23 @@ struct StatsView: View {
                 }
             }
             .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                        VibrationManager.shared.lightImpact()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            
+                        Text("Back")
+                            .font(.system(size: 18, weight: .heavy))
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 

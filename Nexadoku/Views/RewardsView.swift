@@ -11,7 +11,7 @@ struct RewardsView: View {
     @AppStorage("totalPoints") private var totalPoints: Int = 0
     @AppStorage("earnedTrophyIDs") private var earnedTrophyIDs: String = ""
     @AppStorage("claimedTrophyIDs") private var claimedTrophyIDs: String = ""
-
+    
     var levelsTrophies: [Trophy] {
         DifficultyLevel.allCases
             .filter { $0 != .legend }
@@ -56,7 +56,7 @@ struct RewardsView: View {
         claimedTrophyIDs = newIDs.joined(separator: ",")
         VibrationManager.shared.lightImpact()
     }
-   
+    
     private func checkAndAwardPoints() {
         var ids = Set(earnedTrophyIDs.split(separator: ",").map { String($0) })
         var newPoints = 0
@@ -80,39 +80,17 @@ struct RewardsView: View {
             ScrollView {
                 VStack(spacing: 18) {
                     HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
-                                .font(.system(size: 24, weight: .heavy))
-                            
-                            Text("REWARDS")
-                                .foregroundColor(.white)
-                                .font(.system(size: 30, weight: .heavy))
-                        }
-                        Spacer()
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
                         
-                        Button {
-                            withAnimation(.spring(response: 0.38, dampingFraction: 0.78)) {
-                                showPointsSheet = true
-                            }
-                        } label : {
-                            HStack {
-                                Image("coin")
-                                    .resizable()
-                                    .frame(width: 28, height: 28)
-                                Text("\(totalPoints)")
-                                    .foregroundColor(.white)
-                                    .font(.system(size: 19, weight: .heavy))
-                                    .shadow(radius: 4)
-                            }
-                            .padding()
-                        }
+                        Text("Rewards")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                        
+                        Spacer()
                     }
-                    .padding(.top, 12)
-                    
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 8)
+                    .padding()
                     
                     ForEach(levelsTrophies) { trophy in
                         RewardRow(
@@ -162,7 +140,7 @@ struct RewardsView: View {
                         }
                     }
             }
-
+            
             BottomSheetView(trophy: selectedTrophy) {
                 withAnimation(.easeInOut(duration: 0.35)) {
                     selectedTrophy = nil
@@ -172,6 +150,48 @@ struct RewardsView: View {
             .animation(.easeInOut(duration: 0.35), value: selectedTrophy)
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                        
+                        Text("Back")
+                            .font(.system(size: 18, weight: .heavy))
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    withAnimation(.spring(response: 0.38, dampingFraction: 0.78)) {
+                        showPointsSheet = true
+                    }
+                } label: {
+                    HStack(spacing: 6) {
+                        Image("coin")
+                            .resizable()
+                            .frame(width: 22, height: 22)
+                        Text("\(totalPoints)")
+                            .foregroundColor(.white)
+                            .font(.system(size: 17, weight: .heavy))
+                            .shadow(radius: 3)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Color.black.opacity(0.3))
+                    .clipShape(Capsule())
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

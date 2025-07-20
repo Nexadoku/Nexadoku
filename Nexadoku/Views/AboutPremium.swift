@@ -6,102 +6,83 @@ struct AboutPremium: View {
     @State private var showRestoreAlert = false
     @State private var showRestoreFailedAlert = false
     @Environment(\.dismiss) var dismiss
-
+    
     let currentPremiumFeatures: [PremiumFeature] = [
         .init(title: "Special Rewards", description: "Earn exclusive trophies and rewards only available to Premium users."),
         .init(title: "Legend Level", description: "Get access to the Epic difficulty mode, available only with Premium."),
         .init(title: "Smart Highlight Lines", description: "Enable Highlight Lines to automatically show all matching lines on the board.")
     ]
-
+    
     let upcomingPremiumFeatures: [PremiumFeature] = [
         .init(title: "Exclusive Themes", description: "Get access to unique color themes and visual styles."),
         .init(title: "Custom Board Animations", description: "Choose special board and cell animation effects."),
         .init(title: "Personalized App Icons", description: "Select from a variety of Premium app icons to personalize your experience.")
     ]
-
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             PremiumBackground()
             ScrollView(showsIndicators: false) {
-                VStack(spacing: 32) {
-                    // Header
-                    HStack {
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            Image(systemName: "chevron.left")
-                                .foregroundStyle(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing))
-                                .font(.system(size: 24, weight: .heavy))
-                                .padding(.leading)
-                            
-                            Text("Premium")
-                                .font(.system(size: 40, weight: .heavy))
-                                .foregroundStyle(LinearGradient(colors: [.purple, .white], startPoint: .topLeading, endPoint: .bottomTrailing))
-                        }
-                        Spacer()
-                        Button("Restore") {
-                            Task {
-                                let success = await storeManager.restorePurchases()
-                                withAnimation {
-                                    if success {
-                                        showRestoreAlert = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            withAnimation {
-                                                showRestoreAlert = false
-                                            }
-                                        }
-                                    } else {
-                                        showRestoreFailedAlert = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                            withAnimation {
-                                                showRestoreFailedAlert = false
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .font(.system(size: 16))
-                        .foregroundColor(.white.opacity(0.8))
-                        .padding(.trailing)
-                    }
-
-                    ZStack {
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 120, height: 120)
-                            .cornerRadius(30)
-                            .shadow(color: .purple, radius: 10)
-                    }
-
-                    VStack(spacing: 12) {
-                        Text("LIFETIME PREMIUM")
-                            .font(.system(size: 26, weight: .heavy, design: .rounded))
-                            .foregroundColor(.white)
-
-                        Text("One-time payment. All features. Forever.")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white.opacity(0.7))
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-
+                VStack {
+                    VStack(alignment: .leading) {
                         HStack {
-                            Text("Access:")
+                            Image(systemName: "crown.fill")
+                                .font(.system(size: 28, weight: .heavy))
                                 .foregroundColor(.white)
+                            
+                            Text("Get Premium")
+                                .font(.system(size: 28, weight: .heavy))
+                                .foregroundColor(.white)
+                            
                             Spacer()
-                            Text("$14.99")
-                                .font(.system(size: 20, weight: .bold))
+                        }
+                        .padding(.horizontal)
+                        
+                        Text("Unlock all the app features by subscribing to the Premium version.")
+                            .font(.system(size: 14, weight: .light))
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding()
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 18) {
+                        ForEach(currentPremiumFeatures) { feature in
+                            FeatureRow(feature: feature)
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical)
+                    
+                    VStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 10) {
+                           Text("Lifetime Access")
+                                .font(.title3.weight(.heavy))
                                 .foregroundColor(.white)
+                        
+                           Text("$14.99/one-time payment")
+                                .font(.system(size: 18, weight: .regular))
+                                .foregroundColor(.white)
+                            
+                            Divider()
+                            
+                           Text("Unlock extra features.")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white.opacity(0.8))
                         }
                         .padding()
-
+                        .background(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(.purple, lineWidth: 3)
+                                .background(Color.black.opacity(0.3))
+                        )
+                        .cornerRadius(19)
+                        .shadow(radius: 19)
+                        
                         Button(action: {
                             Task {
                                 await storeManager.purchasePremium()
                             }
                         }) {
-                            Text(storeManager.isPurchased ? "Purchased" : "Buy Now")
+                            Text(storeManager.isPurchased ? "Purchased" : "Subscribe")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(storeManager.isPurchased ? .purple : .white)
                                 .frame(maxWidth: .infinity)
@@ -111,49 +92,43 @@ struct AboutPremium: View {
                         }
                         .disabled(storeManager.isPurchased)
                     }
+                    .padding(.horizontal)
+                    
+                    Button("Restore Subscription") {
+                        Task {
+                            let success = await storeManager.restorePurchases()
+                            withAnimation {
+                                if success {
+                                    showRestoreAlert = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        withAnimation {
+                                            showRestoreAlert = false
+                                        }
+                                    }
+                                } else {
+                                    showRestoreFailedAlert = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        withAnimation {
+                                            showRestoreFailedAlert = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .font(.system(size: 16))
+                    .foregroundColor(.white)
                     .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 24)
-                            .fill(LinearGradient(colors: [.purple.opacity(0.35), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .shadow(radius: 18)
-                    )
-                    .padding(.horizontal, 30)
-
-                    // Current features
-                    VStack(alignment: .leading, spacing: 18) {
-                        Text("Premium Features")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundColor(.white)
-                            .padding(.bottom, 6)
-                        ForEach(currentPremiumFeatures) { feature in
-                            FeatureRow(feature: feature)
-                        }
-                    }
-                    .padding(.horizontal)
-
+                    
                     // Coming soon
-                    VStack(alignment: .leading, spacing: 18) {
-                        Text("Coming Soon in Premium")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundColor(.purple)
-                            .padding(.top, 20)
-                            .padding(.bottom, 6)
-                        ForEach(upcomingPremiumFeatures) { feature in
-                            FeatureRow(feature: feature, icon: "sparkles")
-                        }
-                        Text("We’re working on these new features for Premium users. Stay tuned!")
-                            .font(.system(size: 14))
-                            .foregroundColor(.white.opacity(0.7))
-                            .padding(.top, 8)
-                    }
-                    .padding(.horizontal)
-
+                 
+                    
                     Spacer(minLength: 120)
                 }
                 .padding(.top, 30)
                 .padding(.bottom, 30)
             }
-
+            
             // Alerts
             if showRestoreAlert {
                 PremiumAlertView(
@@ -170,9 +145,29 @@ struct AboutPremium: View {
                     message: "No previous purchases were found for this account.",
                     color: .red
                 )
+                
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                        
+                       Text("Back")
+                            .font(.system(size: 18))
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

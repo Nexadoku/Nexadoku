@@ -13,23 +13,18 @@ struct PrivacyPolicy: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 22) {
                     HStack {
-                        Button {
-                            dismiss()
-                            VibrationManager.shared.lightImpact()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
-                                .font(.system(size: 24, weight: .heavy))
-                            
-                            Text("PRIVACY POLICY")
-                                .foregroundColor(.white)
-                                .font(.system(size: 30, weight: .heavy))
-                                .lineLimit(2)
-                        }
+                        Image(systemName: "figure.child.and.lock.fill")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                        
+                        Text("Privacy Policy")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                        
                         Spacer()
                     }
                     .padding()
-
+                    
                     Image("logo")
                         .resizable()
                         .frame(width: 100, height: 100)
@@ -128,6 +123,23 @@ futuresudoku@gmail.com
         }
         .onAppear { animate = true }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                    
+                    Text("Back")
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

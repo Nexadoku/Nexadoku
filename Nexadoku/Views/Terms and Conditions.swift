@@ -9,28 +9,20 @@ struct TermsAndConditions: View {
             SystemBackground()
             VStack(spacing: 24) {
                 HStack {
-                    Button {
-                        dismiss()
-                        VibrationManager.shared.lightImpact()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 24, weight: .heavy))
-                            .foregroundColor(.white)
-                            .shadow(radius: 10)
-                        
-                        Text("Terms and Conditions")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30, weight: .heavy))
-                            .bold()
-                    }
+                    Image(systemName: "text.document.fill")
+                        .font(.system(size: 28, weight: .heavy))
+                        .foregroundColor(.white)
+                    
+                    Text("Terms And Conditions")
+                        .font(.system(size: 28, weight: .heavy))
+                        .foregroundColor(.white)
                     
                     Spacer()
                 }
-                .padding(.horizontal)
-              
-                Spacer()
+                .padding()
                 
                 Text("You can read the full Terms and Conditions by tapping the button below.")
+                    .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
@@ -50,6 +42,23 @@ struct TermsAndConditions: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                    
+                    Text("Back")
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 
     private func openTerms() {

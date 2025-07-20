@@ -25,6 +25,7 @@ struct MenuTabView: View {
                 destination: buildDestination
             )
         }
+        .environment(\.colorScheme, .dark)
     }
     
     @ViewBuilder

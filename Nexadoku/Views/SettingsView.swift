@@ -19,26 +19,18 @@ struct SettingsView: View {
            SystemBackground()
             VStack {
                 ScrollView {
-                    VStack(spacing: 30) {
-                        HStack {
-                            Button {
-                                dismiss()
-                                VibrationManager.shared.lightImpact()
-                            } label: {
-                                Image(systemName: "chevron.left")
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Image(systemName: "gearshape.fill")
+                                    .font(.system(size: 28, weight: .heavy))
                                     .foregroundColor(.white)
-                                    .font(.system(size: 24, weight: .heavy))
                                 
-                                Text("SETTINGS")
-                                    .font(.system(size: 30, weight: .heavy))
+                                Text("Settings")
+                                    .font(.system(size: 28, weight: .heavy))
                                     .foregroundColor(.white)
                             }
+                            .padding()
                             
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        
-                        VStack(alignment: .leading, spacing: 10) {
                             VStack {
                                 Toggle(isOn: $soundEnabled) {
                                     Text("Sounds")
@@ -166,8 +158,25 @@ struct SettingsView: View {
                     highlightsEnabled = false
                 }
             }
-        }
+        
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                    
+                    Text("Back")
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

@@ -16,9 +16,9 @@ public struct AccountRouter: RouterProtocol {
         case .settings:
             SettingsView()
         case .help:
-            PrivacyPolicy()
-        case .privacyPolicy:
             HelpView()
+        case .privacyPolicy:
+            PrivacyPolicy()
         case .terms:
             TermsAndConditions()
         case .premium:

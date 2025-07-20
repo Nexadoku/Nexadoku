@@ -138,21 +138,15 @@ A: Yes! Buying once gives you lifetime access to all current premium features.
                 VStack(alignment: .leading, spacing: 34) {
                     // Title
                     HStack {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 28, weight: .bold))
-                                .foregroundColor(.white)
-                                .shadow(radius: 10)
-                            
-                            Text("HELP & GUIDE")
-                                .font(.system(size: 32, weight: .heavy))
-                                .foregroundStyle(LinearGradient(colors: [.white], startPoint: .top, endPoint: .bottom))
-                        }
-                        Spacer()
+                        Image(systemName: "book.fill")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
+                        
+                        Text("Help & Guide")
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.white)
                     }
-                    .padding(.horizontal)
+                    .padding()
 
                     ForEach(sections.indices, id: \.self) { idx in
                         HelpSectionCard(
@@ -172,6 +166,23 @@ A: Yes! Buying once gives you lifetime access to all current premium features.
             }
         }
         .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                    
+                    Text("Back")
+                        .font(.system(size: 18, weight: .heavy))
+                        .foregroundColor(.white)
+                }
+            }
+        }
+        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 
