@@ -74,13 +74,7 @@ struct StatsView: View {
                         .onTapGesture {
                             showLineChartSheet = true
                         }
-                        StatsCalendarView(winDates: stats.winDates)
-                        .onTapGesture {
-                            showCalendarSheet = true
-                        }
                     
-                   
-
                     statsCapsule
                         .opacity(animate ? 1 : 0)
                         .offset(y: animate ? 0 : 20)
@@ -92,10 +86,6 @@ struct StatsView: View {
             }
             .sheet(isPresented: $showLineChartSheet) {
                 LineChartExplanationSheet(stats: stats)
-                    .presentationDetents([.medium])
-            }
-            .sheet(isPresented: $showCalendarSheet) {
-                CalendarExplanationSheet(winDates: stats.winDates)
                     .presentationDetents([.medium])
             }
             .onAppear {
