@@ -1,9 +1,12 @@
 
 import SwiftUI
+import StoreKit
 
 struct MenuTabView: View {
     @EnvironmentObject private var navigator: Navigator
     @EnvironmentObject private var storeManager: StoreManager
+    
+    @State private var showRate = false
     
     var body: some View {
         NavigationStack(path: $navigator.stack) {

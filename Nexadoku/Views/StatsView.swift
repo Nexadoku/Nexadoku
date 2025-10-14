@@ -133,7 +133,7 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 5)
+                    .stroke(.purple, lineWidth: 1)
                     .background(
                         LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )
@@ -149,7 +149,7 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 5)
+                    .stroke(.purple, lineWidth: 1)
                     .background(
                         LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )
@@ -165,7 +165,7 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 5)
+                    .stroke(.purple, lineWidth: 1)
                     .background(
                         LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
                     )

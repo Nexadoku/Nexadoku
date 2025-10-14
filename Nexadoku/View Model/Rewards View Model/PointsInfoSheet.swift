@@ -56,7 +56,7 @@ Points are kept forever and show your progress.
                    .background(
                        RoundedRectangle(cornerRadius: 35)
                            .fill(
-                            LinearGradient(colors: [.purple, .black], startPoint: .top, endPoint: .bottom)
+                            LinearGradient(colors: [.purple, .black, .black], startPoint: .top, endPoint: .bottom)
                            )
                            .shadow(radius: 22)
                    )

@@ -13,9 +13,9 @@ struct GameView: View {
 
     @State private var showGameOverAlert = false
     @State private var showQuickSettings = false
-    @State private var isPaused = false
+    @State private var showQuickSettingsView = false
     @State private var showExitConfirmation = false
-    @State private var lockedNumber: Int? = nil
+    @State private var showPauseView = false
 
     init(state: GameState) {
         let newGame = Game(state: state)
@@ -26,7 +26,6 @@ struct GameView: View {
     var body: some View {
         ZStack {
             SystemBackground()
-                .blur(radius: isPaused ? 10 : 0)
 
             VStack(spacing: .zero) {
                 if game.isLoading || game.grid.isEmpty {
@@ -35,50 +34,8 @@ struct GameView: View {
                     content
                 }
             }
-            .blur(radius: isPaused ? 10 : 0)
-
-            if isPaused {
-                Color.black.opacity(0.6)
-                    .ignoresSafeArea()
-
-                PauseOverlay(
-                    level: game.level,
-                    mistakes: game.mistakes,
-                    pausedTime: game.timer.elapsedTime,
-                    onResume: {
-                        isPaused = false
-                        game.timer.start()
-                    },
-                    onRestart: {
-                        isPaused = false
-                        game.restart()
-                    }
-                )
-            }
             
-            if showQuickSettings {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-                    .transition(.opacity)
-                    .zIndex(101)
-                    .onTapGesture {
-                        withAnimation(.easeOut(duration: 0.28)) { showQuickSettings = false }
-                    }
-                GameQuickSettingsSheet()
-                    .frame(maxWidth: 300, maxHeight: 500)
-                    .background(
-                        RoundedRectangle(cornerRadius: 30, style: .continuous)
-                            .fill(
-                                LinearGradient(
-                                    colors: [.purple.opacity(0.92), .black.opacity(0.98)], startPoint: .topLeading, endPoint: .bottomTrailing
-                                )
-                            )
-                            .shadow(color: .purple.opacity(0.9), radius: 30, x: 0, y: 8)
-                    )
-                    .padding(.horizontal, 32)
-                    .transition(.scale.combined(with: .opacity))
-                    .zIndex(102)
-            }
+            // old inline sheet removed in favor of fullScreen QuickSettingsView
             
             if showExitConfirmation {
                 Color.black.opacity(0.5)
@@ -87,7 +44,7 @@ struct GameView: View {
                     .zIndex(100)
                     .onTapGesture {
                         // Тап по фону закрывает алерт
-                        withAnimation { showExitConfirmation = false }
+                        withAnimation(.easeInOut(duration: 0.15)) { showExitConfirmation = false }
                     }
 
                 VStack(spacing: 24) {
@@ -95,13 +52,11 @@ struct GameView: View {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 44))
                         .foregroundColor(.purple)
-                        .shadow(color: .purple, radius: 10)
                         .padding(.top, 8)
 
                     Text("Exit Game?")
                         .font(.system(size: 28, weight: .heavy, design: .rounded))
                         .foregroundColor(.white)
-                        .shadow(radius: 10)
 
                     Text("Are you sure you want to exit the game?")
                         .font(.system(size: 17, weight: .medium))
@@ -111,7 +66,7 @@ struct GameView: View {
 
                     HStack(spacing: 18) {
                         Button(action: {
-                            withAnimation { showExitConfirmation = false }
+                            withAnimation(.easeInOut(duration: 0.15)) { showExitConfirmation = false }
                             VibrationManager.shared.lightImpact()
                         }) {
                             Text("Cancel")
@@ -133,7 +88,6 @@ struct GameView: View {
                                 .background(.black)
                                 .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                                .shadow(radius: 10)
                         }
                     }
                     .padding(.bottom, 6)
@@ -145,7 +99,6 @@ struct GameView: View {
                         colors: [Color.black.opacity(0.93), Color.purple.opacity(0.96)],
                         startPoint: .topLeading, endPoint: .bottomTrailing
                     )
-                    .shadow(color: .purple.opacity(0.6), radius: 30, x: 0, y: 8)
                     .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 28)
@@ -167,6 +120,29 @@ struct GameView: View {
             } else {
                 game.timer.start()
             }
+        }
+        .fullScreenCover(isPresented: $showPauseView) {
+            PauseView(
+                level: game.level,
+                mistakes: game.mistakes,
+                timeElapsed: game.timer.elapsedTime,
+                onResume: {
+                    showPauseView = false
+                    game.timer.start()
+                },
+                onRestart: {
+                    showPauseView = false
+                    game.restart()
+                },
+                onExit: {
+                    showPauseView = false
+                    game.saveCurrentGame()
+                    navigator.pop()
+                }
+            )
+        }
+        .fullScreenCover(isPresented: $showQuickSettingsView) {
+            QuickSettingsView()
         }
         .fullScreenCover(isPresented: $game.gameOver) {
             if game.isWon {
@@ -195,36 +171,31 @@ struct GameView: View {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)
-                        .shadow(radius: 10)
                 }
 
                 Text("NEXADOKU")
                     .font(.system(size: 40, weight: .heavy))
                     .foregroundColor(.white)
-                    .shadow(radius: 10)
 
                 Spacer()
                 
                 Button(action: {
-                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                        showQuickSettings = true
-                    }
+                    showQuickSettingsView = true
+                    VibrationManager.shared.lightImpact()
                 }) {
                     Image(systemName: "switch.2")
                         .font(.system(size: 30, weight: .bold))
                         .foregroundColor(.white)
-                        .shadow(radius: 10)
                 }
 
                 Button(action: {
-                    isPaused = true
                     game.timer.stop()
+                    showPauseView = true
                     VibrationManager.shared.lightImpact()
                 }) {
                     Image(systemName: "pause.circle.fill")
                         .font(.system(size: 30, weight: .bold))
                         .foregroundColor(.white)
-                        .shadow(radius: 10)
                 }
             }
             .padding(.horizontal)
@@ -288,7 +259,6 @@ struct GameView: View {
         .padding(.vertical, 8)
         .background(.purple)
         .clipShape(RoundedRectangle(cornerRadius: 20))
-        .shadow(color: .purple, radius: 5)
         .padding()
     }
 

@@ -8,8 +8,7 @@ struct PrivacyPolicy: View {
 
     var body: some View {
         ZStack {
-            SystemBackground()
-                .ignoresSafeArea()
+            SystemBackground().ignoresSafeArea()
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 22) {
                     HStack {
@@ -110,7 +109,7 @@ futuresudoku@gmail.com
                             .blur(radius: 0.2)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(Color.purple, lineWidth: 3)
+                                    .stroke(Color.purple, lineWidth: 1)
                             )
                     )
                     .padding(.horizontal)
