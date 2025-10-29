@@ -82,7 +82,16 @@ struct RewardsView: View {
                     HStack {
                         Image(systemName: "star.fill")
                             .font(.system(size: 28, weight: .heavy))
-                            .foregroundColor(.white)
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 140/255, green: 60/255, blue: 255/255),
+                                        Color.white
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
                         
                         Text("Rewards")
                             .font(.system(size: 28, weight: .heavy))
@@ -105,12 +114,16 @@ struct RewardsView: View {
                         .padding(.horizontal)
                     }
                 }
+                .opacity(showPointsSheet ? 0 : 1)
+                .scaleEffect(showPointsSheet ? 0.96 : 1)
+                .animation(.easeInOut(duration: 0.28), value: showPointsSheet)
+                .allowsHitTesting(!showPointsSheet)
                 .padding(.bottom, 32)
             }
-            .blur(radius: selectedTrophy != nil ? 3 : 0)
+            .blur(radius: 0)
             
             if showPointsSheet {
-                Color.black.opacity(0.5)
+                Color.black.opacity(0.6)
                     .ignoresSafeArea()
                     .transition(.opacity)
                     .zIndex(20)
@@ -121,7 +134,7 @@ struct RewardsView: View {
                     }
                 
                 PointsAlert {
-                    withAnimation(.easeInOut(duration: 0.22)) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
                         showPointsSheet = false
                     }
                 }
@@ -185,13 +198,31 @@ struct RewardsView: View {
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(Color.black.opacity(0.3))
+                    .background(
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.18), Color.white.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(Color.white.opacity(0.35), lineWidth: 1)
+                        }
+                    )
                     .clipShape(Capsule())
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(
+            LinearGradient(
+                colors: [
+                    Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.26),
+                    Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.26)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            for: .navigationBar
+        )
         .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar(showPointsSheet ? .hidden : .visible, for: .navigationBar)
     }
 }
 

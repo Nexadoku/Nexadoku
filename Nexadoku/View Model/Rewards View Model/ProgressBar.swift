@@ -16,7 +16,17 @@ struct ProgressBar: View {
                 Capsule()
                     .fill(Color.white.opacity(0.15))
                 Capsule()
-                    .fill(progress >= 1 ? Color.purple : Color.purple.opacity(0.8))
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 140/255, green: 60/255, blue: 255/255),
+                                Color(red: 60/255, green: 20/255, blue: 120/255)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .opacity(0.95)
+                    )
                     .frame(width: geometry.size.width * progress)
             }
         }

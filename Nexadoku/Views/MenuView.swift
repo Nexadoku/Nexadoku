@@ -73,7 +73,7 @@ struct MenuView: View {
 
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
-                            saveButton(title: "Continue Game", icon: "play.fill") {
+                            glassMenuButton(title: "Continue Game", icon: "play.fill") {
                                 withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
                                     showContinueAlert = true
                                 }
@@ -84,14 +84,14 @@ struct MenuView: View {
                             }
                         }
 
-                        neonButton(title: "New Game", icon: "gamecontroller.fill") {
+                        glassMenuButton(title: "New Game", icon: "gamecontroller.fill") {
                             navigator.push(.menu(.levelSelection))
                             VibrationManager.shared.lightImpact()
                         }
 
                         // Badge on Rewards
                         ZStack(alignment: .topTrailing) {
-                            neonButton(title: "Rewards", icon: "star.fill") {
+                            glassMenuButton(title: "Rewards", icon: "star.fill") {
                                 navigator.push(.menu(.rewards))
                             }
                             if claimableTrophiesCount > 0 {
@@ -344,22 +344,53 @@ struct MenuView: View {
         }
     }
 
-    func neonButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+    func glassMenuButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 10) {
                 Image(systemName: icon)
-                    .font(.title2)
+                    .font(.title2.weight(.semibold))
                 Text(title)
                     .font(.title2.bold())
             }
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(.purple)
-            .cornerRadius(25)
-            .shadow(radius: 10)
+            .background(GlassMenuBackground(cornerRadius: 25))
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
+            .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
         }
         .padding(.horizontal)
+    }
+
+    struct GlassMenuBackground: View {
+        var cornerRadius: CGFloat = 25
+        var body: some View {
+            ZStack {
+                // Base hues aligned with SystemBackground
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.55),
+                                Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.55)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                // top highlight
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(LinearGradient(colors: [Color.white.opacity(0.22), .clear], startPoint: .topLeading, endPoint: .center))
+                    .blendMode(.screen)
+                // border
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(
+                        LinearGradient(colors: [Color.white.opacity(0.8), Color.white.opacity(0.25)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 1
+                    )
+            }
+        }
     }
 }
 // MARK: - Кастомный центрированный алерт

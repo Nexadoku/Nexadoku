@@ -17,22 +17,22 @@ struct AccountView: View {
             ScrollView {
                 VStack(spacing: 30) {
                     premiumSection(title: "") {
-                        premiumButton(title: "Statistics", icon: "trophy.fill") {
+                        glassMenuButton(title: "Statistics", icon: "trophy.fill") {
                             navigator.push(.account(.statistics))
                             VibrationManager.shared.lightImpact()
                         }
                         
-                        premiumButton(title: "Premium Membership", icon: "star.fill") {
+                        glassMenuButton(title: "Premium Membership", icon: "star.fill") {
                             navigator.push(.account(.premium))
                         }
                     }
                     premiumSection(title: "SETTINGS AND HELP") {
-                        premiumButton(title: "Settings", icon: "gearshape.fill") {
+                        glassMenuButton(title: "Settings", icon: "gearshape.fill") {
                             navigator.push(.account(.settings))
                             VibrationManager.shared.lightImpact()
                         }
                         
-                        premiumButton(title: "Help", icon: "questionmark.circle.fill") {
+                        glassMenuButton(title: "Help", icon: "questionmark.circle.fill") {
                             navigator.push(.account(.help))
                             VibrationManager.shared.lightImpact()
                         }
@@ -44,7 +44,7 @@ struct AccountView: View {
                             .foregroundColor(.white.opacity(0.5))
                             .padding(.horizontal)
                         
-                        premiumButton(title: "Send Feedback", icon: "paperplane.fill") {
+                        glassMenuButton(title: "Send Feedback", icon: "paperplane.fill") {
                             if MFMailComposeViewController.canSendMail() {
                                 showMailView = true
                                 VibrationManager.shared.lightImpact()
@@ -67,11 +67,11 @@ struct AccountView: View {
                             )
                         }
                         
-                        premiumButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
+                        glassMenuButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
                             navigator.push(.account(.privacyPolicy))
                         }
                         
-                        premiumButton(title: "Terms And Conditions", icon: "text.document.fill") {
+                        glassMenuButton(title: "Terms And Conditions", icon: "text.document.fill") {
                             navigator.push(.account(.terms))
                         }
                         
@@ -97,32 +97,52 @@ struct AccountView: View {
     }
 
 
-    // MARK: - Premium Button
+    // MARK: - Glass Button (matches Menu)
 
-    func premiumButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+    func glassMenuButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 10) {
                 Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                    .frame(width: 30)
+                    .font(.title2.weight(.semibold))
                 Text(title)
                     .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
                 Spacer()
             }
+            .foregroundColor(.white)
             .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 25)
-                    .fill(.purple)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25)
-                            .stroke(LinearGradient(colors: [.purple.opacity(0.3), .clear], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
-                    )
-                    .shadow(radius: 10)
-            )
+            .background(GlassMenuBackground(cornerRadius: 25))
+            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+            .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
+            .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
         }
         .padding(.horizontal)
+    }
+
+    struct GlassMenuBackground: View {
+        var cornerRadius: CGFloat = 25
+        var body: some View {
+            ZStack {
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.55),
+                                Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.55)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(LinearGradient(colors: [Color.white.opacity(0.22), .clear], startPoint: .topLeading, endPoint: .center))
+                    .blendMode(.screen)
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(
+                        LinearGradient(colors: [Color.white.opacity(0.8), Color.white.opacity(0.25)], startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 1
+                    )
+            }
+        }
     }
     
 struct AccountViewPreviews: PreviewProvider {
