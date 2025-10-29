@@ -43,12 +43,20 @@ struct MenuView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 50, height: 50)
-                                .shadow(color: .purple.opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12)
+                                .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12)
                                 .shadow(color: .white.opacity(glow ? 0.16 : 0.02), radius: glow ? 12 : 2)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 18)
                                         .stroke(
-                                            LinearGradient(colors: [.purple, .white.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: glow ? 3.5 : 2
+                                            LinearGradient(
+                                                colors: [
+                                                    Color(red: 140/255, green: 60/255, blue: 255/255),
+                                                    Color.white.opacity(0.5)
+                                                ],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            ),
+                                            lineWidth: glow ? 3.5 : 2
                                         )
                                         .blur(radius: glow ? 2.5 : 0)
                                         .opacity(glow ? 0.86 : 0.18)
@@ -68,7 +76,8 @@ struct MenuView: View {
                         .resizable()
                         .frame(width: 140, height: 140)
                         .cornerRadius(30)
-                        .shadow(color: .purple, radius: 15)
+                        .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.7), radius: 18, x: 0, y: 8)
+                        .shadow(color: Color.white.opacity(0.08), radius: 6, x: -2, y: -2)
                         .padding(.bottom, 50)
 
                     VStack(spacing: 20) {

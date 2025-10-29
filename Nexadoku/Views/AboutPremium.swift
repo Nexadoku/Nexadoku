@@ -70,9 +70,28 @@ struct AboutPremium: View {
                         }
                         .padding()
                         .background(
-                            RoundedRectangle(cornerRadius: 18)
-                                .stroke(.purple, lineWidth: 3)
-                                .background(Color.black.opacity(0.3))
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [
+                                                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.22),
+                                                Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.22)
+                                            ],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                    .stroke(
+                                        LinearGradient(
+                                            colors: [Color.white.opacity(0.8), Color.white.opacity(0.25)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        ),
+                                        lineWidth: 1
+                                    )
+                            }
                         )
                         .cornerRadius(19)
                         .shadow(radius: 19)
@@ -84,10 +103,26 @@ struct AboutPremium: View {
                         }) {
                             Text(storeManager.isPurchased ? "Purchased" : "Subscribe")
                                 .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(storeManager.isPurchased ? .purple : .white)
+                                .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 14)
-                                .background(storeManager.isPurchased ? Color.black : Color.purple)
+                                .background(
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                            .fill(
+                                                LinearGradient(
+                                                    colors: [
+                                                        Color(red: 140/255, green: 60/255, blue: 255/255).opacity(storeManager.isPurchased ? 0.12 : 0.45),
+                                                        Color(red: 60/255, green: 20/255, blue: 120/255).opacity(storeManager.isPurchased ? 0.12 : 0.45)
+                                                    ],
+                                                    startPoint: .topLeading,
+                                                    endPoint: .bottomTrailing
+                                                )
+                                            )
+                                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                            .stroke(Color.white.opacity(0.35), lineWidth: 1)
+                                    }
+                                )
                                 .cornerRadius(18)
                         }
                         .disabled(storeManager.isPurchased)
@@ -120,7 +155,7 @@ struct AboutPremium: View {
                     .foregroundColor(.white)
                     .padding()
                     
-                    // Coming soon
+     
                  
                     
                     Spacer(minLength: 120)
@@ -166,7 +201,17 @@ struct AboutPremium: View {
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(
+            LinearGradient(
+                colors: [
+                    Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.26),
+                    Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.26)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            for: .navigationBar
+        )
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }
@@ -197,15 +242,21 @@ struct PremiumAlertView: View {
         .padding(.horizontal, 30)
         .padding(.vertical, 26)
         .background(
-            RoundedRectangle(cornerRadius: 35)
-                .fill(
-                    LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
-                )
-                .shadow(radius: 20)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 35)
-                        .stroke(color, lineWidth: 2)
-                )
+            ZStack {
+                RoundedRectangle(cornerRadius: 35, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.35),
+                                Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.35)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                RoundedRectangle(cornerRadius: 35, style: .continuous)
+                    .stroke(color, lineWidth: 2)
+            }
         )
         .padding(.horizontal, 40)
         .shadow(radius: 30)

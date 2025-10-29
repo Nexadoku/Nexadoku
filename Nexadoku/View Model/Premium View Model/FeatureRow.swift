@@ -9,8 +9,8 @@ struct FeatureRow: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Image(systemName: icon)
-                    .foregroundColor(.purple)
-                    .shadow(color: .purple, radius: 8)
+                    .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255))
+                    .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.7), radius: 18, x: 0, y: 8)
                     .font(.system(size: 20, weight: .bold))
                 Text(feature.title)
                     .font(.system(size: 20, weight: .bold))

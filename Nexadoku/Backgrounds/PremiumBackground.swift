@@ -23,11 +23,7 @@ struct PremiumBackground: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.black, .purple], startPoint: .top, endPoint: .bottom)
-                .ignoresSafeArea()
-            
-            BlurView(style: .systemChromeMaterialDark)
-                .edgesIgnoringSafeArea(.all)
+            SystemBackground()
             
             // Рисуем 50 рандомных звезд
             ForEach(stars) { star in
@@ -35,7 +31,7 @@ struct PremiumBackground: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: star.size, height: star.size)
-                    .foregroundColor(Color.purple.opacity(star.opacity))
+                    .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255)).opacity(0.1)
                     .rotationEffect(.degrees(star.angle))
                     .position(x: star.x, y: star.y)
             }

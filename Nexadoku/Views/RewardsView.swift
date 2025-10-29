@@ -120,7 +120,10 @@ struct RewardsView: View {
                 .allowsHitTesting(!showPointsSheet)
                 .padding(.bottom, 32)
             }
-            .blur(radius: 0)
+            .opacity(selectedTrophy != nil ? 0.95 : 1)
+            .scaleEffect(selectedTrophy != nil ? 0.99 : 1)
+            .blur(radius: selectedTrophy != nil ? 1.0 : 0)
+            .animation(.easeInOut(duration: 0.25), value: selectedTrophy != nil)
             
             if showPointsSheet {
                 Color.black.opacity(0.6)
@@ -198,14 +201,6 @@ struct RewardsView: View {
                     }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
-                    .background(
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.18), Color.white.opacity(0.06)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(Color.white.opacity(0.35), lineWidth: 1)
-                        }
-                    )
                     .clipShape(Capsule())
                 }
             }
