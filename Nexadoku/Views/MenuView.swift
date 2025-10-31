@@ -266,7 +266,6 @@ struct MenuView: View {
                     .blur(radius: 1.5)
                     .blendMode(.screen)
 
-                // Secondary highlight for more glass effect
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(
                         LinearGradient(
@@ -281,7 +280,6 @@ struct MenuView: View {
                     .blur(radius: 3)
                     .blendMode(.overlay)
 
-                // Specular highlight - bright purple spot
                 Circle()
                     .fill(
                         RadialGradient(

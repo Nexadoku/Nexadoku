@@ -24,62 +24,56 @@ struct LevelSelectionView: View {
                         showLevels = true
                     }
                 }
-        
-                VStack(spacing: 40) {
-                   
-                        Text("Select Level:")
-                            .font(.largeTitle.bold())
-                            .foregroundColor(.white)
-                            .shadow(radius: 20)
-                            .padding(.top, 50)
-                        
-                    
-                    
-                    if showLevels {
-                        VStack(spacing: 20) {
-                            HStack(spacing: 20) {
-                                levelButton(title: .easy, color: .green)
-                                levelButton(title: .medium, color: .yellow)
-                                levelButton(title: .hard, color: .orange)
-                            }
-                            
-                            HStack {
-                                levelButton(title: .master, color: .red)
-                                levelButton(title: .epic, color: .black)
-                                levelButton(title: .legend, color: .teal)
-                            }
+            
+            VStack(spacing: 40) {
+                
+                Text("Select Level:")
+                    .font(.largeTitle.bold())
+                    .foregroundColor(.white)
+                    .shadow(radius: 20)
+                    .padding(.top, 50)
+                
+                
+                
+                if showLevels {
+                    VStack(spacing: 20) {
+                        HStack(spacing: 20) {
+                            levelButton(title: .easy, color: .green)
+                            levelButton(title: .medium, color: .yellow)
+                            levelButton(title: .hard, color: .orange)
                         }
-                        .transition(.scale.combined(with: .opacity))
-                    }
-                    
-                    if let level = selectedLevel {
-                        Text("Selected Level: \(level.rawValue)")
-                            .font(.system(size: 20, weight: .bold, design: .rounded))
-                            .foregroundColor(.white)
-                            .padding(.top, 20)
-                            .transition(.opacity)
-                            .shadow(radius: 20)
                         
-                        Button(action: {
-                            navigator.push(
-                                .level(.game(.new(level: level)))
-                            )
-                            
-                        }) {
-                            Text("Start Game")
-                                .foregroundColor(.white)
-                                .font(.system(size: 20, weight: .bold))
-                                .padding()
-                                .frame(width: 250)
-                                .background(.purple)
-                                .cornerRadius(20)
-                                .shadow(color: .purple, radius: 10)
+                        HStack {
+                            levelButton(title: .master, color: .red)
+                            levelButton(title: .epic, color: .black)
+                            levelButton(title: .legend, color: .teal)
                         }
-                        .transition(.opacity.combined(with: .scale))
-                        
                     }
+                    .transition(.scale.combined(with: .opacity))
                 }
-                .padding()
+                
+                if let level = selectedLevel {
+                    Text("Selected Level: \(level.rawValue)")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundColor(.white)
+                        .padding(.top, 20)
+                        .transition(.opacity)
+                        .shadow(radius: 20)
+                    
+                    MagicStartButton(title: "Start Game", icon: "sparkles") {
+                        navigator.push(.level(.game(.new(level: level))))
+                        VibrationManager.shared.lightImpact()
+                    }
+                    .transition(.opacity.combined(with: .scale))
+                    
+                }
+            }
+            .padding()
+            .opacity(showInfoSheet ? 0 : 1)
+            .scaleEffect(showInfoSheet ? 0.96 : 1)
+            .animation(.easeInOut(duration: 0.28), value: showInfoSheet)
+            .allowsHitTesting(!showInfoSheet)
+            
             
             VStack {
                 HStack {
@@ -93,38 +87,51 @@ struct LevelSelectionView: View {
                             .foregroundColor(.white.opacity(0.4))
                             .font(.system(size: 26, weight: .bold))
                             .padding()
+                            .opacity(showInfoSheet ? 0 : 0.95)
+                            .scaleEffect(showInfoSheet ? 0.96 : 1)
+                            .animation(.easeInOut(duration: 0.25), value: showInfoSheet)
+                            .allowsHitTesting(!showInfoSheet)
                     }
                 }
                 Spacer()
             }
-                
-                VStack {
-                    Spacer()
-                    Button(action: {
-                        dismiss()
-                        VibrationManager.shared.lightImpact()
-                    }) {
-                        Text("← Back")
-                            .foregroundColor(.white)
-                            .font(.headline.bold())
-                            .frame(width: 180, height: 50)
-                            .background(.purple)
-                            .cornerRadius(25)
-                            .shadow(radius: 20)
-                    }
-                    .padding(.bottom, 30)
-                    .opacity(0.95)
+            
+            VStack {
+                Spacer()
+                GlassMenuButton(title: "Back", icon: "arrow.left") {
+                    dismiss()
+                    VibrationManager.shared.lightImpact()
                 }
-                
-                if showInfoSheet {
-                    bottomSheet
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .zIndex(10)
-                }
+                .padding(.bottom)
+                .opacity(showInfoSheet ? 0 : 0.95)
+                .scaleEffect(showInfoSheet ? 0.96 : 1)
+                .animation(.easeInOut(duration: 0.25), value: showInfoSheet)
+                .allowsHitTesting(!showInfoSheet)
             }
-            .navigationBarBackButtonHidden()
+            
+            if showInfoSheet {
+                Color.black.opacity(0.6)
+                    .ignoresSafeArea()
+                    .transition(.opacity)
+                    .zIndex(20)
+                    .onTapGesture {
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            showInfoSheet = false
+                        }
+                    }
+                
+                InfoSheetView {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        showInfoSheet = false
+                    }
+                }
+                .zIndex(21)
+                .transition(.scale.combined(with: .opacity))
+            }
+        }
+        .navigationBarBackButtonHidden()
     }
-   
+    
     private func levelButton(title: DifficultyLevel, color: Color) -> some View {
         let isUnlocked = progress.isLevelUnlocked(title)
         let isLegend = title == .legend
@@ -144,7 +151,7 @@ struct LevelSelectionView: View {
                         colors: isUnlocked ? [color.opacity(0.8), color] : [.gray.opacity(0.6), .gray.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing
                     ))
                     .frame(width: 110, height: 90)
-                    .shadow(color: isUnlocked ? color : .purple, radius: 10)
+                    .shadow(color: isUnlocked ? color : Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.7), radius: 10)
                 
                 VStack {
                     Text(title.rawValue)
@@ -158,7 +165,7 @@ struct LevelSelectionView: View {
                             HStack(spacing: 6) {
                                 Text("Premium")
                                     .foregroundStyle(
-                                        LinearGradient(colors: [.purple, .white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        LinearGradient(colors: [.white, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing)
                                     )
                                     .font(.caption.bold())
                             }
@@ -178,79 +185,34 @@ struct LevelSelectionView: View {
         }
         .disabled(!isUnlocked)
     }
+}
+
+struct GlassMenuButton: View {
+    var title: String
+    var icon: String? = nil
+    var action: () -> Void
     
-    private var bottomSheet: some View {
-        VStack(spacing: 20) {
-            Capsule()
-                .frame(width: 40, height: 5)
-                .foregroundColor(.white.opacity(0.4))
-                .padding(.top, 8)
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("📖 How levels work?")
-                        .font(.title2.bold())
-                        .foregroundColor(.white)
-                    
-                    Text("• To unlock Medium, win Easy 2 times\n• To unlock Hard, win Medium 4 times\n• To unlock Master, win Hard 6 times\n• To unlock Epic, win Master 8 times\n• To unlock Legend, win Epic 5 times\n\nPlay and discover new levels!")
-                        .foregroundColor(.white.opacity(0.9))
-                        .font(.body)
-                        .multilineTextAlignment(.leading)
-                    
-                    Divider().background(.white.opacity(0.2))
-                    
-                    HStack(alignment: .top, spacing: 6) {
-                        Image(systemName: "sparkles")
-                            .foregroundStyle(
-                                LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
-                            )
-                            .shadow(color: .teal, radius: 10)
-                            .shadow(color: .purple, radius: 10)
-                            .font(.system(size: 20))
-                            .padding(.top, 2)
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("Legend level")
-                                .font(.headline.bold())
-                                .foregroundStyle(
-                                    LinearGradient(colors: [.white, .teal], startPoint: .topLeading, endPoint: .bottomTrailing)
-                                )
-                                .shadow(color: .teal, radius: 10)
-                                .shadow(color: .purple, radius: 10)
-                            Text("""
-                                The **Legend** level is only available for Premium users.
-                                Buy Premium to challange yourself with the most epic Sudoku puzzles ever!
-                                """)
-                            .foregroundColor(.white.opacity(0.85))
-                        }
-                    }
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.title2.weight(.semibold))
                 }
-                .padding()
+                
+                Text(title)
+                    .font(.title2.bold())
             }
             
-            Button(action: {
-                withAnimation {
-                    showInfoSheet = false
-                }
-            }) {
-                Text("Close")
-                    .font(.headline.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.purple)
-                    .cornerRadius(16)
-                    .shadow(radius: 10)
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 20)
+            .foregroundColor(.white)
+            .padding()
+            .frame(maxWidth: 200, maxHeight: 60)
+            .background(GlassMenuBackground(cornerRadius: 35))
+            .clipShape(RoundedRectangle(cornerRadius: 35, style: .continuous))
+            .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
+            .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
         }
-        .background(
-            LinearGradient(colors: [.purple, .black], startPoint: .top, endPoint: .bottom)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 30))
-        .frame(maxWidth: .infinity)
-        .frame(height: 400)
-        .padding()
+        .padding(.horizontal)
     }
 }
 
@@ -262,3 +224,4 @@ struct LevelSelectionView_Previews: PreviewProvider {
             .environmentObject(UnlockSheetManager())
     }
 }
+
