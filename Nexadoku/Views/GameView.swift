@@ -51,7 +51,7 @@ struct GameView: View {
                     // Иконка или арт — можешь любую
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 44))
-                        .foregroundColor(.purple)
+                        .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255))
                         .padding(.top, 8)
 
                     Text("Exit Game?")
@@ -72,7 +72,7 @@ struct GameView: View {
                             Text("Cancel")
                                 .font(.system(size: 20, weight: .bold))
                                 .frame(width: 120, height: 48)
-                                .background(.purple)
+                                .background(Color(red: 140/255, green: 60/255, blue: 255/255))
                                 .foregroundColor(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                         }
@@ -96,13 +96,13 @@ struct GameView: View {
                 .padding(.horizontal, 24)
                 .background(
                     LinearGradient(
-                        colors: [Color.black.opacity(0.93), Color.purple.opacity(0.96)],
+                        colors: [Color.black.opacity(0.93), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.96)],
                         startPoint: .topLeading, endPoint: .bottomTrailing
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 28)
-                            .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .leading, endPoint: .trailing), lineWidth: 3)
+                            .stroke(LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .leading, endPoint: .trailing), lineWidth: 3)
                     )
                 )
                 .padding(.horizontal, 36)
@@ -257,7 +257,7 @@ struct GameView: View {
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
         .padding(.vertical, 8)
-        .background(.purple)
+        .background((Color(red: 140/255, green: 60/255, blue: 255/255)).opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: 20))
         .padding()
     }

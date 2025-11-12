@@ -10,7 +10,6 @@ struct InfoSheetView: View {
     
     var body: some View {
         ZStack {
-            
             glassBackground
             
             VStack(spacing: 20) {
@@ -23,7 +22,6 @@ struct InfoSheetView: View {
                     .offset(y: textAppear ? 0 : 20)
                     .animation(.easeInOut(duration: 0.2).delay(0.2), value: textAppear)
                     .shadow(color: .indigo, radius: 10)
-                
                 
                 Text("How Levels Work?")
                     .font(.system(size: 26, weight: .heavy))

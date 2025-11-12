@@ -15,7 +15,7 @@ struct QuickSettingsView: View {
 
     var body: some View {
         ZStack {
-            DarkBackground()
+            SystemBackground()
 
             VStack(spacing: 22) {
                 HStack {
@@ -39,48 +39,44 @@ struct QuickSettingsView: View {
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal)
+                
+                Spacer()
 
-                GlassPanel {
+         
                     VStack(spacing: 0) {
-                        // Top illustrative image
-                        Image("GlassPanel")
+                        Image("quicksettings")
                             .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity)
-                            .padding(.bottom, 8)
-
-                        // Divider line with slight translucency
-                        Rectangle()
-                            .fill(Color.white.opacity(0.08))
-                            .frame(height: 1)
-
-                        // Toggles
+                            .scaledToFill()
+                            .frame(maxWidth: 200, maxHeight: 200)
+                            .shadow(color: .indigo, radius: 10)
+                        
+                        Spacer()
+                        
+                        
                         VStack(alignment: .leading, spacing: 14) {
-                        toggleRow(title: "Sounds", binding: $soundEnabled)
-                        toggleRow(title: "Vibration", binding: $vibrationEnabled)
-                        toggleRow(title: "Mistake Limit", binding: $mistakesEnabled)
-                        toggleRow(title: "Timer", binding: $timerEnabled)
-                        toggleRow(title: "Highlight Duplicates", binding: $highlightsEnabled)
-                        HStack {
-                            Text("Highlight Lines")
-                                .font(.system(size: 17, weight: .semibold))
-                                .foregroundColor(.white)
-                            Spacer()
-                            Toggle("", isOn: $highlightLinesEnabled)
-                                .labelsHidden()
-                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
-                                .disabled(!isPremium)
-                        }
+                            toggleRow(title: "Sounds", binding: $soundEnabled)
+                            toggleRow(title: "Vibration", binding: $vibrationEnabled)
+                            toggleRow(title: "Mistake Limit", binding: $mistakesEnabled)
+                            toggleRow(title: "Timer", binding: $timerEnabled)
+                            toggleRow(title: "Highlight Duplicates", binding: $highlightsEnabled)
+                            HStack {
+                                Text("Highlight Lines")
+                                    .font(.system(size: 17, weight: .semibold))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Toggle("", isOn: $highlightLinesEnabled)
+                                    .labelsHidden()
+                                    .toggleStyle(SwitchToggleStyle(tint: isPremium ? Color(red: 140/255, green: 60/255, blue: 255/255) : .gray))
+                                    .disabled(!isPremium)
+                            }
                         }
                         .padding(14)
                     }
-                }
+                
                 .padding(.horizontal)
                 .scaleEffect(appear ? 1 : 0.9)
                 .opacity(appear ? 1 : 0)
                 .animation(.spring(response: 0.5, dampingFraction: 0.85), value: appear)
-
-                Spacer()
             }
             .padding(.top, 20)
         }
@@ -95,7 +91,7 @@ struct QuickSettingsView: View {
             Spacer()
             Toggle("", isOn: binding)
                 .labelsHidden()
-                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
         }
     }
 }
@@ -110,9 +106,9 @@ struct GlassPanel<Content: View>: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.purple.opacity(0.9),
-                            Color.purple.opacity(0.6),
-                            Color.purple.opacity(0.35)
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.9),
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.6),
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.35)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -139,12 +135,14 @@ struct GlassPanel<Content: View>: View {
         }
         .overlay(
             RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.purple.opacity(0.35), lineWidth: 0.6)
+                .stroke(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.35), lineWidth: 0.6)
                 .blur(radius: 2)
                 .offset(x: -1, y: -1)
                 .opacity(0.6)
         )
-        .overlay(content())
+        .overlay(
+                content()
+        )
     }
 }
 

@@ -22,26 +22,26 @@ struct CellView: View {
             backgroundColor
                 .frame(width: 40, height: 40)
                 .cornerRadius(1)
-                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.2), lineWidth: 0.5))
+                .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.black.opacity(0.7), lineWidth: 0.5))
                 .animation(.easeInOut(duration: 1), value: shouldAnimate)
 
-            if drawsGradient {
-                Rectangle()
-                    .fill(
-                        RadialGradient(
-                            gradient: Gradient(colors: [Color.white.opacity(0.5), Color.indigo]),
-                            center: .center,
-                            startRadius: 5,
-                            endRadius: 80
-                        )
-                    )
-                    .frame(width: 40, height: 40)
-                    .cornerRadius(1)
-            }
+           
 
             if cell.value != 0 {
                 Text("\(cell.value)")
-                    .foregroundColor(mistakesEnabled && cell.isIncorrect ? .red : cell.isOriginal ? .black : isSelected ? .white : .indigo)
+                    .foregroundStyle(
+                        mistakesEnabled && cell.isIncorrect
+                        ? LinearGradient(colors: [.red], startPoint: .top, endPoint: .bottom)
+                            : cell.isOriginal
+                        ? LinearGradient(colors: [.white], startPoint: .top, endPoint: .bottom)
+                                : isSelected
+                                    ? LinearGradient(colors: [.white], startPoint: .top, endPoint: .bottom)
+                                    : LinearGradient(
+                                        colors: [.white, .teal],
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                    )
                     .font(.system(size: 20, weight: .bold))
                     
             } else if !cell.notes.isEmpty {
@@ -63,11 +63,11 @@ struct CellView: View {
         if mistakesEnabled && cell.isIncorrect {
             return Color.red.opacity(0.15)
         } else if isSelected {
-            return Color.indigo
+            return Color.indigo.opacity(0.4)
         } else if isHighlighted {
-            return Color.purple.opacity(0.7)
+            return (Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4))
         } else {
-            return Color.white
+            return Color.black.opacity(0.4)
         }
     }
 
@@ -84,7 +84,7 @@ struct CellView: View {
                     ForEach(row, id: \.self) { number in
                         Text(cell.notes.contains(number) ? "\(number)" : " ")
                             .font(.caption2)
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .frame(width: 12, height: 12)
                     }
                 }

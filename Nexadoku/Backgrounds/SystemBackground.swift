@@ -76,6 +76,14 @@ struct SystemBackground: View {
             )
             .blendMode(.multiply)
             .ignoresSafeArea()
+            
+            ForEach(0..<50, id: \.self) { index in
+                Text("\(Int.random(in: 1...9))")
+                    .font(.system(size: 80, weight: .bold))
+                    .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.2))
+                    .rotationEffect(.degrees(Double.random(in: 0...360)))
+                    .position(x: CGFloat.random(in: 0...UIScreen.main.bounds.width), y: CGFloat.random(in: 0...UIScreen.main.bounds.height))
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ struct ButtonsView: View {
                         .font(.caption)
                         .foregroundColor(.white)
                         .padding(4)
-                        .background(Color.purple.opacity(0.8))
+                        .background((Color(red: 140/255, green: 60/255, blue: 255/255)).opacity(0.5))
                         .clipShape(Circle())
                         .offset(x: 10, y: -10)
                 }
@@ -72,7 +72,7 @@ struct ButtonsView: View {
                 } label: {
                     Text("\(number)")
                         .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(isPencilMode ? .brown : .black)
+                        .foregroundColor(isPencilMode ? .indigo : .black)
                         .frame(width: 50, height: 50)
                         .background(
                             ZStack {
@@ -87,7 +87,7 @@ struct ButtonsView: View {
                                 
                                 if isDisabled {
                                     RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color.purple.opacity(0.8), lineWidth: 5)
+                                        .stroke(Color.white.opacity(0.8), lineWidth: 5)
                                         .scaleEffect(1.2)
                                         .opacity(0)
                                         .animation(
@@ -120,7 +120,7 @@ struct ButtonsView: View {
             Image(systemName: systemName)
                 .font(.system(size: 30, weight: .bold))
                 .foregroundStyle(LinearGradient(colors: [.white, .white], startPoint: .bottom, endPoint: .top))
-                .shadow(color: Color.purple, radius: 20, x: 0, y: 0)
+                .shadow(color: Color.white, radius: 10, x: 0, y: 0)
         }
         .buttonStyle(PlainButtonStyle())
     }

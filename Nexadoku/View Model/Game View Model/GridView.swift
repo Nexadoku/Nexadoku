@@ -6,7 +6,7 @@ struct GridView: View {
 
     let cellSize: CGFloat = 40
     let lineWidth: CGFloat = 2
-    let glowColor = Color.purple
+    let glowColor = (Color(red: 140/255, green: 60/255, blue: 255/255))
 
     var body: some View {
         GeometryReader { geometry in
@@ -14,18 +14,15 @@ struct GridView: View {
             let offset = (geometry.size.width - gridSize) / 2
 
             ZStack {
-                Color.white
-                    .shadow(color: .purple, radius: 10)
-
-                // Ячейки
+                
                 ForEach(0..<9, id: \.self) { row in
                     ForEach(0..<9, id: \.self) { col in
                         CellView(
                             cell: game.grid[row][col],
-                                                       isSelected: game.isSelected(row: row, col: col),
-                                                       isHighlighted: game.isHighlighted(row: row, col: col),
-                                                       completedNumber: game.completedNumbers,
-                                                       onTap: { game.selectCell(row: row, col: col) }
+                            isSelected: game.isSelected(row: row, col: col),
+                            isHighlighted: game.isHighlighted(row: row, col: col),
+                            completedNumber: game.completedNumbers,
+                            onTap: { game.selectCell(row: row, col: col) }
                                                       
                      
                         )
@@ -36,7 +33,6 @@ struct GridView: View {
                     }
                 }
 
-                // Тонкие линии (все)
                 ForEach(0..<10) { i in
                     let lineOffset = CGFloat(i) * cellSize
 
@@ -64,21 +60,21 @@ struct GridView: View {
                         path.move(to: CGPoint(x: offset + thickOffset, y: offset))
                         path.addLine(to: CGPoint(x: offset + thickOffset, y: offset + gridSize))
                     }
-                    .stroke(glowColor, lineWidth: 4)
+                    .stroke(glowColor, lineWidth: 2)
 
                     // Горизонтальные толстые линии
                     Path { path in
                         path.move(to: CGPoint(x: offset, y: offset + thickOffset))
                         path.addLine(to: CGPoint(x: offset + gridSize, y: offset + thickOffset))
                     }
-                    .stroke(glowColor, lineWidth: 4)
+                    .stroke(glowColor, lineWidth: 2)
                 }
 
                 // Рамка по краю, чтобы не было двойных толстых линий
                 Path { path in
                     path.addRect(CGRect(x: offset, y: offset, width: gridSize, height: gridSize))
                 }
-                .stroke(glowColor, lineWidth: 4)
+                .stroke(glowColor, lineWidth: 2)
             }
         }
         .frame(width: cellSize * 9, height: cellSize * 9)

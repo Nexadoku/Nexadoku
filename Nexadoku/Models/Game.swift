@@ -428,13 +428,13 @@ final class Game: ObservableObject {
         let selectedValue = grid[row][col].value
         var duplicateCoords: [CellCoordinate] = []
         
-        let startRow = (row / 3) * 3
-        let startCol = (col / 3) * 3
-        for r in startRow..<startRow+3 {
-            for c in startCol..<startCol+3 {
-                highlightedCells.insert(CellCoordinate(row: r, col: c))
-            }
-        }
+//        let startRow = (row / 3) * 3
+//        let startCol = (col / 3) * 3
+//        for r in startRow..<startRow+3 {
+//            for c in startCol..<startCol+3 {
+//                highlightedCells.insert(CellCoordinate(row: r, col: c))
+//            }
+//        }
 
         // Подсвечиваем одинаковые цифры (только фон)
         if highlightsEnabled, selectedValue != 0 {
@@ -459,10 +459,10 @@ final class Game: ObservableObject {
             }
         } else {
             // Стандартная линия только для выбранной клетки
-            for i in 0..<9 {
-                highlightedCells.insert(CellCoordinate(row: row, col: i))
-                highlightedCells.insert(CellCoordinate(row: i, col: col))
-            }
+//            for i in 0..<9 {
+//                highlightedCells.insert(CellCoordinate(row: row, col: i))
+//                highlightedCells.insert(CellCoordinate(row: i, col: col))
+//            }
         }
     }
 }

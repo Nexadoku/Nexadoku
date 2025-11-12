@@ -15,14 +15,14 @@ struct PauseView: View {
     var body: some View {
         ZStack {
             // Beautiful gradient background
-            DarkBackground()
+            SystemBackground()
             
             VStack(spacing: 40) {
                 // PAUSED Title with beautiful styling
                 VStack(spacing: 8) {
                     Text("PAUSED")
                         .font(.system(size: 48, weight: .heavy, design: .rounded))
-                        .foregroundColor(.purple)
+                        .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255))
                         .scaleEffect(animateElements ? 1.0 : 0.8)
                         .opacity(animateElements ? 1.0 : 0.0)
                         .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1), value: animateElements)
@@ -78,7 +78,7 @@ struct PauseView: View {
                     ActionButton(
                         title: "Continue Game",
                         icon: "play.fill",
-                        color: .purple.opacity(0.8),
+                        color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.8),
                         action: onResume
                     )
                     .scaleEffect(animateElements ? 1.0 : 0.8)
