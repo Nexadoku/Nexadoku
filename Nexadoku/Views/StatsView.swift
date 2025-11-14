@@ -22,7 +22,6 @@ struct StatsView: View {
             ScrollView {
                 VStack(spacing: 30) {
                     HStack {
-                        
                         Image(systemName: "trophy.fill")
                             .foregroundColor(.white)
                             .font(.system(size: 28, weight: .heavy))
@@ -51,9 +50,7 @@ struct StatsView: View {
                     }
                     .pickerStyle(.segmented)
                     .colorScheme(.dark)
-                    .background(
-                        LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5), .purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
+                    .background(difficultyGradient)
                     .cornerRadius(10)
                     .opacity(animate ? 1 : 0)
                     .animation(.easeOut(duration: 0.6).delay(0.2), value: animate)
@@ -65,8 +62,8 @@ struct StatsView: View {
                             .animation(.easeOut(duration: 0.8).delay(0.15), value: animate)
                         
                         HStack(spacing: 18) {
-                            legendDot(.purple, "Wins")
-                            legendDot(.green, "Flawless")
+                            legendDot(Color(red: 140/255, green: 60/255, blue: 255/255), "Wins")
+                            legendDot(.indigo, "Flawless")
                             legendDot(.clear, "Losses")
                         }
                         
@@ -112,9 +109,22 @@ struct StatsView: View {
                     }
                 }
             }
-            .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+            .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+    }
+    
+    var difficultyGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4),
+                .black.opacity(0.4),
+                Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4),
+                .black.opacity(0.4)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
 
     var statsCapsule: some View {
@@ -133,9 +143,9 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 1)
+                    .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 0.5)
                     .background(
-                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.black.opacity(0.4), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )
@@ -149,9 +159,9 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 1)
+                    .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 0.5)
                     .background(
-                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.black.opacity(0.4), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )
@@ -165,9 +175,9 @@ struct StatsView: View {
             }
             .background(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(.purple, lineWidth: 1)
+                    .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 0.5)
                     .background(
-                        LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                        LinearGradient(colors: [.black.opacity(0.4), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4)], startPoint: .top, endPoint: .bottom)
                     )
                     .cornerRadius(20)
             )

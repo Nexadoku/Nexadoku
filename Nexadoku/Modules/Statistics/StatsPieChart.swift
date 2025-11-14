@@ -22,7 +22,7 @@ struct StatsPieChart: View {
             Circle()
                 .trim(from: 0, to: CGFloat(animatedPercent * (winPercent / 100)))
                 .stroke(
-                    LinearGradient(colors: [.purple, .indigo], startPoint: .top, endPoint: .bottom),
+                    LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255), .indigo], startPoint: .top, endPoint: .bottom),
                     style: StrokeStyle(lineWidth: 26, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))

@@ -36,7 +36,7 @@ struct StatsLineChart: View {
                     }
                     .fill(
                         LinearGradient(colors: [
-                            Color.purple.opacity(0.23),
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.23),
                             Color.indigo.opacity(0.11)
                         ], startPoint: .top, endPoint: .bottom)
                     )
@@ -53,25 +53,25 @@ struct StatsLineChart: View {
                     }
                     .stroke(
                         LinearGradient(
-                            colors: [Color.purple, Color.indigo],
+                            colors: [Color(red: 140/255, green: 60/255, blue: 255/255), Color.indigo],
                             startPoint: .leading, endPoint: .trailing
                         ),
                         style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round)
                     )
-                    .shadow(color: .purple.opacity(0.5), radius: 7, x: 0, y: 5)
+                    .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.5), radius: 7, x: 0, y: 5)
                     .animation(.easeOut(duration: 1.0), value: progress)
                 }
 
                 // Точки
                 ForEach(points.indices, id: \.self) { i in
                     Circle()
-                        .fill(winDays[i] > 0 ? Color.purple : Color.gray.opacity(0.23))
+                        .fill(winDays[i] > 0 ? Color(red: 140/255, green: 60/255, blue: 255/255) : Color.gray.opacity(0.23))
                         .frame(width: 16, height: 16)
                         .overlay(
                             Circle()
                                 .stroke(Color.white.opacity(0.75), lineWidth: winDays[i] > 0 ? 3 : 1)
                         )
-                        .shadow(color: winDays[i] > 0 ? .purple.opacity(0.5) : .clear, radius: 7)
+                        .shadow(color: winDays[i] > 0 ? Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.5) : .clear, radius: 7)
                         .scaleEffect(winDays[i] > 0 && progress > 0.8 ? 1.16 : 1)
                         .position(
                             x: points[i].x,

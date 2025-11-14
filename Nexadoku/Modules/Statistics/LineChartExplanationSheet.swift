@@ -5,7 +5,7 @@ struct LineChartExplanationSheet: View {
     let stats: GameStats
     var body: some View {
         ZStack {
-            DarkBackground().ignoresSafeArea()
+            SystemBackground().ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 18) {
                     Text("Line Chart")
