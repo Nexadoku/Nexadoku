@@ -33,7 +33,7 @@ struct TermsAndConditions: View {
                         .font(.headline)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.purple)
+                        .background(Color(red: 140/255, green: 60/255, blue: 255/255))
                         .cornerRadius(12)
                         .padding(.horizontal)
                 }
@@ -57,7 +57,7 @@ struct TermsAndConditions: View {
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 

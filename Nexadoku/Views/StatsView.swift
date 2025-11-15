@@ -63,7 +63,7 @@ struct StatsView: View {
                         
                         HStack(spacing: 18) {
                             legendDot(Color(red: 140/255, green: 60/255, blue: 255/255), "Wins")
-                            legendDot(.indigo, "Flawless")
+                            legendDot(.yellow, "Flawless")
                             legendDot(.clear, "Losses")
                         }
                         

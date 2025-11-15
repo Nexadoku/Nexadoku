@@ -37,7 +37,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
                                 .padding()
                                 
                                 Toggle(isOn: $vibrationEnabled) {
@@ -45,7 +45,7 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
                                 .padding()
                                 
                                 Toggle(isOn: $timerEnabled) {
@@ -53,14 +53,14 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
                                 .padding()
                             }
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
+                                    .stroke(LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                                     .background(
-                                        LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                        LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing)
                                     )
                                     .cornerRadius(20)
                             )
@@ -73,13 +73,13 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(LinearGradient(colors: [.purple, .purple], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 3)
+                                        .stroke(LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                                         .background(
-                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                            LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing)
                                         )
                                         .cornerRadius(20)
                                 )
@@ -97,13 +97,13 @@ struct SettingsView: View {
                                         .font(.system(size: 20, weight: .semibold))
                                         .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: .purple))
+                                .toggleStyle(SwitchToggleStyle(tint: Color(red: 140/255, green: 60/255, blue: 255/255)))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.purple, lineWidth: 3)
+                                        .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 1)
                                         .background(
-                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                            LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing)
                                         )
                                         .cornerRadius(20)
                                 )
@@ -120,13 +120,13 @@ struct SettingsView: View {
                                     .font(.system(size: 20, weight: .semibold))
                                     .foregroundColor(.white)
                                 }
-                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? .purple : .gray))
+                                .toggleStyle(SwitchToggleStyle(tint: isPremium ? Color(red: 140/255, green: 60/255, blue: 255/255) : .gray))
                                 .padding()
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.purple, lineWidth: 3)
+                                        .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 1)
                                         .background(
-                                            LinearGradient(colors: [.purple.opacity(0.5), .black.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                                            LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4), .black.opacity(0.4)], startPoint: .topLeading, endPoint: .bottomTrailing)
                                         )
                                         .cornerRadius(20)
                                 )
@@ -175,7 +175,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }

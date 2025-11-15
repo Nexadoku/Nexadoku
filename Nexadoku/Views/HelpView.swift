@@ -181,7 +181,7 @@ A: Yes! Buying once gives you lifetime access to all current premium features.
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }
@@ -196,7 +196,7 @@ struct AnimatedGlows: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [Color.purple.opacity(0.2), Color.clear],
+                            colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.2), Color.clear],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -233,16 +233,16 @@ struct HelpSectionCard: View {
                 Image(systemName: section.icon)
                     .font(.system(size: 26))
                     .foregroundStyle(
-                        LinearGradient(colors: [.white, .purple], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        LinearGradient(colors: [.white, Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .topLeading, endPoint: .bottomTrailing)
                     )
-                    .shadow(color: .purple.opacity(0.5), radius: 6, y: 2)
+                    .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.5), radius: 6, y: 2)
                     .frame(width: 40, height: 40)
                     .background(.ultraThinMaterial.opacity(0.14))
                     .clipShape(Circle())
 
                 Text(section.title)
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(LinearGradient(colors: [.white, .purple], startPoint: .leading, endPoint: .trailing))
+                    .foregroundStyle(LinearGradient(colors: [.white, Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .leading, endPoint: .trailing))
                 Spacer()
                 Button {
                     withAnimation(.interactiveSpring(response: 0.50, dampingFraction: 0.83)) {
@@ -276,12 +276,12 @@ struct HelpSectionCard: View {
         .background(
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .stroke(
-                    LinearGradient(colors: [.purple.opacity(0.8), .white.opacity(0.22)], startPoint: .top, endPoint: .bottom),
+                    LinearGradient(colors: [Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.8), .white.opacity(0.22)], startPoint: .top, endPoint: .bottom),
                     lineWidth: 3
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 22)
-                        .fill(LinearGradient(colors: [Color.black.opacity(0.74), Color.purple.opacity(0.18)], startPoint: .top, endPoint: .bottom))
+                        .fill(LinearGradient(colors: [Color.black.opacity(0.74), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.18)], startPoint: .top, endPoint: .bottom))
                 )
                 .shadow(color: .purple.opacity(0.13), radius: 30, x: 0, y: 16)
         )

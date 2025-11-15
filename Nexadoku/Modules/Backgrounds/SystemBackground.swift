@@ -16,18 +16,16 @@ struct BlurView: UIViewRepresentable {
 struct SystemBackground: View {
     var body: some View {
         ZStack {
-            // Base deep purple to near-black gradient
             LinearGradient(
                 colors: [
-                    Color(red: 15/255, green: 6/255, blue: 28/255),   // deep plum
-                    Color(red: 10/255, green: 5/255, blue: 20/255)    // near black
+                    Color(red: 15/255, green: 6/255, blue: 28/255),
+                    Color(red: 10/255, green: 5/255, blue: 20/255)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             .ignoresSafeArea()
 
-            // Diagonal magenta sheen (top-left to center)
             LinearGradient(
                 colors: [
                     Color(red: 168/255, green: 61/255, blue: 255/255).opacity(0.45),
@@ -39,7 +37,6 @@ struct SystemBackground: View {
             .blendMode(.screen)
             .ignoresSafeArea()
 
-            // Bottom purple glow
             RadialGradient(
                 colors: [
                     Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.38),
@@ -52,7 +49,6 @@ struct SystemBackground: View {
             .blendMode(.screen)
             .ignoresSafeArea()
 
-            // Soft blurred blobs for depth like the reference
             Group {
                 Circle()
                     .fill(Color(red: 190/255, green: 80/255, blue: 255/255).opacity(0.25))
@@ -68,7 +64,6 @@ struct SystemBackground: View {
             }
             .allowsHitTesting(false)
 
-            // Subtle edge vignette to focus center content
             LinearGradient(
                 colors: [Color.black.opacity(0.38), Color.clear, Color.black.opacity(0.5)],
                 startPoint: .top,

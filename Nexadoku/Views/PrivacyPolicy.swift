@@ -28,7 +28,7 @@ struct PrivacyPolicy: View {
                         .resizable()
                         .frame(width: 100, height: 100)
                         .cornerRadius(20)
-                        .shadow(color: .purple, radius: 15, x: 0, y: 6)
+                        .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255), radius: 15, x: 0, y: 6)
                         .padding(.top, 16)
 
                     VStack(alignment: .leading, spacing: 16) {
@@ -104,12 +104,12 @@ futuresudoku@gmail.com
                     .background(
                         RoundedRectangle(cornerRadius: 25)
                             .fill(
-                                LinearGradient(colors: [.black.opacity(0.5), .purple.opacity(0.5)], startPoint: .top, endPoint: .bottom)
+                                LinearGradient(colors: [.black.opacity(0.4), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4)], startPoint: .top, endPoint: .bottom)
                             )
                             .blur(radius: 0.2)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(Color.purple, lineWidth: 1)
+                                    .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 1)
                             )
                     )
                     .padding(.horizontal)
@@ -137,7 +137,7 @@ futuresudoku@gmail.com
                 }
             }
         }
-        .toolbarBackground(.purple.opacity(0.3), for: .navigationBar)
+        .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
     }
 }

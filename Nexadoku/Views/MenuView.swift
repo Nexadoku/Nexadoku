@@ -39,30 +39,8 @@ struct MenuView: View {
                             navigator.push(.menu(.premium))
                             VibrationManager.shared.lightImpact()
                         }) {
-                            Image("premium")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(glow ? 0.6 : 0.13), radius: glow ? 28 : 12)
-                                .shadow(color: .white.opacity(glow ? 0.16 : 0.02), radius: glow ? 12 : 2)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 18)
-                                        .stroke(
-                                            LinearGradient(
-                                                colors: [
-                                                    Color(red: 140/255, green: 60/255, blue: 255/255),
-                                                    Color.white.opacity(0.5)
-                                                ],
-                                                startPoint: .topLeading,
-                                                endPoint: .bottomTrailing
-                                            ),
-                                            lineWidth: glow ? 3.5 : 2
-                                        )
-                                        .blur(radius: glow ? 2.5 : 0)
-                                        .opacity(glow ? 0.86 : 0.18)
-                                )
-                                .scaleEffect(glow ? 1.08 : 1.0)
-                                .animation(.easeInOut(duration: 1.45).repeatForever(autoreverses: true), value: glow)
+                            PremiumCrownIcon()
+                                .frame(width: 42, height: 42)
                                 .padding(.trailing)
                         }
                         .padding(.top, 8)

@@ -63,7 +63,7 @@ struct WinScreen: View {
                         .foregroundColor(.white)
                         .padding(.vertical, 12)
                         .padding(.horizontal, 30)
-                        .background(.purple)
+                        .background(Color(red: 140/255, green: 60/255, blue: 255/255))
                         .cornerRadius(26)
                         .shadow(radius: 8)
                 }
@@ -155,13 +155,13 @@ struct WinScreen: View {
         .padding()
         .background(
             LinearGradient(
-                colors: [.black.opacity(0.5), .purple.opacity(0.5)],
+                colors: [.black.opacity(0.4), Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4)],
                 startPoint: .top,
                 endPoint: .bottom
             )
         )
         .cornerRadius(20)
-        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color.purple, lineWidth: 3))
+        .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 1))
         .shadow(radius: 10)
     }
 

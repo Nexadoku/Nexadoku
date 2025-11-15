@@ -9,17 +9,14 @@ struct LoseScreen: View {
 
     @State private var appear = false
 
-    // More horizontal lanes so there are more floating numbers visible
     private let floatingColumns: [CGFloat] = [-220, -190, -160, -130, -100, -70, -40, -10, 20, 50, 80, 110, 140, 170, 200, 230]
 
     var body: some View {
         ZStack {
-            DarkBackground()
-            // Floating numbers 1..9 in purple, moving gently
+            SystemBackground()
             GeometryReader { proxy in
                 let height = proxy.size.height
                 ZStack {
-                    // Continuous stream: two numbers per lane with a phase offset
                     ForEach(0..<floatingColumns.count, id: \.self) { lane in
                         let xPos = floatingColumns[lane]
                         let baseDuration = Double.random(in: 6.0...8.0)
@@ -42,7 +39,6 @@ struct LoseScreen: View {
             }
 
             VStack(spacing: 28) {
-                // Glassy header card with YOU LOSE
                 VStack(spacing: 10) {
                     Text("YOU")
                         .font(.system(size: 46, weight: .black, design: .rounded))
@@ -76,10 +72,10 @@ struct LoseScreen: View {
 
                 // Actions with a glass container
                 VStack(spacing: 14) {
-                    GlassButton(title: "Retry", systemIcon: "arrow.clockwise", color: .purple.opacity(0.7)) {
+                    GlassButton(title: "Retry", systemIcon: "arrow.clockwise", color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.7)) {
                         onRetry()
                     }
-                    GlassButton(title: "Exit", systemIcon: "house.fill", color: .red.opacity(0.7)) {
+                    GlassButton(title: "Exit", systemIcon: "house.fill", color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.7)) {
                         navigator.pop()
                         onExit()
                     }
@@ -107,9 +103,9 @@ private struct GlassyPurple: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color.purple.opacity(0.9),
-                            Color.purple.opacity(0.6),
-                            Color.purple.opacity(0.35)
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.9),
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.6),
+                            Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.35)
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -208,7 +204,7 @@ private struct FloatingNumber: View {
     var body: some View {
         Text(text)
             .font(.system(size: 28, weight: .black, design: .rounded))
-            .foregroundColor(.purple)
+            .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255))
             .opacity(0.95)
             .scaleEffect(scale)
             .offset(x: x, y: atEnd ? endY : startY)
