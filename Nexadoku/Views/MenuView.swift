@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct MenuView: View {
@@ -11,7 +12,6 @@ struct MenuView: View {
     @State private var alertAppear = false
     @State private var glow = false
 
-    // Главное отличие: теперь AppStorage, чтобы View сам слушал изменения!
     @AppStorage("claimedTrophyIDs") private var claimedTrophyIDs: String = ""
 
     private var claimableTrophiesCount: Int {

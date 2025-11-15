@@ -2,9 +2,8 @@
 import SwiftUI
 
 struct PremiumCrownIcon: View {
-    @State private var glow = false
-    @State private var rotate = false
-    @State private var shimmer = false
+    @State private var shimmerPhase: CGFloat = 0
+    @State private var gradientShift: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -12,67 +11,68 @@ struct PremiumCrownIcon: View {
                 .fill(
                     RadialGradient(
                         colors: [
-                            Color(red: 150/255, green: 80/255, blue: 255/255).opacity(glow ? 0.55 : 0.25),
+                            Color.purple.opacity(0.4),
+                            Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.1),
                             .clear
                         ],
                         center: .center,
                         startRadius: 0,
-                        endRadius: 50
+                        endRadius: 80
                     )
                 )
-                .blur(radius: 16)
-                .scaleEffect(glow ? 1.25 : 0.9)
-                .animation(.easeInOut(duration: 2.8).repeatForever(autoreverses: true), value: glow)
+                .blur(radius: 25)
+                .overlay(
+                    Circle()
+                        .stroke(Color.white.opacity(0.05), lineWidth: 0.8)
+                        .blur(radius: 1)
+                )
             
-            AngularGradient(
-                colors: [
-                    Color.white.opacity(0.9),
-                    Color(red: 140/255, green: 60/255, blue: 255/255),
-                    Color.white.opacity(0.9),
-                    Color(red: 60/255, green: 20/255, blue: 120/255)
-                ],
-                center: .center
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(red: 170/255, green: 100/255, blue: 255/255),
+                    Color.white.opacity(0.95),
+                    Color(red: 100/255, green: 40/255, blue: 255/255)
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
+            .hueRotation(.degrees(gradientShift))
             .mask(
-                Image(systemName: "crown.fill")
+                Image("premium")
                     .resizable()
                     .scaledToFit()
             )
-            .rotationEffect(.degrees(rotate ? 360 : 0))
-            .animation(.linear(duration: 8).repeatForever(autoreverses: false), value: rotate)
-            .shadow(color: .white.opacity(0.3), radius: 4)
-            .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
-            
-            RoundedRectangle(cornerRadius: 50)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color.white.opacity(0.25),
-                            .clear
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+            .shadow(color: Color.white.opacity(0.25), radius: 6)
+            .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.6), radius: 10)
+            .overlay(
+                AngularGradient(
+                    gradient: Gradient(colors: [
+                        Color.white.opacity(0.0),
+                        Color.yellow.opacity(0.18),
+                        Color.white.opacity(0.0)
+                    ]),
+                    center: .center,
+                    startAngle: .degrees(shimmerPhase),
+                    endAngle: .degrees(shimmerPhase + 180)
                 )
-                .frame(width: shimmer ? 80 : 0, height: shimmer ? 80 : 0)
-                .blur(radius: 6)
                 .mask(
-                    Image(systemName: "crown.fill")
+                    Image("premium")
                         .resizable()
                         .scaledToFit()
                 )
-                .animation(
-                    .easeInOut(duration: 3)
-                    .repeatForever(autoreverses: true)
-                    .delay(1.5),
-                    value: shimmer
-                )
+                .blur(radius: 1.2)
+            )
         }
         .onAppear {
-            glow = true
-            rotate = true
-            shimmer = true
+            withAnimation(.linear(duration: 18).repeatForever(autoreverses: false)) {
+                gradientShift = 360
+            }
+            
+            withAnimation(.easeInOut(duration: 5).repeatForever(autoreverses: false)) {
+                shimmerPhase = 720
+            }
         }
-        .scaleEffect(1.05)
+        .frame(width: 42, height: 42)
+        .scaleEffect(1.0)
     }
 }
