@@ -15,7 +15,7 @@ struct PuzzleCardView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(height: 250)
                     .cornerRadius(35)
-                    .clipped() // Обрезаем лишние части изображения
+                    .clipped()
                     .overlay(
                         LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.5), Color.clear]), startPoint: .top, endPoint: .bottom) // Градиент для темного фона
                             .cornerRadius(35)
@@ -48,7 +48,7 @@ struct PuzzleCardView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(.purple)
+                        .background(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.85))
                         .cornerRadius(35)
                         .shadow(color: Color.purple.opacity(0.3), radius: 10, x: 0, y: 5)
                 }
@@ -57,9 +57,9 @@ struct PuzzleCardView: View {
                 .cornerRadius(35)
             }
         }
-        .background(Color.purple.opacity(0.5))
+        .background(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.5))
         .cornerRadius(35)
-        .shadow(color: Color.purple, radius: 20, x: 0, y: 10)
+        .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255), radius: 20, x: 0, y: 10)
         .padding(.bottom)
         .scaleEffect(1.05)
         .animation(.spring(), value: 1)

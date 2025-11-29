@@ -75,6 +75,11 @@ struct MenuView: View {
                             navigator.push(.menu(.levelSelection))
                             VibrationManager.shared.lightImpact()
                         }
+                        
+                        glassMenuButton(title: "Events", icon: "party.popper") {
+                            navigator.push(.menu(.events))
+                            VibrationManager.shared.lightImpact()
+                        }
 
                         // Badge on Rewards
                         ZStack(alignment: .topTrailing) {

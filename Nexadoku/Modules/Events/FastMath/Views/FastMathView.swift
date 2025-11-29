@@ -4,15 +4,14 @@ import SwiftUI
 struct MathPuzzleView: View {
     @ObservedObject var game = MathPuzzleGame()
     @Environment(\.dismiss) var dismiss
-    @State private var animateQuestions = false
     @State private var bounce = false
-    @State private var animate = false
     
     var body: some View {
         ZStack {
             SystemBackground()
             
             VStack {
+                // HEADER
                 HStack {
                     Button {
                         dismiss()
@@ -26,18 +25,18 @@ struct MathPuzzleView: View {
                     
                     Text("FAST MATH")
                         .font(.system(size: 30, weight: .heavy))
-                        .multilineTextAlignment(.center)
                         .foregroundColor(.white)
                         .shadow(radius: 10)
-                    
+
                     Spacer()
-                       
                 }
                 .padding(.horizontal)
                 .padding(.top, 20)
                 .padding(.bottom, 10)
+                
                 Spacer()
                 
+                // GAME OVER SCREEN
                 if game.gameOver {
                     VStack {
                         Text(game.score <= 20 ? "You Lose!" : "You Win!")
@@ -64,41 +63,42 @@ struct MathPuzzleView: View {
                                 .font(.title2)
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(.purple)
+                                .background(Color(red: 140/255, green: 60/255, blue: 255/255))
                                 .cornerRadius(20)
-                                .shadow(color: .purple, radius: 10)
                         }
                     }
-                } else {
+                }
+                else {
+                    // CALCULATOR IMAGE
                     Image("purpleCalculator")
                         .resizable()
-                        .frame(width: 180, height: 180)
+                        .frame(width: 200, height: 250)
                         .offset(y: bounce ? -10 : 0)
                         .scaleEffect(bounce ? 1.1 : 1.0)
                         .animation(.easeInOut(duration: 0.25), value: bounce)
-                        .shadow(color: .purple, radius: 10)
+                        .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255), radius: 10)
                     
+                    // SCORE
                     Text("Score: \(game.score)")
                         .font(.title2)
                         .foregroundColor(.white)
                         .padding(.top, 10)
                     
-                    Group {
-                        if !game.gameOver {
-                            Text(game.questions[game.currentQuestionIndex].question)
-                                .font(.system(size: 50))
-                                .fontWeight(.bold)
-                                .foregroundColor(.white)
-                                .padding()
-                                .transition(.move(edge: .trailing).combined(with: .opacity))
-                        }
-                    }
-                    .animation(.easeInOut(duration: 0.3), value: game.currentQuestionIndex)
+                    // CURRENT QUESTION
+                    Text(game.currentQuestion.question)
+                        .font(.system(size: 50))
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .padding()
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                        .animation(.easeInOut(duration: 0.3), value: game.questionIndexCategory)
                     
+                    // OPTIONS
                     VStack(spacing: 15) {
-                        ForEach(game.currentOptions, id: \ .self) { option in
+                        ForEach(game.currentOption, id: \.self) { option in
                             Button(action: {
-                                if option == game.questions[game.currentQuestionIndex].answer {
+                                
+                                if option == game.currentQuestion.answer {
                                     withAnimation(.easeInOut(duration: 0.25)) {
                                         bounce = true
                                     }
@@ -108,7 +108,9 @@ struct MathPuzzleView: View {
                                         }
                                     }
                                 }
+                                
                                 game.checkAnswer(option)
+                                
                             }) {
                                 Text("\(option)")
                                     .font(.title2)
@@ -117,12 +119,13 @@ struct MathPuzzleView: View {
                                     .padding()
                                     .background(game.getButtonColor(for: option))
                                     .cornerRadius(25)
-                                    .shadow(color: .purple, radius: 10)
+                                    .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255), radius: 10)
                             }
                         }
                     }
+                    .padding(.horizontal)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .animation(.easeInOut(duration: 0.3), value: game.currentQuestionIndex)
+                    .animation(.easeInOut(duration: 0.3), value: game.questionIndexCategory)
                     
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
@@ -132,21 +135,20 @@ struct MathPuzzleView: View {
                             
                             Rectangle()
                                 .fill(game.getProgressBarColor())
-                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 2.5, height: 6)
+                                .frame(width: geometry.size.width * CGFloat(game.questionTimeLeft) / 2.5)
+                                .frame(height: 6)
                                 .animation(.linear(duration: 1.0), value: game.questionTimeLeft)
                         }
-                        .cornerRadius(3)
                     }
                     .frame(height: 5)
                     .padding(.horizontal)
                     .padding(.top, 20)
+                    
                     Spacer()
                 }
             }
             .padding(.horizontal)
-            .onAppear {
-                game.startGame()
-            }
+            .onAppear { game.startGame() }
         }
         .navigationBarBackButtonHidden(true)
     }
