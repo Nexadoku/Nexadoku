@@ -15,6 +15,8 @@ struct MenuTabView: View {
                     switch navigator.selectedTab {
                     case .menu:
                         MenuView()
+                    case .events:
+                        EventsView()
                     case .account:
                         AccountView()
                     }

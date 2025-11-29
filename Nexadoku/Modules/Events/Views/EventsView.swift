@@ -11,26 +11,6 @@ struct EventsView: View {
             SystemBackground()
             ScrollView {
                 VStack(spacing: 35) {
-                    HStack {
-                        Button {
-                            dismiss()
-                            VibrationManager.shared.lightImpact()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
-                                .font(.system(size: 24, weight: .heavy))
-                                .shadow(radius: 10)
-                        }
-                        
-                        Text("TRIALS")
-                            .font(.system(size: 30, weight: .heavy))
-                            .foregroundColor(.white)
-                            .shadow(radius: 20)
-                        
-                        Spacer()
-                            
-                    }
-                    .padding()
                     
                     VStack(spacing: 0) {
                         PuzzleCardView(
