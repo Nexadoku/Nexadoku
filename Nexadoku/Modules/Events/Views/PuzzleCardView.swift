@@ -1,7 +1,7 @@
 
 import SwiftUI
 
-struct PuzzleCardView: View {
+struct EventCardView: View {
     let title: String
     let description: String
     let image: String
@@ -9,32 +9,45 @@ struct PuzzleCardView: View {
 
     var body: some View {
         ZStack {
-            
-            // MARK: - IMAGE BACKGROUND (как в старом варианте)
+            // Background image
             Image(image)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(height: 250)
+                .frame(height: 220)
                 .clipped()
                 .overlay(
                     LinearGradient(
-                        colors: [.black.opacity(0.35), .clear],
+                        colors: [
+                            Color.black.opacity(0.05),
+                            Color.black.opacity(0.45)
+                        ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
                 )
-                .cornerRadius(35)
-            
-            // MARK: - GLASS OVERLAY (новый стиль)
-            RoundedRectangle(cornerRadius: 35, style: .continuous)
-                .fill(Color.white.opacity(0.03))
+                .overlay(
+                    LinearGradient(
+                        colors: [
+                            Color.purple.opacity(0.25),
+                            Color.indigo.opacity(0.2),
+                            Color.clear
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .cornerRadius(28)
+
+            // Glass overlay
+            RoundedRectangle(cornerRadius: 28, style: .continuous)
+                .fill(Color.white.opacity(0.04))
                 .background(
-                    RoundedRectangle(cornerRadius: 35)
+                    RoundedRectangle(cornerRadius: 28)
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.18),
-                                    Color(red: 60/255, green: 20/255, blue: 120/255).opacity(0.18)
+                                    Color(red: 0.53, green: 0.13, blue: 0.92).opacity(0.22),
+                                    Color(red: 0.21, green: 0.06, blue: 0.40).opacity(0.22)
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
@@ -42,81 +55,59 @@ struct PuzzleCardView: View {
                         )
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 35)
+                    RoundedRectangle(cornerRadius: 28)
                         .stroke(
                             LinearGradient(
                                 colors: [
-                                    Color.white.opacity(0.6),
+                                    Color.white.opacity(0.45),
                                     Color.white.opacity(0.15)
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             ),
-                            lineWidth: 1
+                            lineWidth: 1.1
                         )
                 )
-                .shadow(color: .black.opacity(0.25), radius: 14, x: 0, y: 8)
-                .cornerRadius(35)
-            
-            // MARK: - CONTENT LAYOUT (как в старом варианте)
-            VStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    
-                    Text(title)
-                        .font(.title2)
-                        .fontWeight(.heavy)
-                        .foregroundColor(.white)
-                        .padding(.top, 15)
-                        .padding(.horizontal, 20)
-                    
-                    Text(description)
-                        .font(.subheadline)
-                        .foregroundColor(Color.white.opacity(0.9))
-                        .lineLimit(2)
-                        .padding(.horizontal, 20)
-                }
-                
+                .shadow(color: .black.opacity(0.45), radius: 20, x: 0, y: 10)
+
+            VStack(alignment: .leading, spacing: 10) {
                 Spacer()
-                
-                // MARK: - BUTTON (новый градиент)
+
+                Text(title)
+                    .font(.system(size: 26, weight: .heavy))
+                    .foregroundColor(.white)
+                    .shadow(radius: 10)
+
+                Text(description)
+                    .font(.system(size: 15))
+                    .foregroundColor(.white.opacity(0.85))
+                    .lineLimit(2)
+
                 Button(action: action) {
                     Text("Start")
-                        .font(.title3)
-                        .fontWeight(.heavy)
+                        .font(.system(size: 18, weight: .bold))
                         .foregroundColor(.white)
-                        .padding(.vertical, 14)
+                        .padding(.vertical, 12)
                         .frame(maxWidth: .infinity)
                         .background(
                             LinearGradient(
                                 colors: [
-                                    Color(red: 150/255, green: 80/255, blue: 255/255).opacity(0.9),
-                                    Color(red: 90/255, green: 40/255, blue: 180/255).opacity(0.9)
+                                    Color.purple.opacity(0.9),
+                                    Color.indigo.opacity(0.9)
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .cornerRadius(35)
-                        .shadow(color: Color.purple.opacity(0.35), radius: 10, x: 0, y: 6)
+                        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        .shadow(color: .purple.opacity(0.35), radius: 12, x: 0, y: 6)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 18)
+                .padding(.top, 8)
             }
+            .padding(22)
         }
-        .frame(height: 250)
-        .frame(maxWidth: .infinity)
+        .frame(height: 220)
         .padding(.horizontal)
         .padding(.bottom)
-    }
-}
-
-struct PuzzleCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        PuzzleCardView(
-            title: "Fast Math",
-            description: "Solve complex math puzzles using logic.",
-            image: "purpleCalculator"
-        ) { }
-            .preferredColorScheme(.dark)
     }
 }

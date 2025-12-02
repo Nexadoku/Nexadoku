@@ -17,22 +17,25 @@ struct AccountView: View {
             ScrollView {
                 VStack(spacing: 30) {
                     premiumSection(title: "") {
-                        glassMenuButton(title: "Statistics", icon: "trophy.fill") {
+                        
+                        glassProfileButton(title: "Statistics", iconSystem: "trophy.fill") {
                             navigator.push(.account(.statistics))
                             VibrationManager.shared.lightImpact()
                         }
                         
-                        glassMenuButton(title: "Premium Membership", icon: "star.fill") {
+                        glassProfileButton(title: "Premium Membership", iconSystem: "star.fill") {
                             navigator.push(.account(.premium))
+                            VibrationManager.shared.lightImpact()
                         }
                     }
                     premiumSection(title: "SETTINGS AND HELP") {
-                        glassMenuButton(title: "Settings", icon: "gearshape.fill") {
+                       
+                        glassProfileButton(title: "Settings", iconSystem: "gearshape.fill") {
                             navigator.push(.account(.settings))
                             VibrationManager.shared.lightImpact()
                         }
                         
-                        glassMenuButton(title: "Help", icon: "questionmark.circle.fill") {
+                        glassProfileButton(title: "Help & Guide", iconSystem: "questionmark.circle.fill") {
                             navigator.push(.account(.help))
                             VibrationManager.shared.lightImpact()
                         }
@@ -44,13 +47,11 @@ struct AccountView: View {
                             .foregroundColor(.white.opacity(0.5))
                             .padding(.horizontal)
                         
-                        glassMenuButton(title: "Send Feedback", icon: "paperplane.fill") {
+                        glassProfileButton(title: "Send Feedback", iconSystem: "paperplane.fill") {
                             if MFMailComposeViewController.canSendMail() {
                                 showMailView = true
-                                VibrationManager.shared.lightImpact()
                             } else {
                                 showMailError = true
-                                VibrationManager.shared.lightImpact()
                             }
                         }
                         
@@ -67,12 +68,14 @@ struct AccountView: View {
                             )
                         }
                         
-                        glassMenuButton(title: "Privacy Policy", icon: "figure.child.and.lock.fill") {
+                        glassProfileButton(title: "Privacy Policy", iconSystem: "figure.child.and.lock.fill") {
                             navigator.push(.account(.privacyPolicy))
+                            VibrationManager.shared.lightImpact()
                         }
                         
-                        glassMenuButton(title: "Terms And Conditions", icon: "text.document.fill") {
+                        glassProfileButton(title: "Terms and Conditions", iconSystem: "text.document.fill") {
                             navigator.push(.account(.terms))
+                            VibrationManager.shared.lightImpact()
                         }
                         
                     }
@@ -99,26 +102,48 @@ struct AccountView: View {
 
     // MARK: - Glass Button (matches Menu)
 
-    func glassMenuButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 10) {
-                Image(systemName: icon)
-                    .font(.title2.weight(.semibold))
-                Text(title)
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                Spacer()
+func glassProfileButton(
+    title: String,
+    iconSystem: String? = nil,
+    iconImageName: String? = nil,
+    action: @escaping () -> Void
+) -> some View {
+    Button(action: action) {
+        HStack(spacing: 12) {
+            
+            // Custom PNG icon
+            if let iconImageName = iconImageName {
+                Image(iconImageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30, height: 30)
+                    .shadow(color: .white.opacity(0.15), radius: 4)
             }
-            .foregroundColor(.white)
-            .padding()
-            .background(GlassMenuBackground(cornerRadius: 25))
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
-            .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
-        }
-        .padding(.horizontal)
-    }
+            
+            // SF Symbol icon
+            else if let iconSystem = iconSystem {
+                Image(systemName: iconSystem)
+                    .font(.title2.weight(.semibold))
+            }
+            
+            // TEXT INSTEAD OF IMAGE
+            Text(title)
+                .font(.system(size: 20, weight: .bold, design: .rounded))
 
-    struct GlassMenuBackground: View {
+            Spacer()
+        }
+        .foregroundColor(.white)
+        .padding()
+        .frame(maxWidth: 500, maxHeight: 60)
+        .background(GlassProfileBackground(cornerRadius: 25))
+        .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
+        .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
+        .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
+    }
+    .padding(.horizontal)
+}
+
+    struct GlassProfileBackground: View {
         var cornerRadius: CGFloat = 25
         var body: some View {
             ZStack {

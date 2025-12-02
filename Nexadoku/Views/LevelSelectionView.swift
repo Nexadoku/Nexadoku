@@ -207,7 +207,7 @@ struct GlassMenuButton: View {
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 200, maxHeight: 60)
-            .background(GlassMenuBackground(cornerRadius: 35))
+            .background(GlassProfileBackground(cornerRadius: 35))
             .clipShape(RoundedRectangle(cornerRadius: 35, style: .continuous))
             .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
             .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)

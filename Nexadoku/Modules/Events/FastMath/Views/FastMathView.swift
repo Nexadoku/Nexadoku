@@ -76,7 +76,6 @@ struct MathPuzzleView: View {
                         .offset(y: bounce ? -10 : 0)
                         .scaleEffect(bounce ? 1.1 : 1.0)
                         .animation(.easeInOut(duration: 0.25), value: bounce)
-                        .shadow(color: Color(red: 140/255, green: 60/255, blue: 255/255), radius: 10)
                     
                     // SCORE
                     Text("Score: \(game.score)")

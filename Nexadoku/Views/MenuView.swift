@@ -46,9 +46,9 @@ struct MenuView: View {
                         .padding(.top, 8)
                     }
                     
-                    Text("NEXADOKU")
-                        .font(.system(size: 50, weight: .heavy))
-                        .foregroundColor(.white)
+                    Image("nexadoku")
+                        .resizable()
+                        .frame(width: 280, height: 40)
 
                     Image("logo")
                         .resizable()
@@ -60,7 +60,7 @@ struct MenuView: View {
 
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
-                            glassMenuButton(title: "Continue Game", icon: "play.fill") {
+                            glassMenuButton(title: "Continue Game", iconImageName: "player_continue_game") {
                                 withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
                                     showContinueAlert = true
                                 }
@@ -71,13 +71,13 @@ struct MenuView: View {
                             }
                         }
 
-                        glassMenuButton(title: "New Game", icon: "gamecontroller.fill") {
+                        glassMenuButton(title: "New Game", iconImageName: "gamecontroller_new_game") {
                             navigator.push(.menu(.levelSelection))
                             VibrationManager.shared.lightImpact()
                         }
                         
                         ZStack(alignment: .topTrailing) {
-                            glassMenuButton(title: "Rewards", icon: "star.fill") {
+                            glassMenuButton(title: "Rewards", iconImageName: "star_rewards") {
                                 navigator.push(.menu(.rewards))
                             }
                             if claimableTrophiesCount > 0 {
@@ -98,7 +98,6 @@ struct MenuView: View {
                 }
             }
 
-            // Sheet for trophy unlock (if needed)
             if let bannerTrophy = unlockedTrophyBanner {
                 TrophyUnlockBanner(trophy: bannerTrophy) {
                     progress.markTrophyAsShown(bannerTrophy)
@@ -108,7 +107,6 @@ struct MenuView: View {
                 .zIndex(2000)
             }
 
-            // Custom alert in the center
             if showContinueAlert {
                 Color.black.opacity(alertAppear ? 0.45 : 0)
                     .ignoresSafeArea()
@@ -171,27 +169,7 @@ struct MenuView: View {
         }
         return nil
     }
-
-    func saveButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 10) {
-                Image(systemName: icon).font(.title2.weight(.semibold))
-                Text(title).font(.title2.bold())
-            }
-            .foregroundColor(.white)
-            .padding()
-            .frame(maxWidth: 500, maxHeight: 60)
-            .background(
-                GlossyPurpleBackground(cornerRadius: 25) // <- новый фон
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
-            .shadow(color: .purple.opacity(0.6), radius: 16, x: 0, y: 12)
-            .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 18)
-            .shadow(color: .white.opacity(0.1), radius: 8, x: 0, y: -4)
-        }
-        .padding(.horizontal)
-    }
-
+    
     /// Premium glass effect background with enhanced depth and reflections - Purple only
     struct GlossyPurpleBackground: View {
         var cornerRadius: CGFloat = 25
@@ -328,18 +306,38 @@ struct MenuView: View {
         }
     }
 
-    func glassMenuButton(title: String, icon: String, action: @escaping () -> Void) -> some View {
+    func glassMenuButton(
+        title: String,
+        iconSystem: String? = nil,
+        iconImageName: String? = nil,
+        action: @escaping () -> Void
+    ) -> some View {
         Button(action: action) {
-            HStack(spacing: 10) {
-                Image(systemName: icon)
-                    .font(.title2.weight(.semibold))
+            HStack(spacing: 12) {
+                
+                // Custom PNG icon
+                if let iconImageName = iconImageName {
+                    Image(iconImageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .shadow(color: .white.opacity(0.15), radius: 4)
+                }
+                
+                // SF Symbol icon
+                else if let iconSystem = iconSystem {
+                    Image(systemName: iconSystem)
+                        .font(.title2.weight(.semibold))
+                }
+                
+                // TEXT INSTEAD OF IMAGE
                 Text(title)
                     .font(.title2.bold())
             }
             .foregroundColor(.white)
             .padding()
             .frame(maxWidth: 500, maxHeight: 60)
-            .background(GlassMenuBackground(cornerRadius: 25))
+            .background(GlassProfileBackground(cornerRadius: 25))
             .clipShape(RoundedRectangle(cornerRadius: 25, style: .continuous))
             .shadow(color: Color.black.opacity(0.35), radius: 14, x: 0, y: 10)
             .shadow(color: Color.white.opacity(0.06), radius: 6, x: -2, y: -2)
@@ -386,9 +384,10 @@ struct ContinueAlert: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: "gamecontroller.fill")
-                .font(.system(size: 44, weight: .bold))
-                .foregroundColor(Color(red: 140/255, green: 60/255, blue: 255/255))
+            Image("gamecontroller_new_game")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
                 .shadow(radius: 16)
                 .padding(.top, 6)
 
