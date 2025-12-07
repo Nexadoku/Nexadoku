@@ -77,7 +77,6 @@ struct AccountView: View {
                             navigator.push(.account(.terms))
                             VibrationManager.shared.lightImpact()
                         }
-                        
                     }
                 }
                 .padding(.top)

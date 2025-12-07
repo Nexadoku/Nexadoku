@@ -145,7 +145,6 @@ struct RewardsView: View {
                 .transition(.scale.combined(with: .opacity))
             }
             
-            // Затемнение и sheet подробностей трофея
             if selectedTrophy != nil {
                 Color.black.opacity(0.6)
                     .ignoresSafeArea()
