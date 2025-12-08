@@ -5,14 +5,23 @@ struct MenuView: View {
     @EnvironmentObject private var navigator: Navigator
     @EnvironmentObject private var savedGameManager: GameSaveManager
     
+    @Environment(\.sheetIsVisible) private var sheetVisibleSetter
+    
     @ObservedObject var progress = ProgressManager.shared
+    
     @State private var animate = false
     @State private var unlockedTrophyBanner: Trophy? = nil
-    @State private var showContinueAlert = false
     @State private var alertAppear = false
     @State private var glow = false
+    @State private var showContinueSheet = false {
+        didSet {
+            onSheetChange(showContinueSheet)
+        }
+    }
 
     @AppStorage("claimedTrophyIDs") private var claimedTrophyIDs: String = ""
+    
+    var onSheetChange: (Bool) -> Void = { _ in}
 
     private var claimableTrophiesCount: Int {
         let claimedIDs = Set(claimedTrophyIDs.split(separator: ",").map(String.init))
@@ -27,6 +36,8 @@ struct MenuView: View {
         .filter { $0.isUnlocked && !claimedIDs.contains($0.uniqueID) }
         .count
     }
+    
+    
 
     var body: some View {
         ZStack {
@@ -61,8 +72,8 @@ struct MenuView: View {
                     VStack(spacing: 20) {
                         if let game = savedGameManager.game {
                             glassMenuButton(title: "Continue Game", iconImageName: "player_continue_game") {
-                                withAnimation(.spring(response: 0.48, dampingFraction: 0.72)) {
-                                    showContinueAlert = true
+                                withAnimation(.spring(response: 0.38, dampingFraction: 0.75)) {
+                                    showContinueSheet = true
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.13) {
                                     alertAppear = true
@@ -89,6 +100,13 @@ struct MenuView: View {
                 }
                 .padding(.bottom)
             }
+            
+            .opacity(showContinueSheet ? 0.0 : 1)
+            .scaleEffect(showContinueSheet ? 0.96 : 1)
+            .blur(radius: showContinueSheet ? 1 : 0)
+            .animation(.easeInOut(duration: 0.25), value: showContinueSheet)
+            .allowsHitTesting(!showContinueSheet)
+    
             .onAppear {
                 withAnimation(.easeInOut(duration: 1.45).repeatForever(autoreverses: true)) {
                     glow = true
@@ -107,41 +125,27 @@ struct MenuView: View {
                 .zIndex(2000)
             }
 
-            if showContinueAlert {
-                Color.black.opacity(alertAppear ? 0.45 : 0)
+            if showContinueSheet {
+                Color.black.opacity(0.6)
                     .ignoresSafeArea()
-                    .transition(.opacity)
-                    .blur(radius: alertAppear ? 3 : 0)
-                    .animation(.easeInOut(duration: 0.23), value: alertAppear)
-                    .onTapGesture { closeContinueAlert() }
-                    .zIndex(1010)
-                
-                ContinueAlert(
-                    appear: alertAppear,
+                    .zIndex(10)
+                    .onTapGesture {
+                        withAnimation { showContinueSheet = false }
+                    }
+
+                ContinueGameSheet(
                     onContinue: {
                         if let game = savedGameManager.game {
                             navigator.push(.menu(.game(.saved(game: game))))
                         }
-                        closeContinueAlert()
+                    withAnimation { showContinueSheet = false }
                     },
                     onCancel: {
-                        closeContinueAlert()
+                        withAnimation { showContinueSheet = false }
                     }
                 )
-                .zIndex(1011)
-                .transition(.identity)
-                .allowsHitTesting(true)
-            }
-        }
-    }
-    
-    func closeContinueAlert() {
-        withAnimation(.easeInOut(duration: 0.13)) {
-            alertAppear = false
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.13) {
-            withAnimation(.easeInOut(duration: 0.18)) {
-                showContinueAlert = false
+                .zIndex(11)
+                .transition(.scale.combined(with: .opacity))
             }
         }
     }
@@ -349,7 +353,7 @@ struct MenuView: View {
         var cornerRadius: CGFloat = 25
         var body: some View {
             ZStack {
-                // Base hues aligned with SystemBackground
+                
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(
                         LinearGradient(
@@ -361,11 +365,11 @@ struct MenuView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                // top highlight
+                
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(LinearGradient(colors: [Color.white.opacity(0.22), .clear], startPoint: .topLeading, endPoint: .center))
                     .blendMode(.screen)
-                // border
+                
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(
                         LinearGradient(colors: [Color.white.opacity(0.8), Color.white.opacity(0.25)], startPoint: .topLeading, endPoint: .bottomTrailing),
@@ -373,74 +377,6 @@ struct MenuView: View {
                     )
             }
         }
-    }
-}
-// MARK: - Кастомный центрированный алерт
-
-struct ContinueAlert: View {
-    var appear: Bool
-    var onContinue: () -> Void
-    var onCancel: () -> Void
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Image("gamecontroller_new_game")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 150, height: 150)
-                .shadow(radius: 16)
-                .padding(.top, 6)
-
-            Text("Continue Game?")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(.white)
-                .padding(.top, 2)
-            Text("Do you want to continue your saved game?")
-                .font(.system(size: 17))
-                .foregroundColor(.white.opacity(0.86))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 8)
-
-            HStack(spacing: 18) {
-                Button(action: onCancel) {
-                    Text("Cancel")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(.black)
-                        .cornerRadius(14)
-                }
-                Button(action: onContinue) {
-                    Text("Continue")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color(red: 140/255, green: 60/255, blue: 255/255))
-                        .shadow(radius: 15)
-                        .cornerRadius(14)
-                }
-            }
-        }
-        .padding(.horizontal, 32)
-        .padding(.vertical, 28)
-        .background(
-            RoundedRectangle(cornerRadius: 35)
-                .fill(
-                    LinearGradient(colors: [.black, Color(red: 140/255, green: 60/255, blue: 255/255)], startPoint: .topLeading, endPoint: .bottomTrailing)
-                )
-                .shadow(radius: 20)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 35)
-                        .stroke(Color(red: 140/255, green: 60/255, blue: 255/255), lineWidth: 1)
-                )
-        )
-        .padding(.horizontal, 40)
-        .shadow(radius: 32)
-        .opacity(appear ? 1 : 0)
-        .scaleEffect(appear ? 1 : 0.84)
-        .animation(.interpolatingSpring(stiffness: 330, damping: 26), value: appear)
     }
 }
 

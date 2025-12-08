@@ -6,23 +6,36 @@ struct MenuTabView: View {
     @EnvironmentObject private var navigator: Navigator
     @EnvironmentObject private var storeManager: StoreManager
     
+    // ← Теперь состояние хранится здесь, наверху
+    @State private var sheetIsVisible: Bool = false
+    
     @State private var showRate = false
     
     var body: some View {
         NavigationStack(path: $navigator.stack) {
             ZStack {
+                
                 Group {
                     switch navigator.selectedTab {
                     case .menu:
-                        MenuView()
+                        MenuView(onSheetChange: { value in
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                sheetIsVisible = value
+                            }
+                        })
                     case .events:
                         EventsView()
                     case .account:
                         AccountView()
                     }
                 }
+                
+                // TAB BAR — исчезает!
                 .safeAreaInset(edge: .bottom) {
-                    CustomTabBar(selectedTab: $navigator.selectedTab)
+                    if !sheetIsVisible {
+                        CustomTabBar(selectedTab: $navigator.selectedTab)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                    }
                 }
             }
             .navigationDestination(
