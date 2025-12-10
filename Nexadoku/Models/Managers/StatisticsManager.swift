@@ -61,4 +61,9 @@ class StatisticsManager: ObservableObject {
     func stats(for difficulty: DifficultyLevel) -> GameStats {
         stats[difficulty] ?? GameStats()
     }
+    
+    func resetAllStats() {
+        stats = Dictionary(uniqueKeysWithValues: DifficultyLevel.allCases.map { ($0, GameStats()) })
+        save()
+    }
 }

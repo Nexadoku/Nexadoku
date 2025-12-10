@@ -325,8 +325,7 @@ struct MenuView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 40, height: 40)
-                        .shadow(color: .white.opacity(0.15), radius: 4)
-                }
+                    }
                 
                 // SF Symbol icon
                 else if let iconSystem = iconSystem {

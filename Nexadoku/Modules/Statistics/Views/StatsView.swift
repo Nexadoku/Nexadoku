@@ -11,6 +11,7 @@ struct StatsView: View {
     
     @State private var showCalendarSheet = false
     @State private var showLineChartSheet = false
+    @State private var showResetSheet = false
 
     var stats: GameStats {
         statsManager.stats(for: selectedLevel)
@@ -78,8 +79,45 @@ struct StatsView: View {
                         .animation(.easeOut(duration: 0.5).delay(0.1), value: animate)
 
                     Spacer()
+                    
+                    Button(action:  {
+                        VibrationManager.shared.lightImpact()
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                            showResetSheet = true
+                        }
+                    }) {
+                        Text("Reset Statistics")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.9))
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.4),
+                                        Color.indigo.opacity(0.4)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            )
+                            .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
+                    }
+                    .opacity(animate ? 1 : 0)
+                    .animation(.easeOut(duration: 0.6).delay(0.3), value: animate)
+                    .padding(.top, 10)
                 }
                 .padding()
+                .opacity(showResetSheet ? 0.0 : 1.0)
+                .scaleEffect(showResetSheet ? 0.96 : 1.0)
+                .blur(radius: showResetSheet ? 1.5 : 0)
+                .animation(.easeInOut(duration: 0.25), value: showResetSheet)
+                .allowsHitTesting(!showResetSheet)
             }
             .sheet(isPresented: $showLineChartSheet) {
                 LineChartExplanationSheet(stats: stats)
@@ -111,6 +149,40 @@ struct StatsView: View {
             }
             .toolbarBackground(Color(red: 140/255, green: 60/255, blue: 255/255).opacity(0.3), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
+            .toolbar(showResetSheet ? .hidden : .visible, for: .navigationBar)
+            
+            if showResetSheet {
+                Color.black.opacity(0.6)
+                    .ignoresSafeArea()
+                    .zIndex(10)
+                
+                ResetStatisticsSheet(
+                    onReset: {
+                        StatisticsManager.shared.resetAllStats()
+                        VibrationManager.shared.lightImpact()
+                        
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            pieChartProgress = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation(.easeOut(duration: 1.0)) {
+                                pieChartProgress = 1
+                            }
+                        }
+                        
+                        withAnimation {
+                            showResetSheet = false
+                        }
+                    },
+                    
+                    onCancel: {
+                        withAnimation { showResetSheet = false }
+                    }
+                )
+                .zIndex(11)
+                .transition(.scale.combined(with: .opacity))
+            }
         }
     }
     

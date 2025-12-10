@@ -27,20 +27,21 @@ struct ContinueGameSheet: View {
                 )
                 .shadow(color: .black.opacity(0.35), radius: 18, x: 0, y: 10)
             
-            VStack(spacing: 22) {
+            VStack(spacing: 30) {
                 
                 Image("gamecontroller_new_game")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 140, height: 140)
-                    .shadow(radius: 18)
+                    .frame(width: 200, height: 200)
+                    .shadow(color: .white.opacity(0.5), radius: 10)
                     .opacity(contentAppear ? 1 : 0)
                     .scaleEffect(contentAppear ? 1 : 0.9)
                     .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.05), value: contentAppear)
                 
                 Text("CONTINUE GAME?")
-                    .font(.system(size: 26, weight: .heavy))
+                    .font(.system(size: 30, weight: .heavy))
                     .foregroundColor(.white)
+                    .lineLimit(1)
                     .opacity(contentAppear ? 1 : 0)
                     .offset(y: contentAppear ? 0 : 16)
                     .animation(.easeOut(duration: 0.3).delay(0.15), value: contentAppear)
@@ -96,7 +97,7 @@ struct ContinueGameSheet: View {
             .padding(28)
             
         }
-        .frame(maxWidth: 380, maxHeight: 600)
+        .frame(maxWidth: 380)
         .scaleEffect(appear ? 1 : 0.9)
         .opacity(appear ? 1 : 0)
         .animation(.easeInOut(duration: 0.28), value: appear)
