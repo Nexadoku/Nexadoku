@@ -8,7 +8,7 @@ struct MathPuzzleView: View {
     
     var body: some View {
         ZStack {
-            SystemBackground()
+            FastMathRainBackgorund()
             
             VStack {
                 // HEADER
@@ -148,6 +148,7 @@ struct MathPuzzleView: View {
             }
             .padding(.horizontal)
             .onAppear { game.startGame() }
+            .onDisappear { game.stopGame() }
         }
         .navigationBarBackButtonHidden(true)
     }

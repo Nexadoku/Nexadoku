@@ -13,6 +13,10 @@ public struct EventsRouter: RouterProtocol {
         switch route {
         case .mathPuzzle:
             MathPuzzleView()
+        case .mathPuzzleHome:
+            FastMathHomeView()
+        case .fastMathStatistics:
+            FastMathStatsView()
         }
     }
 }

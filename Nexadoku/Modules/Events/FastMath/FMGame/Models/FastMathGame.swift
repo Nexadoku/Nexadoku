@@ -11,13 +11,13 @@ class MathPuzzleGame: ObservableObject {
     
     @Published var categoryIndex = 0
     @Published var questionIndexCategory = 0
-    
     @Published var score = 0
     @Published var gameOver = false
     @Published var selectedAnswer: Int? = nil
     @Published var currentOption: [Int] = []
     @Published var questionTimeLeft = 2.5
     @Published var highScore: Int = UserDefaults.standard.integer(forKey: "HighScore")
+    @Published var waitingForFirstTap = true
     
     var timer: Timer?
     
@@ -89,6 +89,7 @@ class MathPuzzleGame: ObservableObject {
         score = 0
         gameOver = false
         selectedAnswer = nil
+        waitingForFirstTap = true
         
         groupedQuestions = [
             questions2Digits.shuffled(),
@@ -98,7 +99,6 @@ class MathPuzzleGame: ObservableObject {
         ]
         
         generateOptions()
-        startQuestionTimer()
     }
     
     func startQuestionTimer() {
@@ -131,6 +131,12 @@ class MathPuzzleGame: ObservableObject {
     }
     
     func checkAnswer(_ answer: Int) {
+        
+        if waitingForFirstTap {
+            waitingForFirstTap = false
+            startQuestionTimer()
+        }
+        
         selectedAnswer = answer
         timer?.invalidate()
         
@@ -168,8 +174,16 @@ class MathPuzzleGame: ObservableObject {
         startQuestionTimer()
     }
     
+    func stopGame() {
+        timer?.invalidate()
+        timer = nil
+        waitingForFirstTap = true
+    }
+    
     func finishGame() {
         gameOver = true
+        
+        FastMathStatsManager.shared.addScore(score)
         
         if score > highScore {
             highScore = score

@@ -25,7 +25,6 @@ struct PointsAlert: View {
                         .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: coinGlow)
                 }
                 
-                // Title with staggered animation
                 Text("WHAT ARE POINTS?")
                     .font(.system(size: 28, weight: .heavy))
                     .foregroundColor(.white)
@@ -33,7 +32,7 @@ struct PointsAlert: View {
                     .offset(y: textAppear ? 0 : 20)
                     .animation(.easeInOut(duration: 0.4).delay(0.2), value: textAppear)
                 
-                // Content with smooth reveal
+                
                 VStack(spacing: 16) {
                     Text("""
 Earn points by unlocking trophies!

@@ -18,7 +18,7 @@ struct EventsView: View {
                         description: "Solve complex math puzzles using logic and numbers.",
                         image: "purpleCalculator",
                         action: {
-                            navigator.push(.event(.mathPuzzle))
+                            navigator.push(.event(.mathPuzzleHome))
                             VibrationManager.shared.lightImpact()
                         }
                     )
